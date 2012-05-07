@@ -51,13 +51,8 @@ class Native
     }
 
     /**
-     * Sets the specified list of levels.
-     *
-     * @param array $levels the levels
-     *
-     * @return P\Technical\Trace\Adapter\Native
-     *
-     * @throws Exception if an error occured
+     * (non-PHPdoc)
+     * @see sources/F/Technical/Trace/Adapter/F\Technical\Trace\Adapter.Definition::setLevelForKeys()
      */
     public function setLevelForKeys($levels)
     {
@@ -66,13 +61,8 @@ class Native
     }
 
     /**
-     * Returns the current level for the specified key.
-     *
-     * @param string $key the key
-     *
-     * @return string
-     *
-     * @throws Exception if an error occured
+     * (non-PHPdoc)
+     * @see sources/F/Technical/Trace/Adapter/F\Technical\Trace\Adapter.Definition::getLevelForKey()
      */
     public function getLevelForKey($key)
     {
@@ -84,34 +74,15 @@ class Native
 
     /**
      * (non-PHPdoc)
-     * @see sources/F/Technical/Trace/Adapter/F\Technical\Trace\Adapter.Definition::configure()
-     */
-    public function configure($appConfig)
-    {
-    	throw new \RuntimeException (
-    		"Feature '" . __METHOD__ . "' not yet implemented"
-    	);
-    }
-
-    /**
-     * get date time
-     *
-     * @return string
+     * @see sources/F/Technical/Trace/Adapter/F\Technical\Trace\Adapter.Definition::getDatetime()
      */
     public function getDatetime()
     {
         return date('Y/m/d H:i');
     }
-
     /**
-     * Write trace message
-     *
-     * @param string $key
-     * @param string $msg
-     *
-     * @return bool
-     *
-     * @throws RuntimeException
+     * (non-PHPdoc)
+     * @see sources/F/Technical/Trace/Adapter/F\Technical\Trace\Adapter.Definition::write()
      */
     public function write($key, $msg)
     {
@@ -121,40 +92,66 @@ class Native
     }
 
     /**
-     * test if file exist
-     *
-     * @param string $filename
-     *
-     * @return bool
+     * (non-PHPdoc)
+     * @see sources/F/Technical/Trace/Adapter/F\Technical\Trace\Adapter.Definition::checkFileExists()
      */
-    public function isFileExists($filename)
+    public function checkFileExists($filename)
     {
-        return file_exists($filename);
+        throw new \RuntimeException (
+            "Feature '" . __METHOD__ . "' not yet implemented"
+        );
     }
 
     /**
-     * parse ini file
-     *
-     * @param string $filename
-     *
-     * @return array
+     * (non-PHPdoc)
+     * @see sources/F/Technical/Trace/Adapter/F\Technical\Trace\Adapter.Definition::parseIniFile()
      */
     public function parseIniFile($filename)
     {
-        return parse_ini_file($filename);
+        throw new \RuntimeException (
+            "Feature '" . __METHOD__ . "' not yet implemented"
+        );
     }
 
     /**
-     * Get message
-     *
-     * @param string $key
-     *
-     * @param array $params
-     *
-     * @return string
+     * (non-PHPdoc)
+     * @see sources/F/Technical/Trace/Adapter/F\Technical\Trace\Adapter.Definition::getMsg()
      */
     public function getMsg($key, $params=null)
     {
         return  \F\Technical\I18n\Service::singleton()->translate($key, $params);
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see sources/F/Technical/Trace/Adapter/F\Technical\Trace\Adapter.Definition::setTraceEnabled()
+     */
+    public function setTraceEnabled($state)
+    {
+    	throw new \RuntimeException (
+    		"Feature '" . __METHOD__ . "' not yet implemented"
+    	);
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see sources/F/Technical/Trace/Adapter/F\Technical\Trace\Adapter.Definition::isTraceEnabled()
+     */
+    public function isTraceEnabled()
+    {
+    	throw new \RuntimeException (
+    		"Feature '" . __METHOD__ . "' not yet implemented"
+    	);
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see sources/F/Technical/Trace/Adapter/F\Technical\Trace\Adapter.Definition::setFile()
+     */
+    public function setFile($filename)
+    {
+    	throw new \RuntimeException (
+     		"Feature '" . __METHOD__ . "' not yet implemented In Adapter Native"
+     		);
     }
 }

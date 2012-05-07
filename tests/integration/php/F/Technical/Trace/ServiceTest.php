@@ -59,7 +59,7 @@ class ServiceTest
                 . '/TraceWithParamsSuccess',
             'keylevelfile' => $this->getDataSetPath() . '/TraceLevelKeyMessage.ini',
         );
-        $this->s()->configure($appConfig);
+        $this->s()->configureAdapter($appConfig);
         $this->s()->trace('test.withparam',
             array('One', 'Two') );
         $this->assertFileExists($appConfig['file']);
@@ -73,7 +73,7 @@ class ServiceTest
         $appConfig = array (
             'file' => dirname(__FILE__) . '/TraceWithNoActivationTraceSuccess'
         );
-        $this->s()->configure($appConfig);
+        $this->s()->configureAdapter($appConfig);
         $this->s()->trace('test.with.param.success',
             array('paramètres', 'marchent'));
         $this->assertFileNotExists($appConfig['file']);
@@ -86,7 +86,7 @@ class ServiceTest
             'file' => dirname(__FILE__)
             . '/TraceWithNoMessageTraceFileAndNoKeyTraceLevel.log'
         );
-        $this->s()->configure($appConfig);
+        $this->s()->configureAdapter($appConfig);
         $this->s()->trace('test.with.param.success',
             array('paramètres', 'marchent'));
         $this->assertFileExists($appConfig['file']);
@@ -103,7 +103,7 @@ class ServiceTest
             'filters' => array('levels' => array('warning')),
         );
 
-        $this->s()->configure($appConfig);
+        $this->s()->configureAdapter($appConfig);
         $this->s()->trace('test.withparam',
             array('One', 'Two') );
         $this->s()->trace('test.warning');
@@ -122,7 +122,7 @@ class ServiceTest
             . '/testTraceWithTranslationInFrenchSuccess.log',
             'keylevelfile' => $this->getDataSetPath() . '/TraceLevelKeyMessage.ini',
         );
-        $this->s()->configure($appConfig);
+        $this->s()->configureAdapter($appConfig);
         \F\Technical\I18n\Service::singleton()->setCurrentLocale('fr-fr');
         $this->s()->trace('test.lang');
         $this->assertFileExists($appConfig['file']);
@@ -140,7 +140,7 @@ class ServiceTest
             . '/testTraceWithTranslationInEnglishSuccess.log',
             'keylevelfile' => $this->getDataSetPath() . '/TraceLevelKeyMessage.ini',
         );
-        $this->s()->configure($appConfig);
+        $this->s()->configureAdapter($appConfig);
         \F\Technical\I18n\Service::singleton()->setCurrentLocale('en-us');
         $this->s()->trace('test.lang');
         $this->assertFileExists($appConfig['file']);

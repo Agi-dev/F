@@ -55,34 +55,72 @@ extends \F\Technical\Base\Test\Service
 		return parent::m();
 	}
 
+	/**
+	 * setTraceEnabled
+	 */
+	public function testSetTraceEnabledWithNoTrueParamDisableTrace()
+	{
+		$this->mock('setTraceEnabled');
+		$this->assertInstanceOfService($this->s()->setTraceEnabled('unechaine'));
+		$this->assertEquals(array(false), $this->m()->getCallArgs('setTraceEnabled'));
+
+	}
+
+	public function testSetTraceEnabledWithSuccess()
+	{
+    	$this->mock('setTraceEnabled');
+		$this->assertInstanceOfService($this->s()->setTraceEnabled(true));
+        $this->assertEquals(array(true), $this->m()->getCallArgs('setTraceEnabled'));
+	}
+
+	/**
+     * isTraceEnabled
+     */
+    public function testIsTraceEnabledWithSuccess()
+    {
+        $this->mock('isTraceEnabled', true);
+        $this->assertTrue($this->s()->isTraceEnabled());
+    }
+
     /**
      * configure
      */
-    public function testConfigureWithNotExistKeyLevelFileThrowException()
+    public function testConfigureWithTraceSuccess()
     {
-        $this->mock('isFileExists', true);
-        $this->mock('parseIniFile');
-        $this->mock('isFileExists', false);
-        $this->setExpectedException('RuntimeException',
-            "le fichier 'notExistKeyLevelFile' n'existe pas", 404);
-
-        // 3. executes the service method
-        $this->s()->configure(array('keylevelfile' => 'notExistKeyLevelFile'));
-
-        // 4. asserts
+    	$config = array (
+            'activated' => 1,
+            'file' => 'afile',
+            'keylevelfile' =>'TraceLevelKeyMessage',
+        );
+        $this->mock('checkFileExists', true);
+        $this->mock('parseIniFile', 'someData');
+        $this->mock('checkFileExists', true);
+        $this->mock('parseIniFile', 'otherData');
+        $this->mock('setTraceEnabled');
+        $this->mock('setFile');
+    	$this->assertInstanceOfService($this->s()->configure('someparams'));
     }
 
-    public function testConfigureWithSuccess()
-    {
-        $this->mock('isFileExists', true);
-        $this->mock('parseIniFile');
-        $this->mock('isFileExists', true);
-        $this->mock('parseIniFile');
 
-        $this->mock('configure');
-        $this->s()->configure(array('file' => 'File'));
-        $this->assertEquals(array(array('file' => 'File')),
-            $this->m()->getCallArgs('configure'));
+
+    /**
+     * loadLevelsFromFile
+     */
+    public function testLoadLevelsFromFileWithNotExistKeyLevelFileThrowException()
+    {
+        $this->mock('checkFileExists', new \RuntimeException('erreur'));
+        $this->setExpectedException('RuntimeException',
+            'erreur');
+
+        $this->s()->loadLevelsFromFile('notExistKeyLevelFile');
+    }
+
+    public function testLoadLevelsFromFileWithSuccess()
+    {
+    	$this->mock('checkFileExists', true);
+    	$this->mock('parseIniFile', 'someData');
+
+    	$this->assertInstanceOfService($this->s()->loadLevelsFromFile('keyLevelFile'));
     }
 
     /**
@@ -91,16 +129,13 @@ extends \F\Technical\Base\Test\Service
 
     public function testTraceWithParamsNotAnArraySuccess()
     {
-        // 1. set the mock behaviour
         $this->mock('getLevelForKey', 'err');
         $this->mock('getMsg', 'param 1 : paramOne');
         $this->mock('getDatetime', 'Today');
         $this->mock('write');
 
-        // 3. executes the service method
         $this->s()->trace('valid.key', 'paramOne');
 
-        // 4. asserts
         $this->assertEquals(array('valid.key', '[Today][ERR] param 1 : paramOne'."\n"),
             $this->m()->getCallArgs('write'));
         $this->assertEquals(array('valid.key', array('paramOne')), $this->m()->getCallArgs('getMsg'));
@@ -108,16 +143,13 @@ extends \F\Technical\Base\Test\Service
 
     public function testTraceWithParamsSuccess()
     {
-        // 1. set the mock behaviour
         $this->mock('getLevelForKey', 'err');
         $this->mock('getMsg', 'params : paramOne paramTwo');
         $this->mock('getDatetime', 'Today');
         $this->mock('write');
 
-        // 3. executes the service method
         $this->s()->trace('valid.key', array ('paramOne', 'paramTwo'));
 
-        // 4. asserts
         $this->assertEquals(array('valid.key', '[Today][ERR] params : paramOne paramTwo'."\n"),
             $this->m()->getCallArgs('write'));
         $this->assertEquals(array('valid.key', array ('paramOne', 'paramTwo')), $this->m()->getCallArgs('getMsg'));
@@ -137,5 +169,15 @@ extends \F\Technical\Base\Test\Service
         // 4. asserts
         $this->assertEquals(array('valid.key', '[Today][VALID.KEY] message without key level set'."\n"),
             $this->m()->getCallArgs('write'));
+    }
+
+    public function testTraceWithOnlyWarningMessageFilterSuccess()
+    {
+
+    }
+
+    public function testTraceWithoutWarningMessageFilterSuccess()
+    {
+
     }
 }

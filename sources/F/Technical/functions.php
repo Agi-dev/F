@@ -6,7 +6,7 @@
  * @param bool  $exit exit(true by default)
  * @param bool  $dump add var type (false by default)
  */
-function fdbg($v, $exit = true, $dump = false)
+function f_dbg($v, $exit = true, $dump = false)
 {
 	$calledFrom = debug_backtrace();
 	$calledFrom = "\n=== DEBUG FROM ". substr($calledFrom[0]['file'], 1) .' (line ' . $calledFrom[0]['line'].")\n\n";

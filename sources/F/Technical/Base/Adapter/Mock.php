@@ -34,7 +34,7 @@ abstract class Mock
 	public function __construct()
 	{
 		$this->_calls = array('*all*');
-		$this->_results = array();		
+		$this->_results = array();
 	}
 	/**
 	 * Stores the specified call and return the registered result
@@ -142,15 +142,15 @@ abstract class Mock
 
 		return $calls;
 	}
-	
+
 	public function __call($method, $args)
 	{
 	    $definition = str_replace('Mock', 'Definition', get_class($this));
-		
+
 		if(true === in_array($method, get_class_methods($definition))) {
 			return $this->storeCallAndReturnExpectedResult($method, $args);
 		} else {
-			throw new \Exception('Aucun bouchon pour la méthode est définie : '.$method);
+			throw new \Exception('Vérifier que \'' . $method . '\' se trouve dans Definition');
 		}
 	}
 }

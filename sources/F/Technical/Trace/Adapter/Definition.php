@@ -72,13 +72,13 @@ interface Definition
     public function write($key, $msg);
 
     /**
-     * test if file exist
+     * test if file exist throw exception if not
      *
      * @param string $filename
      *
-     * @return bool
+     * @throw RuntimeException
      */
-    public function isFileExists($filename);
+    public function checkFileExists($filename);
 
     /**
      * parse ini file
@@ -99,5 +99,29 @@ interface Definition
      * @return string
      */
     public function getMsg($key, $params);
+
+   /**
+     * set if trace  is enable or not
+     *
+     * @param bool $state
+     *
+     * @return \F\Technical\Trace\Adapter\Definition
+     */
+    public function setTraceEnabled($state);
+
+    /**
+     * get if trace is enable or not
+     *
+     * @return bool
+     */
+    public function isTraceEnabled();
+
+    /**
+     * set filename for trace output
+     *
+     * @param string $filename
+     * @return \F\Technical\Trace\Adapter\Definition
+     */
+    public function setFile($filename);
 }
 // @codeCoverageIgnoreEnd

@@ -71,9 +71,7 @@ class Service
      */
     public function loadLevelsFromFile($path)
     {
-        if ( false === $this->getAdapter()->isFileExists($path) ) {
-            $this->throwException('file.notfound', $path);
-        }
+        $this->getAdapter()->checkFileExists($path);
         $levels = $this->getAdapter()->parseIniFile($path);
         $this->setLevelForKeys($levels);
 
@@ -99,37 +97,6 @@ class Service
 
         return $this;
     }
-
-    /**
-     * Configure Trace
-     *
-     * appConfig['file']         string: filename for trace (required)
-     *          ['keylevelfile'] string: keylevel filename
-     *          ['activated']    int: 1|0 trace activated or not (not by default)
-     *          ['filters'][levels] array::string: levels to filter
-     *                     [keys]   array::string: keys to filter
-     *
-     * @param array $appConfig
-     *
-     * @return W_Technical_Trace_Service
-     *
-     * @throw RuntimeException
-     */
-    public function configure($appConfig)
-    {
-        // init with W levels
-        $this->loadLevelsFromFile(realpath(dirname(__FILE__) . '/../resources')
-                                    . '/trace/default.ini');
-
-        $file =  null;
-        if ( true === isset($appConfig['keylevelfile']) ) {
-            $this->loadLevelsFromFile($appConfig['keylevelfile']);
-            unset($appConfig['keylevelfile']);
-        }
-
-        return $this;
-    }
-
 
     /**
      * Trace
@@ -179,5 +146,53 @@ class Service
     public function getMsg($key, $params = array())
     {
         return $this->getAdapter()->getMsg($key, $params);
+    }
+
+    /**
+     * set if trace  is enable or not
+     *
+     * @param bool $state
+     *
+     * @return \F\Technical\Trace\Service
+     */
+    public function setTraceEnabled($state)
+    {
+        $this->getAdapter()->setTraceEnabled(true === $state);
+
+        return $this;
+    }
+
+    /**
+     * get if trace is enable or not
+     *
+     * @return bool
+     */
+    public function isTraceEnabled()
+    {
+        return $this->getAdapter()->isTraceEnabled();
+    }
+
+    /**
+     * configure trace
+     *
+     *    config['file']            string: filename for trace (required)
+     *          ['keylevelfile']    string: keylevel filename
+     *          ['activated']       int: 1|0 trace activated or not (not by default)
+     *          ['filters'][levels] array::string: levels to filter
+     *
+     * @param array $config
+     *
+     * @return \F\Technical\Trace\Service
+     */
+    public function configure($config)
+    {
+    	// init with W levels
+        $this->loadLevelsFromFile(dirname(__FILE__) . '/../resources/trace/default.ini');
+        $this->loadLevelsFromFile($config['keylevelfile']);
+        $this->getAdapter()->setTraceEnabled($config['activated']);
+    	$this->getAdapter()->setFile($config['file']);
+
+
+    	return $this;
     }
 }
