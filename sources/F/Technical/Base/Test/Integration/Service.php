@@ -83,12 +83,12 @@ abstract class Service
 	 */
 	protected function getDataSetPath()
 	{
-	    if ( false === isset($this->_datasetPath) ) {
-		    if ( true === \Zend_Registry::isRegistered('dataSetPath') ) {
-		        $this->_datasetPath = \Zend_Registry::get('dataSetPath');
-		    }
-		    return $this->_datasetPath;
-	    }    
+// 	    if ( false === isset($this->_datasetPath) ) {
+// 		    if ( true === \Zend_Registry::isRegistered('dataSetPath') ) {
+// 		        $this->_datasetPath = \Zend_Registry::get('dataSetPath');
+// 		    }
+// 		    return $this->_datasetPath;
+// 	    }    
 	    if ( false === isset($this->_datasetPath) ) {
 	        $defaultPath = realpath(dirname(__FILE__) 
 		                              . '/../../../../../../tests/integration/php/dataset');

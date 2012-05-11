@@ -1,4 +1,5 @@
 <?php
+// @codeCoverageIgnoreStart
 /**
  * P\Technical\Base\Adapter\Native is the native adapter
  * for the service.
@@ -31,3 +32,4 @@ abstract class Native {
 		throw new \RuntimeException('Method "'.$method.'" not yet implemented');
 	}
 }
+// @codeCoverageIgnoreEnd

@@ -1,4 +1,5 @@
 <?php
+// @codeCoverageIgnoreStart
 /**
  * Show var content
  *
@@ -42,3 +43,4 @@ function stripAccent($str)
 	$str = preg_replace('#&[^;]+;#', '', $str); // supprime les autres caractères
 	return $str;
 }
+// @codeCoverageIgnoreEnd

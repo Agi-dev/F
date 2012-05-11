@@ -1,4 +1,5 @@
 <?php
+// @codeCoverageIgnoreStart
 /**
  * F\Technical\Trace\Adapter\Native is
  * the native adapter for the trace service,
@@ -155,3 +156,4 @@ class Native
      		);
     }
 }
+// @codeCoverageIgnoreEnd

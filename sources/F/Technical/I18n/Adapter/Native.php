@@ -1,4 +1,5 @@
 <?php
+// @codeCoverageIgnoreStart
 /**
  * F\Technical\I18n\Adapter\Native is
  * the native adapter for the i18n service,
@@ -99,3 +100,4 @@ class Native implements Definition
     }
 
 }
+// @codeCoverageIgnoreEnd

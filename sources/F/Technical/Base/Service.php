@@ -1,4 +1,5 @@
 <?php
+// @codeCoverageIgnoreStart
 /**
  * F\Technical\Base\Service is a class to handle Base operations.
  *
@@ -280,5 +281,5 @@ abstract class Service
     {
     	return get_class($this);
     }
-
+    // @codeCoverageIgnoreEnd
 }

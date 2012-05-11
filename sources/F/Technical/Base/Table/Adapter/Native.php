@@ -1,4 +1,5 @@
 <?php
+// @codeCoverageIgnoreStart
 /**
  * F\Technical\Base\Table\Adapter\Native is
  * the native adapter for the i18n service,
@@ -146,3 +147,4 @@ class Native implements Definition
 		\F\Technical\Database\Service::singleton()->rollbackTransaction();
 	}
 }
+// @codeCoverageIgnoreEnd

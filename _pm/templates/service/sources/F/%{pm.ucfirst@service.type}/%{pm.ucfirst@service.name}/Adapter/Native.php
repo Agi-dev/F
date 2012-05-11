@@ -1,4 +1,5 @@
 <?php
+// @codeCoverageIgnoreStart
 /**
  * F\%{pm.ucfirst@service.type}\%{pm.ucfirst@service.name}\Adapter\Native is
  * the native adapter for the %{pm.service.name} service,
@@ -36,3 +37,4 @@ class Native
     implements Definition
 {
 }
+// @codeCoverageIgnoreEnd

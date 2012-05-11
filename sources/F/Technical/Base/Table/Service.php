@@ -1,4 +1,5 @@
 <?php
+// @codeCoverageIgnoreStart
 /**
  * F\Technical\Base\Service is a class to handle Base operations.
  *
@@ -176,3 +177,4 @@ abstract class Service
        return $data;
    }
 }
+// @codeCoverageIgnoreEnd

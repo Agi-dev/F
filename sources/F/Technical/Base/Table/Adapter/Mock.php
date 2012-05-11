@@ -1,4 +1,5 @@
 <?php
+// @codeCoverageIgnoreStart
 /**
  * P\Technical\Base\Adapter\Table\Mock is the mock adapter
  * for the service.
@@ -141,3 +142,4 @@ class Mock
 	
 	
 }
+// @codeCoverageIgnoreEnd
