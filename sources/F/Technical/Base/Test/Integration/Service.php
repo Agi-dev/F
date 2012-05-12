@@ -16,7 +16,7 @@ require_once 'F/Technical/Base/Test/Base.php';
 /**
  * Abstract integration Service Test
  *
- * @category   w
+ * @category   F
  * @package    F_Technical
  */
 abstract class Service 

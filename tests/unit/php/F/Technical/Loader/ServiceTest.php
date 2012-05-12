@@ -56,14 +56,29 @@ extends \F\Technical\Base\Test\Service
 	}
 
     /**
-     * just for saying there is no test
+     * autoload
      */
+	public function testAutoloadWithErrorThrowRuntimeException()
+	{
+		$this->mock('registerAutoloadFunction', new \Exception('une error'));
+		$this->setExpectedException('RuntimeException', "Impossible de charger l'autoload");
+		$this->s()->autoload();
+	}
+	
 	public function testAutoloadWithSuccess()
     {
-    	$this->mock('registerNamespaces', $this->s()->getAdapter());
-    	$this->mock('autoload');
-    	$namespace = array('namespace' => 'directory');
-    	$this->assertInstanceOfService($this->s()->autoload($namespace));
-    	$this->assertEquals(array($namespace), $this->m()->getCallArgs('registerNamespaces'));
+    	$this->mock('registerAutoloadFunction', true);
+    	$this->assertInstanceOfService($this->s()->autoload());
     }
+    
+    /**
+     * load
+     */
+    public function testLoadWithSuccess()
+    {
+    	$this->mock('php_require_once');
+    	$this->assertInstanceOfService($this->s()->load('uneclass'));
+    	$this->assertEquals(array('uneclass.php'), $this->m()->getCallArgs('php_require_once'));
+    }
+    
 }

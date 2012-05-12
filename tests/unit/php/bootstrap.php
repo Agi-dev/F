@@ -9,4 +9,4 @@ include_once 'F/Technical/functions.php';
 
 // autoload
 require_once 'F/Technical/Loader/Service.php';
-\F\Technical\Loader\Service::singleton()->autoload( array("F" => "sources/F"));
+//\F\Technical\Loader\Service::singleton()->autoload( array("F" => "sources/F"));

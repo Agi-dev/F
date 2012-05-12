@@ -8,7 +8,7 @@
  * <LICENSETXT>
  *
  * @category  F
- * @author    François <francoisschneider@neuf.fr>
+ * @author    FranÃ§ois <francoisschneider@neuf.fr>
  * @package    F\Technical\File\Adapter
  * @copyright Copyright (c) 2012 <COPYRIGHT>
  * @license   <LICENSE>
@@ -36,5 +36,38 @@ require_once 'F/Technical/File/Adapter/Definition.php';
 class Native
     implements Definition
 {
+	/**
+	 * (non-PHPdoc)
+	 * @see sources/F/Technical/File/Adapter/F\Technical\File\Adapter.Definition::isFileExists()
+	 */
+	public function isFileExists($filename)
+	{
+		$err1   = error_get_last();
+        $result = @file_exists($filename);
+        $err    = error_get_last();
+        
+        if (false === $result && (serialize($err1) !== serialize($err))) {
+            throw new \RuntimeException($err['message'], 1000 + $err['type']);
+        } 
+        
+        return true === $result;
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see sources/F/Technical/File/Adapter/F\Technical\File\Adapter.Definition::parseIniFile()
+	 */
+	public function parseIniFile($filename)
+	{
+		$err1   = error_get_last();
+        $result = @parse_ini_file($filename);
+        $err    = error_get_last();
+        
+        if (false === $result && (serialize($err1) !== serialize($err))) {
+            throw new \RuntimeException($err['message'], 1000 + $err['type']);
+        } 
+        
+        return $result;
+	}
 }
 // @codeCoverageIgnoreEnd

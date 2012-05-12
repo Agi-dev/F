@@ -98,9 +98,7 @@ class Native
      */
     public function checkFileExists($filename)
     {
-        throw new \RuntimeException (
-            "Feature '" . __METHOD__ . "' not yet implemented"
-        );
+        return \F\Technical\File\Service::singleton()->checkFileExists($filename);
     }
 
     /**
@@ -109,9 +107,7 @@ class Native
      */
     public function parseIniFile($filename)
     {
-        throw new \RuntimeException (
-            "Feature '" . __METHOD__ . "' not yet implemented"
-        );
+        return \F\Technical\File\Service::singleton()->parseIniFile($filename);
     }
 
     /**

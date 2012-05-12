@@ -143,16 +143,4 @@ abstract class Service
         $this->assertEquals('value2', $instanceOne->testProperty);
         $this->assertEquals('value2', $instanceTwo->testProperty);
     }
-
-    /**
-     * test if actual is instance of current service
-     *
-     * @param $actual
-     *
-     *
-     */
-    public function assertInstanceOfService($actual)
-    {
-    	$this->assertInstanceOf(get_class($this->s()), $actual);
-    }
 }

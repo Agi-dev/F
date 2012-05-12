@@ -37,38 +37,29 @@ class Native
     implements Definition
 {
 	/**
-	 * loader class
-	 * 
-	 * @var Phalcon_Loader 
-	 */
-	protected $_loader;
-	
-	/**
-	 * Constructeur
-	 */
-	public function __construct()
-	{
-		$this->_loader = new \Phalcon_Loader();
-	}
-	
-	/**
 	 * (non-PHPdoc)
-	 * @see F\Technical\Loader\Adapter.Definition::registerNamespaces()
+	 * @see sources/F/Technical/Loader/Adapter/F\Technical\Loader\Adapter.Definition::registerAutoloadFunction()
 	 */
-	public function registerNamespaces($namespaces)
-	{
-		$this->_loader->registerNamespaces($namespaces);
-		return $this;
-	}
-	
-	/**
-	 * (non-PHPdoc)
-	 * @see F\Technical\Loader\Adapter.Definition::autoload()
-	 */
-	public function autoload()
-	{
-		$this->_loader->register();
-		return $this;
-	}
+	public function registerAutoloadFunction($function)
+    {
+        $err1   = error_get_last();
+        $result = @spl_autoload_register($function);
+        $err    = error_get_last();
+        
+        if (false === $result && (serialize($err1) !== serialize($err))) {
+            throw new \RuntimeException($err['message'], 1000 + $err['type']);
+        } 
+        
+        return true === $result;
+    }
+    
+    /**
+     * (non-PHPdoc)
+     * @see sources/F/Technical/Loader/Adapter/F\Technical\Loader\Adapter.Definition::php_require_once()
+     */
+	public function php_require_once($path)
+    {
+        return require_once $path;
+    }
 }
 // @codeCoverageIgnoreEnd

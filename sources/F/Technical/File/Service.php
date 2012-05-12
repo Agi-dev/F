@@ -5,7 +5,7 @@
  * <LICENSETXT>
  *
  * @category  F
- * @author    François <francoisschneider@neuf.fr>
+ * @author    Franï¿½ois <francoisschneider@neuf.fr>
  * @package   F\Technical\File
  * @copyright Copyright (c) 2012 <COPYRIGHT>
  * @license   <LICENSE>
@@ -58,5 +58,40 @@ class Service
 	public function getAdapter()
 	{
 		return parent::getAdapter();
+	}
+	
+	/**
+	 * Check if file exists throw exception if not
+	 *
+	 * @param string $filename
+	 * 
+	 * @return \F\Technical\File\Service
+	 * 
+	 * @throws RuntimeException
+	 */
+	public function checkFileExists($filename)
+	{
+		if ( false === $this->isFileExists($filename) ) {
+			$this->throwException('file.notfound', $filename);
+		}
+		return $this;
+	}
+	
+	/**
+	 * is file exists return true
+	 * 
+	 * @param string $filename
+	 * 
+	 * @return bool
+	 */
+	public function isFileExists($filename)
+	{
+		return $this->getAdapter()->isFileExists($filename);
+	}
+	
+	public function parseIniFile($filename)
+	{
+		$this->checkFileExists($filename);
+		return $this->getAdapter()->parseIniFile($filename);
 	}
 }

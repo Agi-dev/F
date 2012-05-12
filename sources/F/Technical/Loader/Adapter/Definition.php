@@ -31,19 +31,23 @@ namespace F\Technical\Loader\Adapter;
 interface Definition
 {
 	/**
-	 * register namespaces
-	 * 
-	 * @param array $namespaces
-	 * 
-	 * @return F\Technical\Loader\Adapter\Definition
-	 */
-	public function registerNamespaces($namespaces);
-	
+     * Registers the specified function/method as an autoloader for classes.
+     * 
+     * @param string|array $function the function or method
+     * 
+     * @return bool true if succeed, false otherwise
+     * 
+     * @throws Exception if an error occured
+     */
+	public function registerAutoloadFunction($function);
+    
 	/**
-	 * Enable classes autoloading
+	 * include file
+	 *
+	 * @param string $path
 	 * 
-	 * @return F\Technical\Loader\Adapter\Definition
+	 * @return mixed
 	 */
-	public function autoload();
+	public function php_require_once($path);
 }
 // @codeCoverageIgnoreEnd

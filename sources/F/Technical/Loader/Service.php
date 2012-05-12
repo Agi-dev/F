@@ -63,17 +63,41 @@ class Service
 	/**
 	 * Autoload projects class according to namespaces
 	 * 
-	 * namespaces is an array : array ( 'namespace1' => 'directory'),
-	 * ex :  array("F" => "sources/F")
-	 * 
 	 * @param array $namespace
 	 * 
 	 * @return  \F\Technical\Base\Service
 	 */
-	public function autoload($namespace)
+	public function autoload()
 	{
-		$this->getAdapter()->registerNamespaces($namespace)
-						   ->autoload();
+		$registered = false;
+        
+        try {
+            $registered = $this->getAdapter()
+                ->registerAutoloadFunction(array($this, 'load'));
+        } catch (\Exception $e) {
+            $registered = false;
+        }
+
+        if (true !== $registered) {
+            $this->throwException('classloader.register.error');
+        }
+        
+        // AFAIRE : activer la trace
+        //$this->trace('autoloader.registered');
+        
+        return $this;
+	}
+	
+	/**
+	 * Chargement de la class
+	 * 
+	 * @param string $class
+	 * 
+	 * @return void
+	 */
+	public function load($class)
+	{
+		$this->getAdapter()->php_require_once($class . '.php');
 		return $this;
 	}
 }

@@ -9,8 +9,4 @@ include_once 'F/Technical/functions.php';
 
 // autoload
 require_once 'F/Technical/Loader/Service.php';
-\F\Technical\Loader\Service::singleton()->autoload( array("F" => "sources/F"));
-
-// AFAIRE: utiler f config service
-// indique le répertoire des jeu de données pour les ti
-//\Zend_Registry::set('dataSetPath', realpath(dirname(__FILE__) . '/dataset'));
+\F\Technical\Loader\Service::singleton()->autoload();

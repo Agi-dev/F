@@ -86,4 +86,16 @@ abstract class Base
     {
         throw new \RuntimeException('Unknown method ' . get_class($this) . "::$name()");
     }
+    
+	/**
+     * test if actual is instance of current service
+     *
+     * @param $actual
+     *
+     *
+     */
+    public function assertInstanceOfService($actual)
+    {
+    	$this->assertInstanceOf(get_class($this->s()), $actual);
+    }
 }

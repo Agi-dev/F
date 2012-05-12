@@ -6,7 +6,7 @@
  * <LICENSETXT>
  *
  * @category  F
- * @author    François <francoisschneider@neuf.fr>
+ * @author    FranÃ§ois <francoisschneider@neuf.fr>
  * @package    F\Technical\File\Adapter
  * @copyright Copyright (c) 2012 <COPYRIGHT>
  * @license   <LICENSE>
@@ -56,9 +56,52 @@ extends \F\Technical\Base\Test\Service
 	}
 
     /**
-     * just for saying there is no test
+     * checkFileExists
      */
-	public function testToImplement()
+	public function testCheckFileExistsWithFileNotExistsThrowRuntimeException()
     {
+    	$this->mock('isFileExists', false);
+    	$this->setExpectedException('RuntimeException', "le fichier 'fileNotExists' n'existe pas");
+    	$this->s()->checkFileExists('fileNotExists');
+    }
+    
+	public function testCheckFileExistsWithSuccess()
+    {
+    	$this->mock('isFileExists', true);
+    	$actual = $this->s()->checkFileExists('fileExists');
+    	$this->assertInstanceOfService($actual);
+    }
+    
+    /**
+     * isFileExists
+     */
+    public function testIsFileExistsWithFileNotExistReturnFalse()
+    {
+		$this->mock('isFileExists', false);
+		$this->assertFalse($this->s()->isFileExists('fileNotExist'));
+    }
+    
+    public function testIsFileExistsWithFileExistReturnTrue()
+    {
+    	$this->mock('isFileExists', true);
+		$this->assertTrue($this->s()->isFileExists('fileExist'));
+    }
+    
+    /**
+     * parseIniFile
+     */
+    public function testParseIniFileWithFileNotExistsThrowRuntimeException()
+    {
+    	$this->mock('isFileExists', false);
+    	$this->setExpectedException('RuntimeException', "le fichier 'fileIni' n'existe pas");
+    	$this->s()->parseIniFile('fileIni');
+    }
+    
+    public function testParseIniFileWithSuccess()
+    {
+    	$this->mock('isFileExists', true);
+    	$this->mock('parseIniFile', 'somedata');
+    	$actual = $this->s()->parseIniFile('fileIni');
+    	$this->assertEquals('somedata', $actual);
     }
 }

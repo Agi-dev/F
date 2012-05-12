@@ -7,7 +7,7 @@
  * <LICENSETXT>
  *
  * @category  F
- * @author    François <francoisschneider@neuf.fr>
+ * @author    Franï¿½ois <francoisschneider@neuf.fr>
  * @package    F\Technical\File\Adapter
  * @copyright Copyright (c) 2012 <COPYRIGHT>
  * @license   <LICENSE>
@@ -30,5 +30,22 @@ namespace F\Technical\File\Adapter;
  */
 interface Definition
 {
+	/**
+	 * is file exists return true
+	 * 
+	 * @param string $filename
+	 * 
+	 * @return bool
+	 */
+	public function isFileExists($filename);
+	
+	/**
+	 * Parse un fichier Ini
+	 * 
+	 * @param string $filename
+	 * 
+	 * @return array
+	 */
+	public function parseIniFile($filename);
 }
 // @codeCoverageIgnoreEnd

@@ -6,7 +6,7 @@
  * <LICENSETXT>
  *
  * @category  F
- * @author    Fran�ois <francoisschneider@neuf.fr>
+ * @author    Fran�ois <francoisschneider@neuf.fr>
  * @package    F\Technical\File\Adapter
  * @copyright Copyright (c) 2012 <COPYRIGHT>
  * @license   <LICENSE>
@@ -49,9 +49,47 @@ class ServiceTest
     }
 
     /**
-     * just for saying there is no test
+     * checkFileExists
      */
-    public function testToImplement()
+	public function testCheckFileExistsWithFileNotExistsThrowRuntimeException()
     {
+    	$this->setExpectedException('RuntimeException', "le fichier 'fileNotExists' n'existe pas");
+    	$actual= $this->s()->checkFileExists('fileNotExists');
+    	$this->assertFalse($actual);
+    }
+    
+	public function testCheckFileExistsWithSuccess()
+    {
+    	$actual = $this->s()->checkFileExists($this->getDataSetPath() . '/fileExists.txt');
+    	$this->assertInstanceOfService($actual);
+    }
+    
+    /**
+     * isFileExists
+     */
+    public function testIsFileExistsWithFileNotExistReturnFalse()
+    {
+		$this->assertFalse($this->s()->isFileExists('fileNotExist'));
+    }
+    
+    public function testIsFileExistsWithFileExistReturnTrue()
+    {
+    	$actual = $this->s()->isFileExists($this->getDataSetPath() . '/fileExists.txt');
+    	$this->assertTrue($actual);
+    }
+    
+    /**
+     * parseIniFile
+     */
+    public function testParseIniFileWithSuccess()
+    {
+    	$expected = array(
+    		'unedonnée'       => 'unevaleur',
+			'uneautredonnée'  => 'uneautrevaleur',
+			'unedonnée2'      => 'unevaleur',
+			'uneautredonnée2' => 'uneautrevaleur'
+    	);
+    	$actual = $this->s()->parseIniFile($this->getDataSetPath() . '/fileIni.ini');
+    	$this->assertEquals($expected, $actual);
     }
 }
