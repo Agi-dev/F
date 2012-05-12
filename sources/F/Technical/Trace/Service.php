@@ -106,15 +106,27 @@ class Service
      */
     public function trace($key, $params = null )
     {
-        if (null !== $params && false === is_array($params) ) {
-            $params = array($params);
+        if ( false === $this->getAdapter()->isTraceEnabled() ) {
+        	return $this;
         }
-
+        
+        $level = $this->getLevelForKey($key);
+        
+        if ( false === $this->getAdapter()->isLevelEnabled() ) {
+        	return $this;
+        }
+        
+        if (null !== $params && false === is_array($params) ) {
+        	$params = array($params);
+        }
+        
         $msg = '[' . $this->getAdapter()->getDatetime() . ']['
-                . strtoupper($this->getLevelForKey($key)) . '] '
+                . strtoupper($level) . '] '
                 . $this->getMsg($key, $params) . "\n";
 
-        return $this->getAdapter()->write($key, $msg);
+        $this->getAdapter()->write($key, $msg);
+        
+        return $this;
     }
 
     /**

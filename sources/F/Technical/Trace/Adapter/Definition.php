@@ -123,5 +123,14 @@ interface Definition
      * @return \F\Technical\Trace\Adapter\Definition
      */
     public function setFile($filename);
+    
+    /**
+     * get if level trace is enabled
+     * 
+     * @param string $level
+     * 
+     * @return  \F\Technical\Trace\Adapter\Definition
+     */
+    public function isLevelEnabled($level); 
 }
 // @codeCoverageIgnoreEnd

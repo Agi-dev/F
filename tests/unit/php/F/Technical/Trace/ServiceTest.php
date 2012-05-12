@@ -126,10 +126,18 @@ extends \F\Technical\Base\Test\Service
     /**
      * trace
      */
-
+    public function testTraceWithTraceNotEnabledDoNothing()
+    {
+    	$this->mock('isTraceEnabled', false);
+    	$this->s()->trace('no.trace');
+    	$this->assertEquals(0, $this->m()->countCalls('write'));
+    }
+    
     public function testTraceWithParamsNotAnArraySuccess()
     {
-        $this->mock('getLevelForKey', 'err');
+    	$this->mock('isTraceEnabled', true);
+    	$this->mock('getLevelForKey', 'err');
+    	$this->mock('isLevelEnabled', true);
         $this->mock('getMsg', 'param 1 : paramOne');
         $this->mock('getDatetime', 'Today');
         $this->mock('write');
@@ -143,7 +151,9 @@ extends \F\Technical\Base\Test\Service
 
     public function testTraceWithParamsSuccess()
     {
-        $this->mock('getLevelForKey', 'err');
+    	$this->mock('isTraceEnabled', true);
+    	$this->mock('getLevelForKey', 'err');
+    	$this->mock('isLevelEnabled', true);
         $this->mock('getMsg', 'params : paramOne paramTwo');
         $this->mock('getDatetime', 'Today');
         $this->mock('write');
@@ -157,27 +167,39 @@ extends \F\Technical\Base\Test\Service
 
     public function testTraceWithNoKeyLevelSetSuccess()
     {
-        // 1. set the mock behaviour
-        $this->mock('getLevelForKey', null);
+    	$this->mock('isTraceEnabled', true);
+    	$this->mock('getLevelForKey', null);
+    	$this->mock('isLevelEnabled', true);
         $this->mock('getMsg', 'message without key level set');
         $this->mock('getDatetime', 'Today');
         $this->mock('write');
 
-        // 3. executes the service method
-        $this->s()->trace('valid.key', array('paramOne', 'paramTwo'));
+        $this->s()->trace('valid.key');
 
-        // 4. asserts
         $this->assertEquals(array('valid.key', '[Today][VALID.KEY] message without key level set'."\n"),
             $this->m()->getCallArgs('write'));
     }
-
+    
     public function testTraceWithOnlyWarningMessageFilterSuccess()
     {
-
+    	$this->mock('isTraceEnabled', true);
+    	$this->mock('getLevelForKey', 'warning');
+    	$this->mock('isLevelEnabled', true);
+    	$this->mock('isLevelEnabled', true);
+    	$this->mock('getMsg', 'message');
+    	$this->mock('getDatetime', 'Today');
+    	$this->mock('write');
+    	$this->s()->trace('warning.message');
+    	$this->assertEquals(array('warning.message', '[Today][WARNING] message'."\n"),
+    	$this->m()->getCallArgs('write'));
     }
 
     public function testTraceWithoutWarningMessageFilterSuccess()
     {
-
+    	$this->mock('isTraceEnabled', true);
+    	$this->mock('getLevelForKey', 'warning');
+    	$this->mock('isLevelEnabled', false);
+    	$this->s()->trace('warning.message.not.enabled');
+    	$this->assertEquals(0, $this->m()->countCalls('write'));
     }
 }

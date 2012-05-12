@@ -155,5 +155,15 @@ class Native
      		"Feature '" . __METHOD__ . "' not yet implemented In Adapter Native"
      		);
     }
+    
+    /**
+     * (non-PHPdoc)
+     * @see F\Technical\Trace\Adapter.Definition::isLevelEnabled()
+     */
+    public function isLevelEnabled($level)
+    {
+    	throw new \RuntimeException ("Feature '" . __METHOD__ . 
+    					"' not yet implemented in Native Adapter");
+    }
 }
 // @codeCoverageIgnoreEnd
