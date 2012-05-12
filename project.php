@@ -8,12 +8,5 @@ return array(
 			'company.name' => 'Orange',
 			'company.website' => 'www.orange.fr'
 		),
-		'Franþois' =>array(
-			'lang' => 'fr-fr',
-			'user.name' => 'Francois Schneider',
-			'user.email' => 'francoisschneider@neuf.fr',
-			'company.name' => 'Orange',
-			'company.website' => 'www.orange.fr'
-		),
 	)
 );
