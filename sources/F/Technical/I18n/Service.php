@@ -76,30 +76,28 @@ class Service extends \F\Technical\Base\Service
 	 */
     public function translate ($key, $args=null)
     {
-        $i18n = $this->getAdapter()->getI18nTranslation();
-
-        if (true === isset($i18n[$key])) {
-
-            if (null !== $args && false === is_array($args) ) {
-            	$args = array($args);
-            }
-
-            $message = $i18n[$key];
-
-
-            // si aucun argument n'est passé, on se contente de retourner le
-            // message
-            if (false === empty($args)) {
-                // On remplace la structure %{n} par l'argument n-1 dans le
-                // message - sinon on laisse %{n}
-                $message = preg_replace('/\%\{(\d+)\}/e',
-                        'isset($args[$1-1]) ? $args[$1-1] : "%{$1}";', $message);
-
-            }
-            return $message;
-        }
-
-        return $key;
+		$i18n = $this->getAdapter()->getI18nTranslation();
+		
+		if (true === isset($i18n[$key])) {
+		
+			if (null !== $args && false === is_array($args) ) {
+				$args = array($args);
+			}
+			
+			$message = $i18n[$key];
+			
+			// si aucun argument n'est passé, on se contente de retourner le
+			// message
+			if (false === empty($args)) {
+				// On remplace la structure %{n} par l'argument n-1 dans le
+				// message - sinon on laisse %{n}
+				$message = preg_replace('/\%\{(\d+)\}/e',
+				'isset($args[$1-1]) ? $args[$1-1] : "%{$1}";', $message);
+			}
+			return $message;
+		}
+		
+		return str_replace('.', ' ', $key);
     }
 
     /**
@@ -111,14 +109,8 @@ class Service extends \F\Technical\Base\Service
      */
     public function addI18nFile ($filePath)
     {
-        if (false === $this->getAdapter()->fileExists($filePath)) {
-            $this->throwException('file.notfound', $filePath);
-        }
-        if (false === $this->getAdapter()->isFile($filePath)) {
-            $this->throwException('notafile.badformat', $filePath);
-        }
-
-        $i18n = $this->getAdapter()->getI18nContent($filePath);
+        $this->getAdapter()->checkFileExists($filePath);
+    	$i18n = $this->getAdapter()->getI18nContent($filePath);
         $this->getAdapter()->addI18nTranslation($i18n);
 
         return $this;

@@ -104,4 +104,61 @@ extends \F\Technical\Base\Test\Service
     	$actual = $this->s()->parseIniFile('fileIni');
     	$this->assertEquals('somedata', $actual);
     }
+    
+    /**
+     * appendFile
+     */
+    public function testAppendFileWithSuccess()
+    {
+    	$this->mock('fopen', 'une resource');
+    	$actual = $this->s()->appendFile('fichier');
+    	$this->assertEquals('une resource', $actual);
+    }
+    
+    /**
+     * writeResource
+     */
+    public function testWriteResourceWithBadResourceThrowRuntimeException()
+    {
+    	$this->mock('is_resource', false);
+    	$this->setExpectedException('RuntimeException', "la resource fichier est null ou incorrect");
+    	$this->s()->writeResource('bad resource', 'content');
+    }
+    
+    public function testWriteResourceWithSuccess()
+    {
+    	$this->mock('is_resource', true);
+    	$this->mock('fwrite', 6);
+    	$actual = $this->s()->writeResource('bad resource', 'content');
+    	$this->assertEquals(6, $actual);
+    	$this->assertEquals(array('bad resource'), $this->m()->getCallArgs('is_resource'));
+    }
+        
+    /**
+     * checkResource
+     */
+    public function testCheckResourceWithBadResourceThrowRuntimeException()
+    {
+    	$this->mock('is_resource', false);
+    	$this->setExpectedException('RuntimeException', "la resource fichier est null ou incorrect");
+    	$this->s()->checkResource('bad resource');
+    }
+    
+    
+    public function testCheckResourceWithSuccess()
+    {
+    	$this->mock('is_resource', true);
+    	$this->assertInstanceOfService($this->s()->checkResource('une resource'));
+    }
+    
+    /**
+     * closeResource
+     */
+    public function testClosekResourceWithSuccess()
+    {
+    	$this->mock('is_resource', true);
+    	$this->mock('fclose', true);
+    	$this->assertTrue($this->s()->closeResource('une resource'));
+    	$this->assertEquals(array('une resource'), $this->m()->getCallArgs('fclose'));
+    }
 }

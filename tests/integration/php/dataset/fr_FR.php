@@ -1,6 +1,6 @@
 <?php
 return array(
-    'file.test.notfound' => "test Le fichier '%{1}' n'existe pas",
-    'file.test.badformat' => "test Le fichier '%{1}' n'est pas un fichier plat",
-    'une.clef' => 'une clef',
+    'test.withparam' => "param %{1} and param %{2}",
+	'test.warning'   => "ceci est un warning",
+	'test.error'     => "ceci est une error",
  );

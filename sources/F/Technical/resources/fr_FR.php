@@ -21,17 +21,17 @@
 
 return array(
 	// badformat
-	'notafile.badformat'  => "'%{1}' n'est pas un fichier",
+	'file.resource.badformat' => "la resource fichier est null ou incorrect",
 
 	// error
-	'classloader.register.error' => "Impossible de charger l'autoload",
+	'classloader.register.error' => "impossible de charger l'autoload",
 	
 	// notfound
 	'file.notfound' => "le fichier '%{1}' n'existe pas",
 
 	// param.missing
-	'param.missing'  => "'%{1}' paramètre manquant",
-	'class.attribut.missing'  => "L'attribue de class %{1} n'est pas initialisé",
+	'param.missing'           => "'%{1}' paramètre manquant",
+	'class.attribut.missing'  => "l'attribue de class %{1} n'est pas initialisé",
 
 	// notconnected
 	'database.notconnected'  => "aucune connection à une base de données",

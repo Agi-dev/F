@@ -36,24 +36,46 @@ require_once 'F/Technical/Trace/Adapter/Definition.php';
 class Native
     implements Definition
 {
-/**
+	/**
+	 * level for key
      * @var array
      */
     private $_levels;
+    
+    /**
+     * log is enable ?
+     * @var bool
+     */
+    private $_enable = false;
+    
+    /**
+     * log filename
+     * @var string
+     */
+    private $_logfile;
+    
+    /**
+     * log resource
+     * 
+     * @var resource
+     */
+    private $_logResource;
 
     /**
      * Constructs a new adapter.
      *
-     * @return P\Technical\Trace\Adapter\Native
+     * @return F\Technical\Trace\Adapter\Native
      */
     public function __construct()
     {
         $this->_levels = array();
+        $this->_enable = false;
+        return $this;
     }
 
     /**
      * (non-PHPdoc)
-     * @see sources/F/Technical/Trace/Adapter/F\Technical\Trace\Adapter.Definition::setLevelForKeys()
+     * @see F\Technical\Trace\Adapter.Definition::setLevelForKeys()
      */
     public function setLevelForKeys($levels)
     {
@@ -63,7 +85,7 @@ class Native
 
     /**
      * (non-PHPdoc)
-     * @see sources/F/Technical/Trace/Adapter/F\Technical\Trace\Adapter.Definition::getLevelForKey()
+     * @see F\Technical\Trace\Adapter.Definition::getLevelForKey()
      */
     public function getLevelForKey($key)
     {
@@ -75,26 +97,25 @@ class Native
 
     /**
      * (non-PHPdoc)
-     * @see sources/F/Technical/Trace/Adapter/F\Technical\Trace\Adapter.Definition::getDatetime()
+     * @see F\Technical\Trace\Adapter.Definition::getDatetime()
      */
     public function getDatetime()
     {
         return date('Y/m/d H:i');
     }
+    
     /**
      * (non-PHPdoc)
-     * @see sources/F/Technical/Trace/Adapter/F\Technical\Trace\Adapter.Definition::write()
+     * @see F\Technical\Trace\Adapter.Definition::log()
      */
-    public function write($key, $msg)
+    public function log($msg)
     {
-    	throw new \RuntimeException (
-    		"Feature '" . __METHOD__ . "' not yet implemented"
-    	);
+    	return \F\Technical\File\Service::singleton()->writeResource($this->_logResource, $msg);
     }
 
     /**
      * (non-PHPdoc)
-     * @see sources/F/Technical/Trace/Adapter/F\Technical\Trace\Adapter.Definition::checkFileExists()
+     * @see F\Technical\Trace\Adapter.Definition::checkFileExists()
      */
     public function checkFileExists($filename)
     {
@@ -103,7 +124,7 @@ class Native
 
     /**
      * (non-PHPdoc)
-     * @see sources/F/Technical/Trace/Adapter/F\Technical\Trace\Adapter.Definition::parseIniFile()
+     * @see F\Technical\Trace\Adapter.Definition::parseIniFile()
      */
     public function parseIniFile($filename)
     {
@@ -112,7 +133,7 @@ class Native
 
     /**
      * (non-PHPdoc)
-     * @see sources/F/Technical/Trace/Adapter/F\Technical\Trace\Adapter.Definition::getMsg()
+     * @see F\Technical\Trace\Adapter.Definition::getMsg()
      */
     public function getMsg($key, $params=null)
     {
@@ -121,45 +142,58 @@ class Native
 
     /**
      * (non-PHPdoc)
-     * @see sources/F/Technical/Trace/Adapter/F\Technical\Trace\Adapter.Definition::setTraceEnabled()
+     * @see F\Technical\Trace\Adapter.Definition::setTraceEnabled()
      */
     public function setTraceEnabled($state)
     {
-    	throw new \RuntimeException (
-    		"Feature '" . __METHOD__ . "' not yet implemented"
-    	);
+    	$this->_enable = true === $state;
+    	return $this;
     }
 
     /**
      * (non-PHPdoc)
-     * @see sources/F/Technical/Trace/Adapter/F\Technical\Trace\Adapter.Definition::isTraceEnabled()
+     * @see F\Technical\Trace\Adapter.Definition::isTraceEnabled()
      */
     public function isTraceEnabled()
     {
-    	throw new \RuntimeException (
-    		"Feature '" . __METHOD__ . "' not yet implemented"
-    	);
+    	return $this->_enable; 
     }
 
     /**
      * (non-PHPdoc)
-     * @see sources/F/Technical/Trace/Adapter/F\Technical\Trace\Adapter.Definition::setFile()
+     * @see F\Technical\Trace\Adapter.Definition::setFile()
      */
     public function setFile($filename)
     {
-    	throw new \RuntimeException (
-     		"Feature '" . __METHOD__ . "' not yet implemented In Adapter Native"
-     		);
+    	$this->_logfile = $filename;
+    	return $this;
     }
     
     /**
      * (non-PHPdoc)
-     * @see F\Technical\Trace\Adapter.Definition::isLevelEnabled()
+     * @see F\Technical\Trace\Adapter.Definition::openLog()
      */
-    public function isLevelEnabled($level)
+    public function openLog()
     {
-    	throw new \RuntimeException ("Feature '" . __METHOD__ . 
-    					"' not yet implemented in Native Adapter");
+    	if ( null === $this->_logResource ) {
+    		$this->_logResource = \F\Technical\File\Service::singleton()
+    								->appendFile($this->_logfile);
+    	}
+    	return $this;
+    }
+    
+    /**
+     * (non-PHPdoc)
+     * @see F\Technical\Trace\Adapter.Definition::closeLog()
+     */
+    public function closeLog()
+    {
+    	if ( null !== $this->_logResource ) {
+    		\F\Technical\File\Service::singleton()
+    			->closeResource($this->_logResource);
+    		$this->_logResource = null;
+    	}
+    	return $this;
     }
 }
 // @codeCoverageIgnoreEnd

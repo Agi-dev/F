@@ -47,5 +47,43 @@ interface Definition
 	 * @return array
 	 */
 	public function parseIniFile($filename);
+	
+	/**
+	 * open a file
+	 * 
+	 * @param string $filename
+	 * @param string $mode (r, a, a+, w, w+ ...)
+	 * 
+	 * @return resource
+	 */
+	public function fopen($filename, $mode = 'r');
+	
+	/**
+	 * check if is a resource
+	 * 
+	 * @param resource $resource
+	 * 
+	 * @return bool
+	 */
+	public function is_resource($resource);
+	
+	/**
+	 *  Binary-safe file write
+	 * 
+	 * @param resource $resource
+	 * @param string $content
+	 * 
+	 * @return returns the number of bytes written, or FALSE on error
+	 */
+	public function fwrite($resource, $content);
+	
+	/**
+	 * Closes an open file pointer
+	 * 
+	 * @param resource $resource file pointer
+	 * 
+	 * @return bool
+	 */
+	public function fclose ($resource);
 }
 // @codeCoverageIgnoreEnd

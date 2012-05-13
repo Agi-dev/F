@@ -62,14 +62,13 @@ interface Definition
     /**
      * Write trace message
      *
-     * @param string $key
      * @param string $msg
      *
      * @return bool
      *
      * @throws RuntimeException
      */
-    public function write($key, $msg);
+    public function log($msg);
 
     /**
      * test if file exist throw exception if not
@@ -125,12 +124,17 @@ interface Definition
     public function setFile($filename);
     
     /**
-     * get if level trace is enabled
+     * Open log
      * 
-     * @param string $level
-     * 
-     * @return  \F\Technical\Trace\Adapter\Definition
+     * return \F\Technical\Trace\Adapter\Definition
      */
-    public function isLevelEnabled($level); 
+    public function openLog();
+    
+    /**
+     * Close log
+     * 
+     * return \F\Technical\Trace\Adapter\Definition
+     */
+    public function closeLog();
 }
 // @codeCoverageIgnoreEnd

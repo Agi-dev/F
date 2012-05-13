@@ -61,7 +61,7 @@ extends \F\Technical\Base\Test\Service
 	public function testAutoloadWithErrorThrowRuntimeException()
 	{
 		$this->mock('registerAutoloadFunction', new \Exception('une error'));
-		$this->setExpectedException('RuntimeException', "Impossible de charger l'autoload");
+		$this->setExpectedException('RuntimeException', "impossible de charger l'autoload");
 		$this->s()->autoload();
 	}
 	

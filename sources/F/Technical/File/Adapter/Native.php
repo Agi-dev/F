@@ -69,5 +69,74 @@ class Native
         
         return $result;
 	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see F\Technical\File\Adapter.Definition::fopen()
+	 */
+	public function fopen($filename, $mode = 'r')
+	{
+		$err1   = error_get_last();
+		$result = @fopen($filename, $mode);
+		$err    = error_get_last();
+		
+		if (false === $result && (serialize($err1) !== serialize($err))) {
+			throw new \RuntimeException($err['message'], 1000 + $err['type']);
+		}
+		
+		return $result;
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see F\Technical\File\Adapter.Definition::is_resource()
+	 */
+	public function is_resource($resource)
+	{
+		$err1   = error_get_last();
+        $result = @is_resource($resource);
+        $err    = error_get_last();
+        
+        if (false === $result && (serialize($err1) !== serialize($err))) {
+            throw new \RuntimeException($err['message'], 1000 + $err['type']);
+        } 
+        
+        return true === $result;
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see F\Technical\File\Adapter.Definition::fwrite()
+	 */
+	public function fwrite($resource, $content)
+	{
+		$err1   = error_get_last();
+        $result = @fwrite($resource, $content);
+        $err    = error_get_last();
+        
+        if (false === $result && (serialize($err1) !== serialize($err))) {
+            throw new \RuntimeException($err['message'], 1000 + $err['type']);
+        } 
+        
+        return $result;
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see F\Technical\File\Adapter.Definition::fclose()
+	 */
+	public function fclose ($resource)
+	{
+		$err1   = error_get_last();
+        $result = @fclose($resource);
+        $err    = error_get_last();
+        
+        if (false === $result && (serialize($err1) !== serialize($err))) {
+            throw new \RuntimeException($err['message'], 1000 + $err['type']);
+        } 
+        
+        return true === $result;
+	}
+	
 }
 // @codeCoverageIgnoreEnd

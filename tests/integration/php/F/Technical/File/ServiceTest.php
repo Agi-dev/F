@@ -92,4 +92,69 @@ class ServiceTest
     	$actual = $this->s()->parseIniFile($this->getDataSetPath() . '/fileIni.ini');
     	$this->assertEquals($expected, $actual);
     }
+    
+    /**
+     * appendFile
+     */
+    public function testAppendFileWithSuccess()
+    {
+    	$filename = $this->getDataSetPath() . '/file.txt';
+    	$actual = $this->s()->appendFile($filename);
+    	$this->assertFileExists($filename);
+    	$this->assertInternalType('resource', $actual);
+    	fclose($actual);
+    	unlink($filename);
+    }
+    
+    /**
+     * checkResource
+     */
+    public function testCheckResourceWithBadResourceThrowRuntimeException()
+    {
+    	$this->setExpectedException('RuntimeException', "la resource fichier est null ou incorrect");
+    	$this->s()->checkResource('bad resource');
+    }
+    
+    
+    public function testCheckResourceWithSuccess()
+    {
+    	$filename = $this->getDataSetPath() . '/file.txt';
+    	$resource = $this->s()->appendFile($filename);
+    	$this->assertInstanceOfService($this->s()->checkResource($resource));
+    	fclose($resource);
+    	unlink($filename);
+    }
+    
+    /**
+     * writeResource
+     */
+    public function testWriteResourceWithBadResourceThrowRuntimeException()
+    {
+    	$this->setExpectedException('RuntimeException', "la resource fichier est null ou incorrect");
+    	$this->s()->WriteResource('bad resource', 'un contenu');
+    }
+    
+    public function testWriteResourceWithSuccess()
+    {
+    	$filename = $this->getDataSetPath() . '/file.txt';
+    	$resource = $this->s()->appendFile($filename);
+    	$content = 'une phrase de test';
+    	$actual = $this->s()->writeResource($resource, $content);
+    	$this->assertEquals(strlen($content), $actual);
+    	fclose($resource);
+    	$this->assertEquals($content, file_get_contents($filename));
+    	unlink($filename);
+    }
+    
+    /**
+     * fclose
+     */
+    public function testClosekResourceWithSuccess()
+    {
+    	$filename = $this->getDataSetPath() . '/file.txt';
+    	$resource = $this->s()->appendFile($filename);
+    	$this->assertTrue($this->s()->closeResource($resource));
+    	unlink($filename);
+    	
+    }
 }

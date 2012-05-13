@@ -71,11 +71,11 @@ class ServiceTest extends \F\Technical\Base\Test\Service
 //         $this->assertEquals($expected, $actual);
 //     }
 
-    public function testTranslateWithUnknownKeyReturnKey()
+    public function testTranslateWithUnknownKeyReturnKeyWithoutTheDot()
     {
         $this->mock('getI18nTranslation', 
                 array('known.key' => 'Un joli message'));
-        $this->assertEquals('unknown.key', $this->s()->translate('unknown.key'));
+        $this->assertEquals('unknown key', $this->s()->translate('unknown.key'));
     }
 
     public function testTranslateWithKnownKeyReturnString ()
@@ -122,24 +122,20 @@ class ServiceTest extends \F\Technical\Base\Test\Service
     
     public function testAddI18nFilePathDoesntExistThrowException ()
     {
-        $this->mock('fileExists', false);
-        $this->mock('isFile', false);
+        $this->mock('checkFileExists', new \RuntimeException('error fichier'));
         $filePath = 'nexistepas';
-        $this->setExpectedException('RuntimeException', "le fichier 'nexistepas' n'existe pas");
+        $this->setExpectedException('RuntimeException', "error fichier");
         $this->s()->addI18nFile($filePath);
     }
 
-    public function testAddI18nFilePathIsNotFileThrowException ()
+    public function testAddI18nFileWithSuccess()
     {
-        $this->mock('fileExists', true);
-        $this->mock('isFile', false);
-        $filePath = 'unfichierquimarche';
-        $this->setExpectedException('RuntimeException', "'unfichierquimarche' n'est pas un fichier");
-        $this->s()->addI18nFile($filePath);
+    	$this->mock('checkFileExists');
+    	$this->mock('getI18nContent', 'content');
+    	$this->mock('addI18nTranslation');
+    	$filePath = 'unfichier';
+    	$actual = $this->s()->addI18nFile($filePath);
+    	$this->assertInstanceOfService($actual);
+    	$this->assertEquals(array('content'), $this->m()->getCallArgs('addI18nTranslation'));
     }
-    
-    
-    
-   
-
 }

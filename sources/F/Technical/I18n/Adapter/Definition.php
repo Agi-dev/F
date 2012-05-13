@@ -31,13 +31,15 @@ namespace F\Technical\I18n\Adapter;
 interface Definition
 {
 	/**
-	 * Vérifie d'un fichier existe
+	 * Vérifie qu'un fichier existe
 	 *
-	 * @param sting $filename chemin complet du fichier
+	 * @param string $filename chemin complet du fichier
 	 *
-	 *  @return bool
+	 *  @return F\Technical\I18n\Adapter\Definition
+	 *  
+	 *  @throw RuntimeException file.notfound
 	 */
-	public function fileExists($filename);
+	public function checkFileExists($filename);
 
 	/**
 	 * Lit le fichier de traduction
@@ -47,15 +49,6 @@ interface Definition
 	 * @return array ($key => $value);
 	 */
 	public function getI18nContent($filename);
-
-	/**
-	 * Teste si le fichier est un fichier plat (et non pas un répertoire) ou un lien symbolique
-	 *
-	 * @param string $filename
-	 *
-	 * @return bool;
-	 */
-	public function isFile($filename);
 
 	/**
 	 * Ajoute un fichier i18n dans le registre de traduction
@@ -72,6 +65,5 @@ interface Definition
 	 * @return array
 	 */
 	public function getI18nTranslation();
-
 }
 // @codeCoverageIgnoreEnd

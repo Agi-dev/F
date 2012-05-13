@@ -33,6 +33,12 @@ class Service
     extends \F\Technical\Base\Service
 {
 	/**
+	 * liste des niveaux à tracer, si vide => tous
+	 * 
+	 * @var array
+	 */
+	protected $_filters;
+	/**
 	 * Returns the singleton of this service
 	 *
 	 * @return F\Technical\Trace\Service
@@ -112,7 +118,7 @@ class Service
         
         $level = $this->getLevelForKey($key);
         
-        if ( false === $this->getAdapter()->isLevelEnabled() ) {
+        if ( false === $this->_isLevelEnabled($level) ) {
         	return $this;
         }
         
@@ -122,9 +128,9 @@ class Service
         
         $msg = '[' . $this->getAdapter()->getDatetime() . ']['
                 . strtoupper($level) . '] '
-                . $this->getMsg($key, $params) . "\n";
-
-        $this->getAdapter()->write($key, $msg);
+                . $this->getAdapter()->getMsg($key, $params). "\n";
+        
+        $this->getAdapter()->log($msg);
         
         return $this;
     }
@@ -146,21 +152,6 @@ class Service
     }
 
     /**
-     * get Message
-     *
-     * @param string $key
-     * @param array $params
-     *
-     * @return string
-     *
-     * @throw RuntimeException
-     */
-    public function getMsg($key, $params = array())
-    {
-        return $this->getAdapter()->getMsg($key, $params);
-    }
-
-    /**
      * set if trace  is enable or not
      *
      * @param bool $state
@@ -169,7 +160,12 @@ class Service
      */
     public function setTraceEnabled($state)
     {
-        $this->getAdapter()->setTraceEnabled(true === $state);
+    	$this->getAdapter()->setTraceEnabled(true === $state);
+        if ( true === $state ) {
+        	$this->getAdapter()->openLog();
+        } else {
+        	$this->getAdapter()->closeLog();
+        }
 
         return $this;
     }
@@ -198,13 +194,36 @@ class Service
      */
     public function configure($config)
     {
-    	// init with W levels
+    	// init with F levels
         $this->loadLevelsFromFile(dirname(__FILE__) . '/../resources/trace/default.ini');
-        $this->loadLevelsFromFile($config['keylevelfile']);
-        $this->getAdapter()->setTraceEnabled($config['activated']);
-    	$this->getAdapter()->setFile($config['file']);
-
+        
+        if ( true === isset($config['keylevelfile']) ) {
+        	$this->loadLevelsFromFile($config['keylevelfile']);
+        }
+        if ( true === isset($config['filters']) ) {
+        	$this->_filters = $config['filters'];
+        } else  {
+        	$this->_filters = array();
+        }
+        $this->getAdapter()->setFile($config['file']);
+        $this->setTraceEnabled($config['activated'] === 1);
 
     	return $this;
     }
+    
+    /**
+     * check if level is enable
+     * 
+     * @param string $level
+     * 
+     * @return bool
+     */
+    protected function _isLevelEnabled($level)
+    {
+    	if (false === empty($this->_filters) ) {
+    		return in_array($level, $this->_filters);
+    	}
+    	return true;
+    }
+    
 }

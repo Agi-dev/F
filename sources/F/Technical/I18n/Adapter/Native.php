@@ -49,20 +49,27 @@ class Native implements Definition
      * @var array
      */
     private $_i18n;
+    
+    /**
+     * current locale
+     * @var string
+     */
+    private $_locale = 'fr_FR';
 
     public function __construct()
     {
         // traduction de la lib
-        $this->_i18n = $this->getI18nContent(
-                        realpath(dirname(__FILE__) . '/../../resources/fr_FR.php'));
+        $this->_i18n = $this->getI18nContent(realpath(dirname(__FILE__) . 
+        									'/../../resources/' . $this->_locale . '.php'));
     }
 
     /*
      * (non-PHPdoc) @see F\Technical\I18n\Adapter.Definition::fileExists()
      */
-    public function fileExists ($filename)
+    public function checkFileExists ($filename)
     {
-        return file_exists($filename);
+        \F\Technical\File\Service::singleton()->checkFileExists($filename);
+        return $this;
     }
 
     /*
@@ -72,14 +79,6 @@ class Native implements Definition
     {
         $this->_i18n = array_merge($this->_i18n, $newI18n);
         return $this;
-    }
-
-    /*
-     * (non-PHPdoc) @see F\Technical\I18n\Adapter.Definition::isFile()
-     */
-    public function isFile($filename)
-    {
-        return is_file($filename);
     }
 
     /*
@@ -98,6 +97,5 @@ class Native implements Definition
     {
         return include($filename);
     }
-
 }
 // @codeCoverageIgnoreEnd

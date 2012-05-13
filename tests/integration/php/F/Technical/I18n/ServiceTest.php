@@ -64,13 +64,6 @@ class ServiceTest
     	$this->s()->AddI18nFile($filePath);
     }
 
-     public function testAddI18nFileWithFileNotFileThrowException()
-    {
-    	$filePath = __DIR__;
-        $this->setExpectedException('RuntimeException', "'".$filePath ."' n'est pas un fichier");
-    	$this->s()->AddI18nFile($filePath);
-    }
-
     public function testAddI18nFileWithFileExistsSuccess()
     {
     	$filePath = $this->getDataSetPath().'/fr_FR.php';
@@ -80,9 +73,9 @@ class ServiceTest
     	$this->assertInstanceOf($expected, $actual);
 
     	$expected = array_merge($initial, array(
-    	        'file.test.notfound' => "test Le fichier '%{1}' n'existe pas",
-    	        'file.test.badformat' => "test Le fichier '%{1}' n'est pas un fichier plat",
-    	        'une.clef' =>"une clef",
+    		'test.withparam' => "param %{1} and param %{2}",
+    		'test.warning'   => "ceci est un warning",
+    		'test.error'     => "ceci est une error",
     	));
     	$this->assertEquals($expected, $this->s()->getAdapter()->getI18nTranslation());
 
@@ -102,8 +95,8 @@ class ServiceTest
     public function testTranslateWithI18nFileSetReturnMessageWithParam()
     {
     	$this->s()->AddI18nFile($this->getDataSetPath().'/fr_FR.php');
-    	$actual = $this->s()->translate('file.test.notfound', 'fichier');
-    	$expected = 'test Le fichier \'fichier\' n\'existe pas';
+    	$actual = $this->s()->translate('test.withparam', array('One', 'Two'));
+    	$expected = 'param One and param Two';
     	$this->assertEquals($expected, $actual);
     }
 }
