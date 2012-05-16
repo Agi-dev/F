@@ -32,7 +32,6 @@ require_once 'F/Technical/Base/Service.php';
  */
 class Service extends \F\Technical\Base\Service
 {
-
     /**
      * Returns the singleton of this service
      *
@@ -77,15 +76,15 @@ class Service extends \F\Technical\Base\Service
     public function translate ($key, $args=null)
     {
 		$i18n = $this->getAdapter()->getI18nTranslation();
-		
+
 		if (true === isset($i18n[$key])) {
-		
+
 			if (null !== $args && false === is_array($args) ) {
 				$args = array($args);
 			}
-			
+
 			$message = $i18n[$key];
-			
+
 			// si aucun argument n'est passé, on se contente de retourner le
 			// message
 			if (false === empty($args)) {
@@ -96,7 +95,7 @@ class Service extends \F\Technical\Base\Service
 			}
 			return $message;
 		}
-		
+
 		return str_replace('.', ' ', $key);
     }
 

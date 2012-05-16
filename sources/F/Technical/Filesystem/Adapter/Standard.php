@@ -1,32 +1,32 @@
 <?php
 // @codeCoverageIgnoreStart
 /**
- * F\Technical\File\Adapter\Standard is the default/standard adapter
+ * F\Technical\Filesystem\Adapter\Standard is the default/standard adapter
  * for the file service.
  *
  * <LICENSETXT>
  *
  * @category  F
- * @author    François <francoisschneider@neuf.fr>
- * @package    F\Technical\File\Adapter
+ * @author    Franï¿½ois <francoisschneider@neuf.fr>
+ * @package    F\Technical\Filesystem\Adapter
  * @copyright Copyright (c) 2012 <COPYRIGHT>
  * @license   <LICENSE>
  * @version   $Id: $
  */
 
-namespace F\Technical\File\Adapter;
+namespace F\Technical\Filesystem\Adapter;
 
 /**
- * @see F/Technical/File/Adapter/Native.php
+ * @see F/Technical/Filesystem/Adapter/Native.php
  */
-require_once 'F/Technical/File/Adapter/Native.php';
+require_once 'F/Technical/Filesystem/Adapter/Native.php';
 
 /**
- * F\Technical\File\Adapter\Standard is
+ * F\Technical\Filesystem\Adapter\Standard is
  * the default/standard adapter for the file service.
  *
  * @category   F
- * @package    F\Technical\File\Adapter
+ * @package    F\Technical\Filesystem\Adapter
  * @copyright  Copyright (c) 2012 <COPYRIGHT>
  * @license    <LICENSE>
  * @version    Release: @package_version@

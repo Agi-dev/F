@@ -49,7 +49,7 @@ class Native implements Definition
      * @var array
      */
     private $_i18n;
-    
+
     /**
      * current locale
      * @var string
@@ -59,8 +59,8 @@ class Native implements Definition
     public function __construct()
     {
         // traduction de la lib
-        $this->_i18n = $this->getI18nContent(realpath(dirname(__FILE__) . 
-        									'/../../resources/' . $this->_locale . '.php'));
+        $this->_i18n = $this->getI18nContent(realpath(dirname(__FILE__) .
+        									'/../../resources/i18n/' . $this->_locale . '.php'));
     }
 
     /*
@@ -68,7 +68,7 @@ class Native implements Definition
      */
     public function checkFileExists ($filename)
     {
-        \F\Technical\File\Service::singleton()->checkFileExists($filename);
+        \F\Technical\Filesystem\Service::singleton()->checkFileExists($filename);
         return $this;
     }
 

@@ -1,25 +1,25 @@
 <?php
 // @codeCoverageIgnoreStart
 /**
- * F\Technical\File\Adapter\Mock is
- * the mock adapter for the file service.
+ * F\Technical\Registry\Adapter\Mock is
+ * the mock adapter for the registry service.
  *
  * <LICENSETXT>
  *
  * @category  F
- * @author    François <francoisschneider@neuf.fr>
- * @package    F\Technical\File\Adapter
+ * @author    fschneider <francoisschneider@neuf.fr>
+ * @package    F\Technical\Registry\Adapter
  * @copyright Copyright (c) 2012 <COPYRIGHT>
  * @license   <LICENSE>
  * @version   $Id: $
  */
 
-namespace F\Technical\File\Adapter;
+namespace F\Technical\Registry\Adapter;
 
 /**
- * @see F/Technical/File/Adapter/Definition.php
+ * @see F/Technical/Registry/Adapter/Definition.php
  */
-require_once 'F/Technical/File/Adapter/Definition.php';
+require_once 'F/Technical/Registry/Adapter/Definition.php';
 
 /**
  * @see F/Technical/Base/Adapter/Mock.php
@@ -27,11 +27,11 @@ require_once 'F/Technical/File/Adapter/Definition.php';
 require_once 'F/Technical/Base/Adapter/Mock.php';
 
 /**
- * F\Technical\File\Adapter\Mock is
- *  the mock adapter for the file service.
+ * F\Technical\Registry\Adapter\Mock is
+ *  the mock adapter for the registry service.
  *
  * @category   F
- * @package    F\Technical\File\Adapter
+ * @package    F\Technical\Registry\Adapter
  * @copyright  Copyright (c) 2012 <COPYRIGHT>
  * @license    <LICENSE>
  * @version    Release: @package_version@

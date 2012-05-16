@@ -1,18 +1,18 @@
 <?php
 /**
- * F\Technical\File\Service is a class to handle file operations.
+ * F\Technical\Filesystem\Service is a class to handle file operations.
  *
  * <LICENSETXT>
  *
  * @category  F
  * @author    Fran�ois <francoisschneider@neuf.fr>
- * @package   F\Technical\File
+ * @package   F\Technical\Filesystem
  * @copyright Copyright (c) 2012 <COPYRIGHT>
  * @license   <LICENSE>
  * @version   $Id: $
  */
 
-namespace F\Technical\File;
+namespace F\Technical\Filesystem;
 
 /**
  * @see F/Technical/Abstract/Service.php
@@ -20,10 +20,10 @@ namespace F\Technical\File;
 require_once 'F/Technical/Base/Service.php';
 
 /**
- * F\Technical\File\Service is a class to handle file operations.
+ * F\Technical\Filesystem\Service is a class to handle file operations.
  *
  * @category F
- * @package F\Technical\File
+ * @package F\Technical\Filesystem
  * @copyright Copyright (c) 2012 <COPYRIGHT>
  * @license <LICENSE>
  * @version Release: @package_version@
@@ -35,7 +35,7 @@ class Service
 	/**
 	 * Returns the singleton of this service
 	 *
-	 * @return F\Technical\File\Service
+	 * @return F\Technical\Filesystem\Service
 	 */
 	public static function singleton()
 	{
@@ -44,7 +44,7 @@ class Service
 	/**
 	 * Returns an instance of this service
 	 *
-	 * @return F\Technical\File\Service
+	 * @return F\Technical\Filesystem\Service
 	 */
 	public static function factory($adapter = null)
 	{
@@ -53,7 +53,7 @@ class Service
 	/**
 	 * Returns the underlying adapter
 	 *
-	 * @return F\Technical\File\Adapter\Definition
+	 * @return F\Technical\Filesystem\Adapter\Definition
 	 */
 	public function getAdapter()
 	{
@@ -65,7 +65,7 @@ class Service
 	 *
 	 * @param string $filename
 	 * 
-	 * @return \F\Technical\File\Service
+	 * @return \F\Technical\Filesystem\Service
 	 * 
 	 * @throws RuntimeException
 	 */
@@ -138,7 +138,7 @@ class Service
 	 * 
 	 * @param resource $resource
 	 * 
-	 * @return \F\Technical\File\Service
+	 * @return \F\Technical\Filesystem\Service
 	 */
 	public function checkResource($resource)
 	{
@@ -154,7 +154,7 @@ class Service
 	 * 
 	 * @param resource $resource
 	 * 
-	 * @return \F\Technical\File\Service
+	 * @return \F\Technical\Filesystem\Service
 	 */
 	public function closeResource($resource)
 	{

@@ -1,19 +1,19 @@
 <?php
 /**
- * F\Technical\File\Service is
+ * F\Technical\Filesystem\Service is
  * a class to handle file operations.
  *
  * <LICENSETXT>
  *
  * @category  F
  * @author    François <francoisschneider@neuf.fr>
- * @package    F\Technical\File\Adapter
+ * @package    F\Technical\Filesystem\Adapter
  * @copyright Copyright (c) 2012 <COPYRIGHT>
  * @license   <LICENSE>
  * @version   $Id: $
  */
 
-namespace F\Technical\File;
+namespace F\Technical\Filesystem;
 
 /**
  * @see tests/unit/php/bootstrap.php
@@ -27,11 +27,11 @@ require_once __DIR__ . '/../../../bootstrap.php';
 require_once 'F/Technical/Base/Test/Service.php';
 
 /**
- * F\Technical\File\Service is
+ * F\Technical\Filesystem\Service is
  * a class to handle file operations.
  *
  * @category F
- * @package F\Technical\File
+ * @package F\Technical\Filesystem
  * @copyright  Copyright (c) 2012 <COPYRIGHT>
  * @license    <LICENSE>
  * @version    Release: @package_version@
@@ -41,14 +41,14 @@ class ServiceTest
 extends \F\Technical\Base\Test\Service
 {
 	/**
-	 * @return F\Technical\File\Service
+	 * @return F\Technical\Filesystem\Service
 	 */
 	public function s()
 	{
 		return parent::s();
 	}
 	/**
-	 * @return F\Technical\File\Adapter\Mock
+	 * @return F\Technical\Filesystem\Adapter\Mock
 	 */
 	public function m()
 	{

@@ -59,18 +59,18 @@ class Service
 	{
 		return parent::getAdapter();
 	}
-	
+
 	/**
 	 * Autoload projects class according to namespaces
-	 * 
+	 *
 	 * @param array $namespace
-	 * 
+	 *
 	 * @return  \F\Technical\Base\Service
 	 */
 	public function autoload()
 	{
 		$registered = false;
-        
+
         try {
             $registered = $this->getAdapter()
                 ->registerAutoloadFunction(array($this, 'load'));
@@ -81,18 +81,18 @@ class Service
         if (true !== $registered) {
             $this->throwException('classloader.register.error');
         }
-        
+
         // AFAIRE : activer la trace
         //$this->trace('autoloader.registered');
-        
+
         return $this;
 	}
-	
+
 	/**
 	 * Chargement de la class
-	 * 
+	 *
 	 * @param string $class
-	 * 
+	 *
 	 * @return void
 	 */
 	public function load($class)

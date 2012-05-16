@@ -1,7 +1,7 @@
 <?php
 // @codeCoverageIgnoreStart
 /**
- * F\Technical\File\Adapter\Native is
+ * F\Technical\Filesystem\Adapter\Native is
  * the native adapter for the file service,
  * that implements PHP natives primitives.
  *
@@ -9,25 +9,25 @@
  *
  * @category  F
  * @author    François <francoisschneider@neuf.fr>
- * @package    F\Technical\File\Adapter
+ * @package    F\Technical\Filesystem\Adapter
  * @copyright Copyright (c) 2012 <COPYRIGHT>
  * @license   <LICENSE>
  * @version   $Id: $
  */
 
-namespace F\Technical\File\Adapter;
+namespace F\Technical\Filesystem\Adapter;
 
 /**
- * @see F/Technical/File/Adapter/Definition.php
+ * @see F/Technical/Filesystem/Adapter/Definition.php
  */
-require_once 'F/Technical/File/Adapter/Definition.php';
+require_once 'F/Technical/Filesystem/Adapter/Definition.php';
 
 /**
- * F\Technical\File\Adapter\Native is the native adapter
+ * F\Technical\Filesystem\Adapter\Native is the native adapter
  * for the file service, that implements PHP natives primitives.
  *
  * @category   F
- * @package    F\Technical\File\Adapter
+ * @package    F\Technical\Filesystem\Adapter
  * @copyright  Copyright (c) 2012 <COPYRIGHT>
  * @license    <LICENSE>
  * @version    Release: @package_version@
@@ -38,7 +38,7 @@ class Native
 {
 	/**
 	 * (non-PHPdoc)
-	 * @see sources/F/Technical/File/Adapter/F\Technical\File\Adapter.Definition::isFileExists()
+	 * @see sources/F/Technical/Filesystem/Adapter/F\Technical\Filesystem\Adapter.Definition::isFileExists()
 	 */
 	public function isFileExists($filename)
 	{
@@ -55,7 +55,7 @@ class Native
 	
 	/**
 	 * (non-PHPdoc)
-	 * @see sources/F/Technical/File/Adapter/F\Technical\File\Adapter.Definition::parseIniFile()
+	 * @see sources/F/Technical/Filesystem/Adapter/F\Technical\Filesystem\Adapter.Definition::parseIniFile()
 	 */
 	public function parseIniFile($filename)
 	{
@@ -72,7 +72,7 @@ class Native
 	
 	/**
 	 * (non-PHPdoc)
-	 * @see F\Technical\File\Adapter.Definition::fopen()
+	 * @see F\Technical\Filesystem\Adapter.Definition::fopen()
 	 */
 	public function fopen($filename, $mode = 'r')
 	{
@@ -89,7 +89,7 @@ class Native
 	
 	/**
 	 * (non-PHPdoc)
-	 * @see F\Technical\File\Adapter.Definition::is_resource()
+	 * @see F\Technical\Filesystem\Adapter.Definition::is_resource()
 	 */
 	public function is_resource($resource)
 	{
@@ -106,7 +106,7 @@ class Native
 	
 	/**
 	 * (non-PHPdoc)
-	 * @see F\Technical\File\Adapter.Definition::fwrite()
+	 * @see F\Technical\Filesystem\Adapter.Definition::fwrite()
 	 */
 	public function fwrite($resource, $content)
 	{
@@ -123,7 +123,7 @@ class Native
 	
 	/**
 	 * (non-PHPdoc)
-	 * @see F\Technical\File\Adapter.Definition::fclose()
+	 * @see F\Technical\Filesystem\Adapter.Definition::fclose()
 	 */
 	public function fclose ($resource)
 	{

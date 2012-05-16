@@ -45,21 +45,21 @@ class Native
         $err1   = error_get_last();
         $result = @spl_autoload_register($function);
         $err    = error_get_last();
-        
+
         if (false === $result && (serialize($err1) !== serialize($err))) {
             throw new \RuntimeException($err['message'], 1000 + $err['type']);
-        } 
-        
+        }
+
         return true === $result;
     }
-    
+
     /**
      * (non-PHPdoc)
      * @see sources/F/Technical/Loader/Adapter/F\Technical\Loader\Adapter.Definition::php_require_once()
      */
 	public function php_require_once($path)
     {
-        return require_once $path;
+       return require_once $path;
     }
 }
 // @codeCoverageIgnoreEnd

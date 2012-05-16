@@ -41,22 +41,22 @@ class Native
      * @var array
      */
     private $_levels;
-    
+
     /**
      * log is enable ?
      * @var bool
      */
     private $_enable = false;
-    
+
     /**
      * log filename
      * @var string
      */
     private $_logfile;
-    
+
     /**
      * log resource
-     * 
+     *
      * @var resource
      */
     private $_logResource;
@@ -103,14 +103,14 @@ class Native
     {
         return date('Y/m/d H:i');
     }
-    
+
     /**
      * (non-PHPdoc)
      * @see F\Technical\Trace\Adapter.Definition::log()
      */
     public function log($msg)
     {
-    	return \F\Technical\File\Service::singleton()->writeResource($this->_logResource, $msg);
+    	return \F\Technical\Filesystem\Service::singleton()->writeResource($this->_logResource, $msg);
     }
 
     /**
@@ -119,7 +119,7 @@ class Native
      */
     public function checkFileExists($filename)
     {
-        return \F\Technical\File\Service::singleton()->checkFileExists($filename);
+        return \F\Technical\Filesystem\Service::singleton()->checkFileExists($filename);
     }
 
     /**
@@ -128,7 +128,7 @@ class Native
      */
     public function parseIniFile($filename)
     {
-        return \F\Technical\File\Service::singleton()->parseIniFile($filename);
+        return \F\Technical\Filesystem\Service::singleton()->parseIniFile($filename);
     }
 
     /**
@@ -137,7 +137,7 @@ class Native
      */
     public function getMsg($key, $params=null)
     {
-        return  \F\Technical\I18n\Service::singleton()->translate($key, $params);
+        return  \F\Technical\Translate\Service::singleton()->translate($key, $params);
     }
 
     /**
@@ -156,7 +156,7 @@ class Native
      */
     public function isTraceEnabled()
     {
-    	return $this->_enable; 
+    	return $this->_enable;
     }
 
     /**
@@ -168,7 +168,7 @@ class Native
     	$this->_logfile = $filename;
     	return $this;
     }
-    
+
     /**
      * (non-PHPdoc)
      * @see F\Technical\Trace\Adapter.Definition::openLog()
@@ -176,12 +176,12 @@ class Native
     public function openLog()
     {
     	if ( null === $this->_logResource ) {
-    		$this->_logResource = \F\Technical\File\Service::singleton()
+    		$this->_logResource = \F\Technical\Filesystem\Service::singleton()
     								->appendFile($this->_logfile);
     	}
     	return $this;
     }
-    
+
     /**
      * (non-PHPdoc)
      * @see F\Technical\Trace\Adapter.Definition::closeLog()
@@ -189,7 +189,7 @@ class Native
     public function closeLog()
     {
     	if ( null !== $this->_logResource ) {
-    		\F\Technical\File\Service::singleton()
+    		\F\Technical\Filesystem\Service::singleton()
     			->closeResource($this->_logResource);
     		$this->_logResource = null;
     	}

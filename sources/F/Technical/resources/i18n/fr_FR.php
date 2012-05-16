@@ -15,7 +15,7 @@
  * 'unknown'           => 404,
  * 'toshort'           => 412,
  * 'notconnected'      => 503,
- * 'alreadyexist'      => 409 
+ * 'alreadyexist'      => 409
  */
 
 
@@ -25,7 +25,7 @@ return array(
 
 	// error
 	'classloader.register.error' => "impossible de charger l'autoload",
-	
+
 	// notfound
 	'file.notfound' => "le fichier '%{1}' n'existe pas",
 
@@ -35,4 +35,7 @@ return array(
 
 	// notconnected
 	'database.notconnected'  => "aucune connection à une base de données",
+
+    // unknown
+    'config.key.unknown' => "clef de registre '%{1}' inconnue",
 );

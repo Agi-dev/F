@@ -1,28 +1,28 @@
 <?php
 // @codeCoverageIgnoreStart
 /**
- * F\Technical\File\Adapter\Definition
+ * F\Technical\Filesystem\Adapter\Definition
  * is the adapter interface for the file service.
  *
  * <LICENSETXT>
  *
  * @category  F
  * @author    Fran�ois <francoisschneider@neuf.fr>
- * @package    F\Technical\File\Adapter
+ * @package    F\Technical\Filesystem\Adapter
  * @copyright Copyright (c) 2012 <COPYRIGHT>
  * @license   <LICENSE>
  * @version   $Id: $
  */
 
-namespace F\Technical\File\Adapter;
+namespace F\Technical\Filesystem\Adapter;
 
 /**
- * F\Technical\File\Adapter\Definition
+ * F\Technical\Filesystem\Adapter\Definition
  * is the adapter interface for the file service
  * that define all the primitives required.
  *
  * @category   F
- * @package    F\Technical\File\Adapter
+ * @package    F\Technical\Filesystem\Adapter
  * @copyright  Copyright (c) 2012 <COPYRIGHT>
  * @license    <LICENSE>
  * @version    Release: @package_version@
