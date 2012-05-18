@@ -82,7 +82,7 @@ interface Definition
      *
      * @throw RuntimeException
      */
-    public function checkDirExits($path);
+    public function checkDirExists($path);
 
 }
 // @codeCoverageIgnoreEnd

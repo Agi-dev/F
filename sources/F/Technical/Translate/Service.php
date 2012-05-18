@@ -61,17 +61,6 @@ class Service
 	}
 
     /**
-     * Init de base
-     *
-     */
-    public function __construct($adapter=null)
-    {
-        parent::__construct($adapter);
-    	$this->addRepository(
-            realpath(dirname(__FILE__) . '/../../resources/i18n'));
-    }
-
-    /**
      * Translates the specified message (key) using arguments and current
      * locale.
      *

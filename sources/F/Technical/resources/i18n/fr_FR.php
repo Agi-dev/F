@@ -21,13 +21,14 @@
 
 return array(
 	// badformat
-	'file.resource.badformat' => "la resource fichier est null ou incorrect",
+	'filesystem.resource.badformat' => "la resource fichier est null ou incorrect",
 
 	// error
 	'classloader.register.error' => "impossible de charger l'autoload",
 
 	// notfound
-	'file.notfound' => "le fichier '%{1}' n'existe pas",
+	'filesystem.file.notfound' => "le fichier '%{1}' n'existe pas",
+    'filesystem.dir.notfound'  => "le répertoire '%{1}' n'existe pas",
 
 	// param.missing
 	'param.missing'           => "'%{1}' paramètre manquant",

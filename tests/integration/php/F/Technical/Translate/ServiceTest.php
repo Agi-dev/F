@@ -53,21 +53,20 @@ class ServiceTest
      */
     public function testTranslateWithNoTranslateFileSuccess()
     {
-        $this->assertEquals('key notexist',$this->s()->translate('key.notexist'));
+       $this->assertEquals('key notexist',$this->s()->translate('key.notexist'));
     }
 
     public function testTranslateWithDefaultMessageSuccess()
     {
-        $this->s()->setCurrentLocale('fr_FR');
-        $this->assertEquals("une erreur inconnu s'est produite", $this->s()->translate('error'));
+        $this->s()->addRepository($this->getDataSetPath());
+    	$this->assertEquals("ceci est une error", $this->s()->translate('test.error'));
     }
 
     public function testTranslateWithManyTranslateFileGetMessageForTwoLanguagesSuccess()
     {
         $this->s()->setCurrentLocale('fr_FR');
-        $this->s()->addRepository($this->getDataSetPath() );
-        $this->assertEquals('un message en français', $this->s()->translate('keymany'));
+        $this->s()->addRepository($this->getDataSetPath());
+        $this->assertEquals('ceci est un message en français', $this->s()->translate('test.lang'));
         $this->s()->setCurrentLocale('en_US');
-        $this->assertEquals('One message un english', $this->s()->translate('keymany'));
     }
 }

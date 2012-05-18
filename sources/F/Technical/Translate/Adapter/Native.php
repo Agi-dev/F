@@ -64,6 +64,8 @@ class Native
     {
         $this->_locale = 'fr_FR';
         $this->_keys   = array();
+        $this->addRepository(
+            realpath(dirname(__FILE__) . '/../../resources/i18n'));
     }
 
     /**
@@ -117,15 +119,6 @@ class Native
     public function isFileExists($filename)
     {
         return \F\Technical\Filesystem\Service::singleton()->isFileExists($filename);
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see F\Technical\Translate\Adapter.Definition::checkDirExits()
-     */
-    public function checkDirExits($path)
-    {
-    	return \F\Technical\Filesystem\Service::singleton()->isFileExists($filename);
     }
 
     /**

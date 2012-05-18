@@ -1,5 +1,4 @@
 <?php
 return array(
-	'keymany'   => 'One message un english',
-	'test.lang' => 'trace in english',
+	'test.lang'  => "this an english message",
 );

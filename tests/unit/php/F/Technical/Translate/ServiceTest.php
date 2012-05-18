@@ -60,6 +60,7 @@ extends \F\Technical\Base\Test\Service
      */
 	function testTranslateWithUnknownKeyReturnKeyWithoutDot()
     {
+        $this->mock('checkDirExists', $this->s()->getAdapter());
         $this->mock('getCurrentLocale', 'fr_FR');
         $this->mock('getKey', null);
         $this->assertEquals('unknow Key', $this->s()->translate('unknow.Key'));
@@ -67,6 +68,7 @@ extends \F\Technical\Base\Test\Service
 
     function testTranslateWithKnownKeySuccess()
     {
+        $this->mock('checkDirExists', $this->s()->getAdapter());
         $this->mock('getCurrentLocale', 'fr_FR');
         $this->mock('getKey','Default Lang Message');
         $this->assertEquals('Default Lang Message', $this->s()->translate('knownKey'));
@@ -74,6 +76,7 @@ extends \F\Technical\Base\Test\Service
 
     function testTranslateWithKnownKeyAndParamsSuccess()
     {
+        $this->mock('checkDirExists', $this->s()->getAdapter());
         $this->mock('getCurrentLocale', 'fr_FR');
         $this->mock('getKey', 'Message param[0]=%{1} and param[1]=%{2}');
 
@@ -84,7 +87,8 @@ extends \F\Technical\Base\Test\Service
 
      public function testTranslateWithParameterInversedOrderSuccess()
      {
-     	$this->mock('getCurrentLocale', 'fr_FR');
+     	$this->mock('checkDirExists', $this->s()->getAdapter());
+        $this->mock('getCurrentLocale', 'fr_FR');
         $this->mock('getKey', 'Message param[0]=%{2} and param[1]=%{1}');
 
         $this->assertEquals('Message param[0]=paramOne and param[1]=paramTwo',

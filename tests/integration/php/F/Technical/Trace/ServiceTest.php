@@ -47,12 +47,17 @@ class ServiceTest
     {
         return parent::s();
     }
-    
+
     public function setUp()
     {
     	parent::setUp();
-    	\F\Technical\i18n\Service::singleton()
-    			->addI18nFile($this->getDataSetPath() . '/fr_FR.php');
+        \F\Technical\Translate\Service::singleton()->addRepository($this->getDataSetPath());
+    }
+
+    public static function setUpBeforeClass()
+    {
+        $mask = dirname(__FILE__) . "/*.trace";
+        array_map( "unlink", glob( $mask ) );
     }
 
     /**
@@ -63,7 +68,7 @@ class ServiceTest
         $appConfig = array (
             'activated' => 1,
             'file' => dirname(__FILE__)
-                . '/TraceWithParamsSuccess',
+                . '/TraceWithParamsSuccess.trace',
             'keylevelfile' => $this->getDataSetPath() . '/TraceLevelKeyMessage.ini',
         );
         $this->s()->configure($appConfig);
@@ -80,7 +85,7 @@ class ServiceTest
     {
         $appConfig = array (
         	'activated' => 0,
-            'file' => dirname(__FILE__) . '/TraceWithNoActivationTraceSuccess'
+            'file' => dirname(__FILE__) . '/TraceWithNoActivationTraceSuccess.trace'
         );
         $this->s()->configure($appConfig);
         $this->s()->trace('test.with.param.success',
@@ -93,7 +98,7 @@ class ServiceTest
         $appConfig = array (
             'activated' => 1,
             'file' => dirname(__FILE__)
-            . '/TraceWithNoMessageTraceFileAndNoKeyTraceLevel.log'
+            . '/TraceWithNoMessageTraceFileAndNoKeyTraceLevel.trace'
         );
         $this->s()->configure($appConfig);
         $this->s()->trace('test.with.param.success',
@@ -108,7 +113,7 @@ class ServiceTest
         $appConfig = array (
             'activated' => 1,
             'file' => dirname(__FILE__)
-            . '/TraceWithOnlyWarningMessageFilterSuccess.log',
+            . '/TraceWithOnlyWarningMessageFilterSuccess.trace',
             'keylevelfile' => $this->getDataSetPath() . '/TraceLevelKeyMessage.ini',
             'filters' => array(('warning')),
         );
@@ -125,40 +130,41 @@ class ServiceTest
         unlink($appConfig['file']);
     }
 
-//     public function testTraceWithTranslationInFrenchSuccess()
-//     {
-//         $appConfig = array (
-//             'activated' => 1,
-//             'file' => dirname(__FILE__)
-//             . '/testTraceWithTranslationInFrenchSuccess.log',
-//             'keylevelfile' => $this->getDataSetPath() . '/TraceLevelKeyMessage.ini',
-//         );
-//         $this->s()->configure($appConfig);
-//         \F\Technical\I18n\Service::singleton()->setCurrentLocale('fr-fr');
-//         $this->s()->trace('test.lang');
-//         $this->assertFileExists($appConfig['file']);
-//         $this->assertStringEndsWith('[INFO] trace en français'."\n",
-//             file_get_contents($appConfig['file']) );
-//         unlink($appConfig['file']);
+     public function testTraceWithTranslationInFrenchSuccess()
+     {
+         $appConfig = array (
+             'activated' => 1,
+             'file' => dirname(__FILE__)
+             . '/testTraceWithTranslationInFrenchSuccess.trace',
+             'keylevelfile' => $this->getDataSetPath() . '/TraceLevelKeyMessage.ini',
+         );
+         $this->s()->configure($appConfig);
+         $this->s()->trace('test.lang');
+         $this->assertFileExists($appConfig['file']);
+         $this->assertStringEndsWith('[INFO] ceci est un message en français'."\n",
+             file_get_contents($appConfig['file']) );
+         $this->s()->getAdapter()->closeLog();
+         unlink($appConfig['file']);
 
-//     }
+     }
 
-//     public function testTraceWithTranslationInEnglishSuccess()
-//     {
-//         $appConfig = array (
-//             'activated' => 1,
-//             'file' => dirname(__FILE__)
-//             . '/testTraceWithTranslationInEnglishSuccess.log',
-//             'keylevelfile' => $this->getDataSetPath() . '/TraceLevelKeyMessage.ini',
-//         );
-//         $this->s()->configure($appConfig);
-//         \F\Technical\I18n\Service::singleton()->setCurrentLocale('en-us');
-//         $this->s()->trace('test.lang');
-//         $this->assertFileExists($appConfig['file']);
-//         $this->assertStringEndsWith('[INFO] trace in english'."\n",
-//             file_get_contents($appConfig['file']) );
-//         unlink($appConfig['file']);
+     public function testTraceWithTranslationInEnglishSuccess()
+     {
+         $appConfig = array (
+             'activated' => 1,
+             'file' => dirname(__FILE__)
+             . '/testTraceWithTranslationInEnglishSuccess.trace',
+             'keylevelfile' => $this->getDataSetPath() . '/TraceLevelKeyMessage.ini',
+         );
+         $this->s()->configure($appConfig);
+         \F\Technical\Translate\Service::singleton()->setCurrentLocale('en_US');
+         $this->s()->trace('test.lang');
+         $this->assertFileExists($appConfig['file']);
+         $this->assertStringEndsWith('[INFO] this an english message'."\n",
+             file_get_contents($appConfig['file']) );
+         $this->s()->getAdapter()->closeLog();
+         unlink($appConfig['file']);
 
-//     }
-    
+     }
+
 }
