@@ -45,14 +45,14 @@ class Native
 		$err1   = error_get_last();
         $result = @file_exists($filename);
         $err    = error_get_last();
-        
+
         if (false === $result && (serialize($err1) !== serialize($err))) {
             throw new \RuntimeException($err['message'], 1000 + $err['type']);
-        } 
-        
+        }
+
         return true === $result;
 	}
-	
+
 	/**
 	 * (non-PHPdoc)
 	 * @see sources/F/Technical/Filesystem/Adapter/F\Technical\Filesystem\Adapter.Definition::parseIniFile()
@@ -62,14 +62,14 @@ class Native
 		$err1   = error_get_last();
         $result = @parse_ini_file($filename);
         $err    = error_get_last();
-        
+
         if (false === $result && (serialize($err1) !== serialize($err))) {
             throw new \RuntimeException($err['message'], 1000 + $err['type']);
-        } 
-        
+        }
+
         return $result;
 	}
-	
+
 	/**
 	 * (non-PHPdoc)
 	 * @see F\Technical\Filesystem\Adapter.Definition::fopen()
@@ -79,14 +79,14 @@ class Native
 		$err1   = error_get_last();
 		$result = @fopen($filename, $mode);
 		$err    = error_get_last();
-		
+
 		if (false === $result && (serialize($err1) !== serialize($err))) {
 			throw new \RuntimeException($err['message'], 1000 + $err['type']);
 		}
-		
+
 		return $result;
 	}
-	
+
 	/**
 	 * (non-PHPdoc)
 	 * @see F\Technical\Filesystem\Adapter.Definition::is_resource()
@@ -96,14 +96,14 @@ class Native
 		$err1   = error_get_last();
         $result = @is_resource($resource);
         $err    = error_get_last();
-        
+
         if (false === $result && (serialize($err1) !== serialize($err))) {
             throw new \RuntimeException($err['message'], 1000 + $err['type']);
-        } 
-        
+        }
+
         return true === $result;
 	}
-	
+
 	/**
 	 * (non-PHPdoc)
 	 * @see F\Technical\Filesystem\Adapter.Definition::fwrite()
@@ -113,14 +113,14 @@ class Native
 		$err1   = error_get_last();
         $result = @fwrite($resource, $content);
         $err    = error_get_last();
-        
+
         if (false === $result && (serialize($err1) !== serialize($err))) {
             throw new \RuntimeException($err['message'], 1000 + $err['type']);
-        } 
-        
+        }
+
         return $result;
 	}
-	
+
 	/**
 	 * (non-PHPdoc)
 	 * @see F\Technical\Filesystem\Adapter.Definition::fclose()
@@ -130,13 +130,29 @@ class Native
 		$err1   = error_get_last();
         $result = @fclose($resource);
         $err    = error_get_last();
-        
+
         if (false === $result && (serialize($err1) !== serialize($err))) {
             throw new \RuntimeException($err['message'], 1000 + $err['type']);
-        } 
-        
+        }
+
         return true === $result;
 	}
-	
+
+	/**
+	 * (non-PHPdoc)
+	 * @see F\Technical\Filesystem\Adapter.Definition::getFileContents()
+	 */
+	public function getFileContents($filename)
+	{
+		$err1   = error_get_last();
+        $result = @file_get_contents($filename);
+        $err    = error_get_last();
+
+        if (false === $result && (serialize($err1) !== serialize($err))) {
+            throw new \RuntimeException($err['message'], 1000 + $err['type']);
+        }
+
+        return $result;
+	}
 }
 // @codeCoverageIgnoreEnd

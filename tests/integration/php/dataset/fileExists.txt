@@ -1,1 +1,3 @@
-just for integration test of file service
+Ce fichier existe bien
+et même sur plusieurs
+lignes.

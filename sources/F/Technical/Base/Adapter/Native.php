@@ -27,9 +27,17 @@ namespace F\Technical\Base\Adapter;
  * @version Release: @package_version@
  * @since Class available since Release 0.0.1
  */
-abstract class Native {
-	public function __call($method, $args) {
-		throw new \RuntimeException('Method "'.$method.'" not yet implemented');
-	}
+abstract class Native
+{
+    /**
+     *
+     * Enter description here ...
+     * @param unknown_type $key
+     * @param unknown_type $params
+     */
+	public function trace($key, $params)
+    {
+    	return \F\Technical\Trace\Service::singleton()->trace($key, $params);
+    }
 }
 // @codeCoverageIgnoreEnd

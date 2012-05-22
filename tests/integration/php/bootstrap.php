@@ -4,9 +4,18 @@ set_include_path(
 	. PATH_SEPARATOR . get_include_path()
 );
 
-// functions like f_dbg for debuging
+// FUNCTIONS LIKE F_DBG FOR DEBUGING
 include_once 'F/Technical/functions.php';
 
-// autoload
+// AUTOLOAD
 require_once 'F/Technical/Loader/Service.php';
 \F\Technical\Loader\Service::singleton()->autoload();
+
+// DATABASE
+$bdd = array(
+    'host'     => '127.0.0.1',
+    'username' => 'feelpix',
+    'password' => 'feelpix',
+    'name'     => 'f_test'
+);
+\F\Technical\Registry\Service::singleton()->setProperty('bdd', $bdd);

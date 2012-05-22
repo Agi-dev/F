@@ -38,13 +38,13 @@ class Service
      * @var int
      */
     protected $_transactionLevel = 0;
-    
+
     /**
      * handle de connection
      * @var mixed
      */
     protected $_cnx = null;
-    
+
 	/**
 	 * Returns the singleton of this service
 	 *
@@ -74,28 +74,17 @@ class Service
 	}
     /**
      * Retourne le resultat d'une requete
-     * 
+     *
      * @param string $sql
      * @param array $tab
      */
 	public function fetchAll($sql, $sqlParams)
 	{
-	    return $this->getAdapter()->fetchAll($this->getConnection(), $sql, $sqlParams);
+	    $this->checkConnection();
+		return $this->getAdapter()->fetchAll($sql, $sqlParams);
 	}
-	
-	/**
-	 * Récupère la clef primaire d'une classe
-	 * 
-	 * @param unknown_type $tablename
-	 * 
-	 * @return mixed
-	 */
-	public function getIdColumn($tablename)
-	{
-	    $dbtable = $this->getAdapter()->getDbTableObject($tablename);
-	    return $this->getAdapter()->getIdColumn($dbtable);
-	}
-	
+
+
 	/**
 	 * Exec script file
 	 *
@@ -105,64 +94,57 @@ class Service
 	 */
 	public function execScriptFile($filename)
 	{
-		$cnx = $this->getConnection();
+		$this->checkConnection();
 		$contents = $this->getAdapter()->getFileContent($filename);
-	
-	
+
+
 		// Remove C style and inline comments
 		$comment_patterns = array(
 				'/^\s*--.*/m', //inline comments start with --
 				'/^\s*#.*/m', //inline comments start with #
 		);
-	
+
 		$contents = preg_replace($comment_patterns, "\n", $contents);
-	
+
 		// Change crlf to lf
 		$contents = preg_replace("/\r\n/", "\n", $contents);
-	
+
 		//Retrieve sql statements
 		$statements = explode(";\n", $contents);
 		$statements = preg_replace("/\s/", ' ', $statements);
-	
+
 		foreach ($statements as $query) {
 			$query = trim($query);
 			if ('' !== $query ) {
-				$res = $this->getAdapter()->executeDirectQuery($cnx, $query);
+				$res = $this->getAdapter()->executeDirectQuery($query);
 			}
 		}
 		return $this;
 	}
-	
-	
-    /**
-	 * Récupère la connection Connection
-	 *
-	 * @return mixed
-	 *
-	 * @throw RuntimeException si pas connecté
-	 */
-	public function getConnection()
-	{
-		if ( null === $this->_cnx ) {
-    	    $this->_cnx = $this->checkConnection()
-    		            ->getAdapter()->getConnection();
-		}
-		return $this->_cnx;
-	}
-	
+
 	/**
 	 * Connecte la base de données
-	 * 
+	 *
+	 * $config = array(
+     *       'host'     => '127.0.0.1',
+     *       'username' => 'webuser',
+     *       'password' => 'xxxxxxxx',
+     *       'name'     => 'test'
+     * )
+	 *
+	 * @param array config
+	 *
 	 * @return \F\Technical\Database\Service
 	 */
-	public function connect()
+	public function connect($config=null)
 	{
-	    $this->getAdapter()->connect($this->getAdapter()->getConnection());
-	    return $this;
+		if (null === $config) {
+            $config = $this->getAdapter()->getConnectConfig();
+        }
+        $this->getAdapter()->connect($config);
+        return $this;
 	}
-	
-	
-	
+
 	/**
 	 * Check if there is a ddb connection
 	 *
@@ -177,7 +159,7 @@ class Service
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Teste la connection à la bdd
 	 *
@@ -185,104 +167,64 @@ class Service
 	 */
 	public function isConnected()
 	{
-	     return $this->getAdapter()->isConnected($this->getAdapter()->getConnection());
+	     return $this->getAdapter()->isConnected();
 	}
-	
-	/**
-	 * Récupère le configuration courante de la base de données
-	 */
-	public function getConfig()
-	{
-	    return $this->getAdapter()->getDbConfig($this->getConnection());
-	}
-	
+
 	/**
 	 * Recupère la date du jour au format de la base de données
-	 * 
-	 * @return string 
+	 *
+	 * @return string
 	 */
 	public function getDbDateToday()
 	{
 	    return $this->getAdapter()->getDbDateToday();
 	}
 
-	//PR
-	/**
-	 * Recupère le nom de la table de la base de données
-	 *
-	 * @return string
-	 */
-	public function getDbTableObject()
-	{
-		return $this->getAdapter()->getDbTableObject();
-	}	
-	
-	/**
-	 * Insert les donnnées dans la table
-	 * 
-	 * @param array $data données (champs => valeur)
-	 * @param string $tablename nom de la table
-	 * @param string $module nom du module (null par défaut)
-	 * 
-	 * @return id
-	 */
-	public function insert($data, $tablename, $module = null)
-	{
-	    
-	    $this->checkConnection();
-	    $dbtable = $this->getAdapter()->getDbTableObject($tablename, $module);
-
-	    return $this->getAdapter()->insert($dbtable, $data);
-
-	    //return $this->getAdapter()->lastInsertId($dbtable); 
-	    
-	}
-	
 	/**
 	 * Commence une transaction
-	 * 
+	 *
 	 * @return \F\Technical\Database\Service
 	 */
 	public function beginTransaction()
 	{
 	    if ( $this->_transactionLevel === 0 ) {
-	    	$this->getAdapter()->beginTransaction($this->getConnection());
+	    	$this->getAdapter()->beginTransaction();
 	    }
 	    $this->_transactionLevel++;
-	    
+
 	    return $this;
 	}
-	
+
 	/**
 	 * Annule une transaction
-	 * 
+	 *
 	 * @return \F\Technical\Database\Service
 	 */
 	public function rollbackTransaction()
 	{
 	    if ( $this->_transactionLevel === 1 ) {
-	    	$this->getAdapter()->rollbackTransaction($this->getConnection());
+	    	$this->getAdapter()->rollbackTransaction();
 	    }
 	    return $this->_transactionLevelDecrement();
 	}
-	
+
 	/**
 	 * Valide une transaction
-	 * 
+	 *
 	 * @return \F\Technical\Database\Service
 	 */
 	public function commitTransaction()
 	{
 	    if ( $this->_transactionLevel === 1 ) {
-	    	$this->getAdapter()->commitTransaction($this->getConnection());
+	    	$this->getAdapter()->commitTransaction();
 	    }
-	    	    
+
 	    return $this->_transactionLevelDecrement();
 	}
-	
+
 	/**
 	 * Decremente le niveau de transaction
-	 * 
+	 *
 	 */
 	protected function _transactionLevelDecrement()
 	{
@@ -291,7 +233,7 @@ class Service
 	    }
 	    return $this;
 	}
-	
+
 	/**
 	 * Retourne le niveau de transaction
 	 */

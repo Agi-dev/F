@@ -57,13 +57,13 @@ class ServiceTest
     	$actual= $this->s()->checkFileExists('fileNotExists');
     	$this->assertFalse($actual);
     }
-    
+
 	public function testCheckFileExistsWithSuccess()
     {
     	$actual = $this->s()->checkFileExists($this->getDataSetPath() . '/fileExists.txt');
     	$this->assertInstanceOfService($actual);
     }
-    
+
     /**
      * isFileExists
      */
@@ -71,13 +71,13 @@ class ServiceTest
     {
 		$this->assertFalse($this->s()->isFileExists('fileNotExist'));
     }
-    
+
     public function testIsFileExistsWithFileExistReturnTrue()
     {
     	$actual = $this->s()->isFileExists($this->getDataSetPath() . '/fileExists.txt');
     	$this->assertTrue($actual);
     }
-    
+
     /**
      * parseIniFile
      */
@@ -92,7 +92,7 @@ class ServiceTest
     	$actual = $this->s()->parseIniFile($this->getDataSetPath() . '/fileIni.ini');
     	$this->assertEquals($expected, $actual);
     }
-    
+
     /**
      * appendFile
      */
@@ -105,7 +105,7 @@ class ServiceTest
     	fclose($actual);
     	unlink($filename);
     }
-    
+
     /**
      * checkResource
      */
@@ -114,8 +114,8 @@ class ServiceTest
     	$this->setExpectedException('RuntimeException', "la resource fichier est null ou incorrect");
     	$this->s()->checkResource('bad resource');
     }
-    
-    
+
+
     public function testCheckResourceWithSuccess()
     {
     	$filename = $this->getDataSetPath() . '/file.txt';
@@ -124,7 +124,7 @@ class ServiceTest
     	fclose($resource);
     	unlink($filename);
     }
-    
+
     /**
      * writeResource
      */
@@ -133,7 +133,7 @@ class ServiceTest
     	$this->setExpectedException('RuntimeException', "la resource fichier est null ou incorrect");
     	$this->s()->WriteResource('bad resource', 'un contenu');
     }
-    
+
     public function testWriteResourceWithSuccess()
     {
     	$filename = $this->getDataSetPath() . '/file.txt';
@@ -145,7 +145,7 @@ class ServiceTest
     	$this->assertEquals($content, file_get_contents($filename));
     	unlink($filename);
     }
-    
+
     /**
      * fclose
      */
@@ -155,6 +155,22 @@ class ServiceTest
     	$resource = $this->s()->appendFile($filename);
     	$this->assertTrue($this->s()->closeResource($resource));
     	unlink($filename);
-    	
+
+    }
+
+
+    /**
+     * getFileContent
+     */
+    public function testGetFileContentWithFileNotFoundThrowRuntimeException()
+    {
+        $this->setExpectedException('RuntimeException', "le fichier 'fileNotExists' n'existe pas");
+        $this->s()->getFileContents('fileNotExists');
+    }
+
+    public function testGetFileContentWithSuccess()
+    {
+        $actual = $this->s()->getFileContents($this->getDataSetPath() . '/fileExists.txt');
+        $this->assertEquals("Ce fichier existe bien\net même sur plusieurs\nlignes.", $actual);
     }
 }

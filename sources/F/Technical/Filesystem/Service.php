@@ -180,4 +180,17 @@ class Service
         }
         return $this;
     }
+
+    /**
+     * Reads entire file into a string
+     *
+     * @param $filename
+     *
+     * @return string
+     */
+    public function getFileContents($filename)
+    {
+    	$this->checkFileExists($filename);
+    	return $this->getAdapter()->getFileContents($filename);
+    }
 }

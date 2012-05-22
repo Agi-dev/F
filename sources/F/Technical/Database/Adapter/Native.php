@@ -35,124 +35,101 @@ require_once 'F/Technical/Database/Adapter/Definition.php';
 class Native
     implements Definition
 {
+    /**
+     * resource database
+     *
+     * @var \Phalcon_Db_Adapter_Mysql
+     */
+	protected $_cnx = null;
+
 	/* (non-PHPdoc)
      * @see F\Technical\Database\Adapter.Definition::fetchAll()
      */
     public function fetchAll ($cnx, $sql, $sqlParams)
     {
-        return $cnx->fetchAll($sql, $sqlParams);
+    	throw new \RuntimeException (
+    		"Feature '" . __METHOD__ . "' not yet implemented In Adapter Native"
+    	);
     }
-    
+
 	/* (non-PHPdoc)
      * @see F\Technical\Database\Adapter.Definition::isConnected()
      */
-    public function isConnected ($cnx)
+    public function isConnected ()
     {
-        // Utilisation de la classe surchargée dans ASM
-        return $cnx->isConnected();
+    	return ($this->_cnx instanceof \Phalcon_Db_Adapter_Mysql);
     }
-    
+
 	/* (non-PHPdoc)
 	 * @see F\Technical\Database\Adapter.Definition::executeDirectQuery()
 	 */
-	public function executeDirectQuery($cnx, $sql) {
-		return $cnx->query($sql);
-	}
-
-	/* (non-PHPdoc)
-	 * @see F\Technical\Database\Adapter.Definition::getConnection()
-	 */
-	public function getConnection() {
-		return \Zend_Db_Table::getDefaultAdapter();
+	public function executeDirectQuery($sql)
+	{
+		return $this->_cnx->query($sql);
 	}
 
 	/* (non-PHPdoc)
 	 * @see F\Technical\Database\Adapter.Definition::connect()
 	 */
-	public function connect($cnx) {
-		$cnx->getConnection();
+	public function connect($config)
+	{
+		$this->_cnx = \Phalcon_Db::factory("Mysql", (object) $config);
 		return $this;
 	}
 
 	/* (non-PHPdoc)
+     * @see F\Technical\Database\Adapter.Definition::getConnectConfig()
+     */
+    public function getConnectConfig()
+    {
+    	return \F\Technical\Registry\Service::singleton()->getProperty('_databaseConfig');
+    }
+
+	/* (non-PHPdoc)
 	 * @see F\Technical\Database\Adapter.Definition::getFileContent()
 	 */
-	public function getFileContent($filename) {
-		return file_get_contents($filename);
-	}
-	
-	/**
-	 * Récupère la configuration de la base de données courante
-	 * @param unknown_type $cnx
-	 */
-	public function getDbConfig($cnx) 
+	public function getFileContent($filename)
 	{
-	    return $cnx->getConfig();
+		return \F\Technical\Filesystem\Service::singleton()->getFileContents($filename);
 	}
-	
+
 	/* (non-PHPdoc)
 	 * @see F\Technical\Database\Adapter.Definition::getDbDateToday()
 	 */
-	public function getDbDateToday() 
+	public function getDbDateToday()
 	{
-		return date('Y-m-d H:i:s');
-	}
-	
-	/* (non-PHPdoc)
-	 * @see F\Technical\Database\Adapter.Definition::getDbTableObject()
-	 */
-	public function getDbTableObject($tablename) 
-	{
-	    $class = 'Table_';
-	    $class .= ucfirst(substr($tablename, 0, -4));
-	    require_once (APP_ROOT . '/application/models/' .str_replace ('_', '/', $class) .'.php');
-	    $class = 'Model_' . $class;
-	    return  new $class();
+		throw new \RuntimeException (
+			"Feature '" . __METHOD__ . "' not yet implemented In Adapter Native"
+		);
 	}
 
-	/* (non-PHPdoc)
-	 * @see F\Technical\Database\Adapter.Definition::insert()
-	 */
-	public function insert($dbtable, $data) 
-	{
-		return $dbtable->insert($data) ;
-	}
-
-	/* (non-PHPdoc)
-	 * @see F\Technical\Database\Adapter.Definition::lastInsertId()
-	 */
-	public function lastInsertId($dbtable) 
-	{
-		return \Oft_App::getInstance()->getDb()->lastInsertId($dbtable);
-	}
-	/* (non-PHPdoc)
-	 * @see F\Technical\Database\Adapter.Definition::getIdColumn()
-	 */
-	public function getIdColumn($dbtable) 
-	{
-		return $dbtable->getIdColumn();
-	}
 	/* (non-PHPdoc)
 	 * @see F\Technical\Database\Adapter.Definition::beginTransaction()
 	 */
-	public function beginTransaction($cnx) 
+	public function beginTransaction()
 	{
-		$cnx->beginTransaction();
+		throw new \RuntimeException (
+			"Feature '" . __METHOD__ . "' not yet implemented In Adapter Native"
+		);
 	}
 
 	/* (non-PHPdoc)
 	 * @see F\Technical\Database\Adapter.Definition::commit()
 	 */
-	public function commitTransaction($cnx) 
+	public function commitTransaction()
 	{
-		$cnx->commit();
+		throw new \RuntimeException (
+			"Feature '" . __METHOD__ . "' not yet implemented In Adapter Native"
+		);
 	}
 
 	/* (non-PHPdoc)
 	 * @see F\Technical\Database\Adapter.Definition::rollback()
 	 */
-	public function rollbackTransaction($cnx) 
+	public function rollbackTransaction()
 	{
-		$cnx->rollBack();
+		throw new \RuntimeException (
+			"Feature '" . __METHOD__ . "' not yet implemented In Adapter Native"
+		);
 	}
 }

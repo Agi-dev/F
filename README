@@ -1,1 +1,13 @@
 Ma librairie que c'est la mienne ;o)
+
+- I - Dépendances
+
+* Framework PHP    : PhalconPHP (http://www.phalconphp.com)
+* Tests Unitaires  : PHP
+* Project Manager  : PM (http://blog.phppro.fr/?post/2011/04/13/PM-%3A-Developpeurs-augmentez-votre-productivite)
+
+- II - Tests Intégrations
+
+Ceux ci nécessitent une base de données pour fonctionner :
+La description de la base de données se trouve dans le fichier f\tests\integration\php\boostrap.php
+ 

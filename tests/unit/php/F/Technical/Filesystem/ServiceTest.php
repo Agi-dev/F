@@ -64,14 +64,14 @@ extends \F\Technical\Base\Test\Service
     	$this->setExpectedException('RuntimeException', "le fichier 'fileNotExists' n'existe pas");
     	$this->s()->checkFileExists('fileNotExists');
     }
-    
+
 	public function testCheckFileExistsWithSuccess()
     {
     	$this->mock('isFileExists', true);
     	$actual = $this->s()->checkFileExists('fileExists');
     	$this->assertInstanceOfService($actual);
     }
-    
+
     /**
      * isFileExists
      */
@@ -80,13 +80,13 @@ extends \F\Technical\Base\Test\Service
 		$this->mock('isFileExists', false);
 		$this->assertFalse($this->s()->isFileExists('fileNotExist'));
     }
-    
+
     public function testIsFileExistsWithFileExistReturnTrue()
     {
     	$this->mock('isFileExists', true);
 		$this->assertTrue($this->s()->isFileExists('fileExist'));
     }
-    
+
     /**
      * parseIniFile
      */
@@ -96,7 +96,7 @@ extends \F\Technical\Base\Test\Service
     	$this->setExpectedException('RuntimeException', "le fichier 'fileIni' n'existe pas");
     	$this->s()->parseIniFile('fileIni');
     }
-    
+
     public function testParseIniFileWithSuccess()
     {
     	$this->mock('isFileExists', true);
@@ -104,7 +104,7 @@ extends \F\Technical\Base\Test\Service
     	$actual = $this->s()->parseIniFile('fileIni');
     	$this->assertEquals('somedata', $actual);
     }
-    
+
     /**
      * appendFile
      */
@@ -114,7 +114,7 @@ extends \F\Technical\Base\Test\Service
     	$actual = $this->s()->appendFile('fichier');
     	$this->assertEquals('une resource', $actual);
     }
-    
+
     /**
      * writeResource
      */
@@ -124,7 +124,7 @@ extends \F\Technical\Base\Test\Service
     	$this->setExpectedException('RuntimeException', "la resource fichier est null ou incorrect");
     	$this->s()->writeResource('bad resource', 'content');
     }
-    
+
     public function testWriteResourceWithSuccess()
     {
     	$this->mock('is_resource', true);
@@ -133,7 +133,7 @@ extends \F\Technical\Base\Test\Service
     	$this->assertEquals(6, $actual);
     	$this->assertEquals(array('bad resource'), $this->m()->getCallArgs('is_resource'));
     }
-        
+
     /**
      * checkResource
      */
@@ -143,14 +143,14 @@ extends \F\Technical\Base\Test\Service
     	$this->setExpectedException('RuntimeException', "la resource fichier est null ou incorrect");
     	$this->s()->checkResource('bad resource');
     }
-    
-    
+
+
     public function testCheckResourceWithSuccess()
     {
     	$this->mock('is_resource', true);
     	$this->assertInstanceOfService($this->s()->checkResource('une resource'));
     }
-    
+
     /**
      * closeResource
      */
@@ -160,5 +160,23 @@ extends \F\Technical\Base\Test\Service
     	$this->mock('fclose', true);
     	$this->assertTrue($this->s()->closeResource('une resource'));
     	$this->assertEquals(array('une resource'), $this->m()->getCallArgs('fclose'));
+    }
+
+    /**
+     * getFileContent
+     */
+    public function testGetFileContentsWithFileNotFoundThrowRuntimeException()
+    {
+    	$this->mock('isFileExists', false);
+    	$this->setExpectedException('RuntimeException', "le fichier 'fileNotExist' n'existe pas");
+    	$this->s()->getFileContents('fileNotExist');
+    }
+
+    public function testGetFileContentsWithSuccess()
+    {
+    	$this->mock('isFileExists', true);
+    	$this->mock('getFileContents', 'un contenu de fichier');
+        $actual = $this->s()->getFileContents('fileExist');
+        $this->assertEquals("un contenu de fichier", $actual);
     }
 }
