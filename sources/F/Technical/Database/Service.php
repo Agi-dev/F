@@ -76,14 +76,46 @@ class Service
      * Retourne le resultat d'une requete
      *
      * @param string $sql
-     * @param array $tab
+     * @param array $params
+     *
+     * @return array result
      */
-	public function fetchAll($sql, $sqlParams)
+	public function fetchAll($sql, $params = array())
 	{
 	    $this->checkConnection();
-		return $this->getAdapter()->fetchAll($sql, $sqlParams);
+	    $sql = $this->prepare($sql, $params);
+	    return $this->getAdapter()->fetchAll($sql);
 	}
 
+	/**
+	 * Quotes a value and places into a piece of text at a placeholder.
+     *
+     * The placeholder is a question-mark; all placeholders will be replaced
+     * with the quoted value.   For example:
+	 *
+	 * <code>
+     * $text = "WHERE date < ?";
+     * $date = "2005-01-02";
+     * $safe = $sql->quoteInto($text, $date);
+     * // $safe = "WHERE date < '2005-01-02'"
+     * </code>
+     *
+	 * @param string $sql
+	 * @param mixed $params
+	 *
+	 * @return string sql
+	 */
+	public function prepare($sql, $params = array() )
+	{
+		if (null !== $params && false === is_array($params) ) {
+            $params = array( $params );
+        }
+        if ( true === empty($params) ) {
+        	return $sql;
+        }
+        return $sql;
+
+	}
 
 	/**
 	 * Exec script file

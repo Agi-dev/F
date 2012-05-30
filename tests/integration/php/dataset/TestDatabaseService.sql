@@ -27,3 +27,4 @@ CREATE TABLE `parts` (
 
 INSERT INTO `robots` (`name`, `type`, `year`) VALUES ('astroboy', 'mechanical', '1952');
 INSERT INTO `robots` (`name`, `type`, `year`) VALUES ('goldorak', 'mechanical', '1976');
+INSERT INTO `robots` (`name`, `type`, `year`) VALUES ('Steve Ostin', 'android', '1984');

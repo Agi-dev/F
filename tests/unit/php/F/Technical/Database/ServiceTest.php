@@ -161,13 +161,15 @@ EOF;
     public function testConnectWithConfigParamSuccess()
     {
         $this->mock('connect', 'connection');
+        $this->mock('isConnected', false);
         $this->assertInstanceOfService( $this->s()->connect('uneconfig'));
         $this->assertEquals(array('uneconfig'), $this->m()->getCallArgs('connect'));
     }
 
     public function testConnectWithoutConfigParamGetDefaultSuccess()
     {
-        $this->mock('getConnectConfig', 'uneconfig');
+        $this->mock('isConnected', false);
+    	$this->mock('getConnectConfig', 'uneconfig');
         $this->mock('connect', 'connection');
         $this->assertInstanceOfService( $this->s()->connect());
         $this->assertEquals(array('uneconfig'), $this->m()->getCallArgs('connect'));
@@ -328,5 +330,29 @@ EOF;
     	$actual = $this->s()->commitTransaction();
     	$this->assertInstanceOfService( $actual);
     	$this->assertEquals(0, $this->s()->getTransactionLevel());
+    }
+
+    /**
+     * quoteInto
+     */
+    public function testQuoteIntoWithNoParamSuccess()
+    {
+
+    }
+    public function testQuoteIntoWithIntParamSuccess()
+    {
+    	$this->s()->quoteInto('requete ? param');
+    }
+    public function testQuoteIntoWithStringParamSuccess()
+    {
+
+    }
+    public function testQuoteIntoWithFloatParamSuccess()
+    {
+
+    }
+    public function testQuoteIntoWithDateParamSuccess()
+    {
+
     }
 }

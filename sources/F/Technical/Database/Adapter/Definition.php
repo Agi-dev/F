@@ -33,13 +33,11 @@ interface Definition
     /**
      * Récupére le resultat d'une requete
      *
-     * @param \Zend_Db_Adapter $cnx handler de connection
      * @param string $sql
-     * @param array $sqlParams
      *
      * @return array
      */
-    public function fetchAll($cnx, $sql, $sqlParams);
+    public function fetchAll($sql);
 
     /**
      * Vérifie si on est connecté à la base

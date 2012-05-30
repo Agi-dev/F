@@ -126,18 +126,34 @@ class ServiceTest
         $this->s()->fetchAll('requete', array('knownData'));
   }
 
-    public function testFetchAllWithNoDataReturned()
+    public function testFetchAllWithNoDataReturnedReturnEmptyArray()
     {
         $this->connectDatabase();
-    	$actual = $this->s()->fetchAll('requete', array('unKnownData'));
-        $this->assertEquals(array(array()), $actual);
+        $sql = 'SELECT * FROM robots WHERE year > 2999';
+    	$actual = $this->s()->fetchAll($sql);
+    	$this->assertEquals(array(), $actual);
     }
 
-    public function testFetchAllWithSuccess()
+    public function testFetchAllWithNoParamSuccess()
     {
         $this->connectDatabase();
-        $actual = $this->s()->fetchAll('requete', array('knownData'));
-        $this->assertEquals(array(array('knownData')), $actual);
+        $sql = "SELECT * FROM robots WHERE `type` = 'mechanical'";
+        $actual = $this->s()->fetchAll($sql);
+        $this->assertEquals($this->getResultSet('Technical_Database.php', __FUNCTION__), json_encode($actual));
+    }
+
+    public function testFetchAllWithOneParamSuccess()
+    {
+        $this->connectDatabase();
+    	$sql = "SELECT * FROM robots WHERE `type` = ?";
+    	$actual = $this->s()->fetchAll($sql, 'mechanical');
+    }
+
+    public function testFetchAllWithManyParamsSuccess()
+    {
+        $this->connectDatabase();
+        $sql = "SELECT * FROM robots WHERE `type` = ? AND year > ?";
+        $actual = $this->s()->fetchAll($sql, array('mechanical', 1954));
     }
 
 

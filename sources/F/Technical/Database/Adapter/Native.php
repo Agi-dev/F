@@ -45,11 +45,9 @@ class Native
 	/* (non-PHPdoc)
      * @see F\Technical\Database\Adapter.Definition::fetchAll()
      */
-    public function fetchAll ($cnx, $sql, $sqlParams)
+    public function fetchAll ($sql)
     {
-    	throw new \RuntimeException (
-    		"Feature '" . __METHOD__ . "' not yet implemented In Adapter Native"
-    	);
+        return $this->_cnx->fetchAll($sql);
     }
 
 	/* (non-PHPdoc)
@@ -74,6 +72,7 @@ class Native
 	public function connect($config)
 	{
 		$this->_cnx = \Phalcon_Db::factory("Mysql", (object) $config);
+		$this->_cnx->setFetchMode(\Phalcon_Db::DB_ASSOC);
 		return $this;
 	}
 
