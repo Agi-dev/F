@@ -1,0 +1,11 @@
+<phpunit>
+	<filter>
+	<whitelist addUncoveredFilesFromWhitelist="true">
+		<directory suffix=".php">../sources</directory>
+		<exclude>
+			<directory>../sources/F/*/*/Adapter</directory>
+			<directory>../sources/F/*/Base</directory>
+		</exclude>
+	</whitelist>  
+	</filter>
+</phpunit>

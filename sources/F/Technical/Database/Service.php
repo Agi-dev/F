@@ -88,16 +88,17 @@ class Service
 	}
 
 	/**
-	 * Quotes a value and places into a piece of text at a placeholder.
+	 * Prepare a value and places into a piece of text at a placeholder.
      *
      * The placeholder is a question-mark; all placeholders will be replaced
      * with the quoted value.   For example:
 	 *
 	 * <code>
-     * $text = "WHERE date < ?";
+     * $text = "SELECT * FROM cal WHERE date < ${1} AND id = ${2}";
      * $date = "2005-01-02";
-     * $safe = $sql->quoteInto($text, $date);
-     * // $safe = "WHERE date < '2005-01-02'"
+     * $id = 4
+     * $safe = $sql->quoteInto($text, array($date, $id));
+     * // $safe = "SELECT * FROM cal WHERE date < '2005-01-02' AND id = 4"
      * </code>
      *
 	 * @param string $sql
@@ -113,8 +114,29 @@ class Service
         if ( true === empty($params) ) {
         	return $sql;
         }
-        return $sql;
 
+        $params = array_map(array($this, 'quote'), $params);
+        // On remplace la structure %{n} par l'argument n-1 dans le
+        // message - sinon on laisse %{n}
+        $sql = preg_replace('/\%\{(\d+)\}/e',
+                'isset($params[$1-1]) ? $params[$1-1] : "%{$1}";', $sql);
+        return $sql;
+	}
+
+	 /**
+     * Quote a raw string.
+     *
+     * @param string $value     Raw string
+     * @return string           Quoted string
+     */
+	public function quote($value)
+	{
+		 if (is_int($value)) {
+            return $value;
+        } elseif (is_float($value)) {
+            return sprintf('%F', $value);
+        }
+        return "'" . addcslashes($value, "\000\n\r\\'\"\032") . "'";
 	}
 
 	/**
@@ -200,16 +222,6 @@ class Service
 	public function isConnected()
 	{
 	     return $this->getAdapter()->isConnected();
-	}
-
-	/**
-	 * Recupère la date du jour au format de la base de données
-	 *
-	 * @return string
-	 */
-	public function getDbDateToday()
-	{
-	    return $this->getAdapter()->getDbDateToday();
 	}
 
 	/**

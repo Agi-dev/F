@@ -93,16 +93,6 @@ class Native
 	}
 
 	/* (non-PHPdoc)
-	 * @see F\Technical\Database\Adapter.Definition::getDbDateToday()
-	 */
-	public function getDbDateToday()
-	{
-		throw new \RuntimeException (
-			"Feature '" . __METHOD__ . "' not yet implemented In Adapter Native"
-		);
-	}
-
-	/* (non-PHPdoc)
 	 * @see F\Technical\Database\Adapter.Definition::beginTransaction()
 	 */
 	public function beginTransaction()

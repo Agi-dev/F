@@ -69,13 +69,6 @@ interface Definition
     public function executeDirectQuery($sql);
 
     /**
-     * Recupère la date du jour au format de la base de données
-     *
-     * @return string
-     */
-    public function getDbDateToday();
-
-    /**
      * Connecte la base de données
      *
      * @param array $config

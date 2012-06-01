@@ -75,7 +75,7 @@ extends \F\Technical\Base\Test\Service
     {
         $this->mockGetConnectionSuccess();
         $this->mock('fetchAll', array(array('knownData')));
-        $actual = $this->s()->fetchAll('requete', array('knownData'));
+        $actual = $this->s()->fetchAll('requete %{1}', array('knownData'));
         $this->assertEquals(array(array('knownData')), $actual);
     }
 
@@ -333,26 +333,23 @@ EOF;
     }
 
     /**
-     * quoteInto
+     * prepare
      */
-    public function testQuoteIntoWithNoParamSuccess()
+    public function testPrepareWithNoParamSuccess()
     {
-
+        $actual = $this->s()->prepare('requete without param');
+        $this->assertEquals("requete without param", $actual);
     }
-    public function testQuoteIntoWithIntParamSuccess()
+    public function testPrepareWithParamSuccess()
     {
-    	$this->s()->quoteInto('requete ? param');
+        $actual = $this->s()->prepare('requete %{1} param', 'avec');
+        $this->assertEquals("requete 'avec' param", $actual);
     }
-    public function testQuoteIntoWithStringParamSuccess()
+    public function testPrepareWithMultiTypeParamsSuccess()
     {
-
-    }
-    public function testQuoteIntoWithFloatParamSuccess()
-    {
-
-    }
-    public function testQuoteIntoWithDateParamSuccess()
-    {
-
+    	$actual = $this->s()->prepare('param %{1} is int, param %{2} is string, param %{3} is float, ' .
+    	          'param %{4} is date', array(1, 'une chaine', 1.24, '2012-06-01'));
+    	$this->assertEquals("param 1 is int, param 'une chaine' is string, param 1.240000 is float" .
+    	", param '2012-06-01' is date", $actual);
     }
 }

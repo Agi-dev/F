@@ -139,21 +139,26 @@ class ServiceTest
         $this->connectDatabase();
         $sql = "SELECT * FROM robots WHERE `type` = 'mechanical'";
         $actual = $this->s()->fetchAll($sql);
-        $this->assertEquals($this->getResultSet('Technical_Database.php', __FUNCTION__), json_encode($actual));
+        $this->assertEquals($this->getResultSet('Technical_Database.php', __FUNCTION__),
+                            json_encode($actual));
     }
 
     public function testFetchAllWithOneParamSuccess()
     {
         $this->connectDatabase();
-    	$sql = "SELECT * FROM robots WHERE `type` = ?";
+    	$sql = "SELECT * FROM robots WHERE `type` = %{1}";
     	$actual = $this->s()->fetchAll($sql, 'mechanical');
+    	$this->assertEquals($this->getResultSet('Technical_Database.php', __FUNCTION__),
+    	                    json_encode($actual));
     }
 
     public function testFetchAllWithManyParamsSuccess()
     {
         $this->connectDatabase();
-        $sql = "SELECT * FROM robots WHERE `type` = ? AND year > ?";
+        $sql = "SELECT * FROM robots WHERE `type` = %{1} AND year > %{2}";
         $actual = $this->s()->fetchAll($sql, array('mechanical', 1954));
+        $this->assertEquals($this->getResultSet('Technical_Database.php', __FUNCTION__),
+                            json_encode($actual));
     }
 
 

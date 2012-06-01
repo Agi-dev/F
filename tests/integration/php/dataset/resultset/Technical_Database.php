@@ -7,5 +7,7 @@
  *  @return array
  */
 return array(
-    'testFetchAllWithNoParamSuccess' => '[{"id":"1","name":"astroboy","type":"mechanical","year":"1952"},{"id":"2","name":"goldorak","type":"mechanical","year":"1976"}]',
+    'testFetchAllWithNoParamSuccess'  => '[{"id":"1","name":"astroboy","type":"mechanical","year":"1952"},{"id":"2","name":"goldorak","type":"mechanical","year":"1976"}]',
+    'testFetchAllWithOneParamSuccess' => '[{"id":"1","name":"astroboy","type":"mechanical","year":"1952"},{"id":"2","name":"goldorak","type":"mechanical","year":"1976"}]',
+    'testFetchAllWithManyParamsSuccess' => '[{"id":"2","name":"goldorak","type":"mechanical","year":"1976"}]',
 );
