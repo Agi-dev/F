@@ -15,7 +15,7 @@
 
 namespace F\Technical\Base;
 
-require_once 'F/Technical/I18n/Service.php';
+require_once 'F/Technical/Translate/Service.php';
 
 /**
  * F\Technical\Base\Service is a class to handle Base operations.
@@ -206,7 +206,7 @@ abstract class Service
     	}
     	$args = true === is_array($args) ? $args : array();
     	$origValue = $value;
-    	$value2 = $this->getI18n($value, $args);
+    	$value2 = $this->translate($value, $args);
 
     	if ($value === $value2) {
     		if (false !== strpos($value2, '.') && false === strpos($value2, ' ')) {
@@ -222,17 +222,17 @@ abstract class Service
     	);
     }
 
-   /**
-    * Recupère la traduction de $key
-    * @param unknown_type $key
-    * @param unknown_type $args
-    *
-    * @return sting
-    */
-   function getI18n($key, $args = null)
-   {
-       return \F\Technical\I18n\Service::singleton()->translate($key, $args);
-   }
+    /**
+     * Recupère la traduction de $key
+     * @param unknown_type $key
+     * @param unknown_type $args
+     *
+     * @return sting
+     */
+    function translate($key, $args = null)
+    {
+    	return \F\Technical\Translate\Service::singleton()->translate($key, $args);
+    }
 
     /**
      * Checks if specified adapter if valid (i.e. implements interface)
@@ -247,15 +247,6 @@ abstract class Service
     {
     	$adapterInterfaceClass = $this->getNamespace($this->getClassType())
     	. '\\Adapter\\Definition';
-
-    	// Contrôle désactivé : le mock n'hérite plus de définition
-//     	if (false === ($adapter instanceof $adapterInterfaceClass)) {
-//     	    throw new \RuntimeException('class.denied : '.$adapterInterfaceClass.', '.get_class($adapter));
-//     	     $this->throwException(
-//              'class.denied', $adapterInterfaceClass, $adapter
-//     		 );
-//     	}
-
     	return $this;
     }
 

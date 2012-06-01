@@ -74,6 +74,17 @@ extends \F\Technical\Base\Test\Service
         $this->assertEquals('Default Lang Message', $this->s()->translate('knownKey'));
     }
 
+    function testTranslateWithKnownKeyAndOneParamSuccess()
+    {
+        $this->mock('checkDirExists', $this->s()->getAdapter());
+        $this->mock('getCurrentLocale', 'fr_FR');
+        $this->mock('getKey', 'Message param[0]=%{1}');
+
+        $this->assertEquals('Message param[0]=paramOne',
+            $this->s()->translate('knownKey', 'paramOne'));
+        $this->assertEquals(array('knownKey', 'fr_FR'), $this->m()->getCallArgs('getKey'));
+    }
+
     function testTranslateWithKnownKeyAndParamsSuccess()
     {
         $this->mock('checkDirExists', $this->s()->getAdapter());
@@ -111,5 +122,16 @@ extends \F\Technical\Base\Test\Service
         $this->mock('checkDirExists', $this->s()->getAdapter());
         $this->mock('addRepository');
         $this->assertInstanceOfService($this->s()->addRepository('dir'));
+    }
+
+    /**
+     * setCurrentLocale
+     */
+    public function testSetCurrentLocaleWithSuccess()
+    {
+    	$this->mock('setCurrentLocale');
+    	$actual = $this->s()->setCurrentLocale('local');
+    	$this->assertInstanceOfService($actual);
+    	$this->assertEquals(array('local'), $this->m()->getCallArgs('setCurrentLocale'));
     }
 }

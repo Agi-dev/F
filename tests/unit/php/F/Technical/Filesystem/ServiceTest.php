@@ -154,12 +154,19 @@ extends \F\Technical\Base\Test\Service
     /**
      * closeResource
      */
-    public function testClosekResourceWithSuccess()
+    public function testCloseResourceWithSuccess()
     {
     	$this->mock('is_resource', true);
     	$this->mock('fclose', true);
     	$this->assertTrue($this->s()->closeResource('une resource'));
     	$this->assertEquals(array('une resource'), $this->m()->getCallArgs('fclose'));
+    }
+
+    public function testCloseResourceWithNoResourceReturnTrue()
+    {
+        $this->mock('is_resource', false);
+        $this->assertTrue($this->s()->closeResource('une resource'));
+        $this->assertEquals(0, $this->m()->countCalls('fclose'));
     }
 
     /**
@@ -178,5 +185,21 @@ extends \F\Technical\Base\Test\Service
     	$this->mock('getFileContents', 'un contenu de fichier');
         $actual = $this->s()->getFileContents('fileExist');
         $this->assertEquals("un contenu de fichier", $actual);
+    }
+
+    /**
+     * checkDirExist
+     */
+    public function testCheckDirExistsWithDirNotExistThrowRuntimeException()
+    {
+    	$this->mock('isFileExists', false);
+    	$this->setExpectedException('RuntimeException', "le répertoire 'dirNotExist' n'existe pas");
+        $this->s()->checkDirExists('dirNotExist');
+    }
+
+    public function testCheckDirExistsWithSuccess()
+    {
+    	$this->mock('isFileExists', true);
+    	$this->assertInstanceOfService($this->s()->checkDirExists('dirExist'));
     }
 }
