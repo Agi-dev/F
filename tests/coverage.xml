@@ -5,6 +5,7 @@
 		<exclude>
 			<directory>../sources/F/*/*/Adapter</directory>
 			<directory>../sources/F/*/Base</directory>
+			<directory>../sources/F/Phalcon</directory>
 		</exclude>
 	</whitelist>  
 	</filter>

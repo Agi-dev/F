@@ -30,6 +30,8 @@ return array(
 	'filesystem.file.notfound' => "le fichier '%{1}' n'existe pas",
     'filesystem.dir.notfound'  => "le répertoire '%{1}' n'existe pas",
 
+    'flash.priority.notfound'  => "la priorité de flash '%{1}' est inconnue",
+
 	// param.missing
 	'param.missing'           => "'%{1}' paramètre manquant",
 	'class.attribut.missing'  => "l'attribue de class %{1} n'est pas initialisé",

@@ -12,11 +12,15 @@ function f_dbg($v, $exit = true, $dump = false)
 	$calledFrom = debug_backtrace();
 	$calledFrom = "\n=== DEBUG FROM ". substr($calledFrom[0]['file'], 1) .' (line ' . $calledFrom[0]['line'].")\n\n";
 	if (true === $dump) {
-		header('Content-Type: text/html');
+		if ( !isset($_SERVER['PROMPT']) ) {
+		  header('Content-Type: text/html');
+		}
 		echo $calledFrom;
 		var_dump($v);
 	} else {
-		header('Content-Type: text/plain');
+		if ( !isset($_SERVER['PROMPT']) ) {
+		  header('Content-Type: text/plain');
+		}
 		echo $calledFrom;
 		print_r($v);
 	}

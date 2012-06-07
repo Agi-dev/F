@@ -38,7 +38,7 @@ class Native
 {
 	/**
 	 * (non-PHPdoc)
-	 * @see sources/F/Technical/Loader/Adapter/F\Technical\Loader\Adapter.Definition::registerAutoloadFunction()
+	 * @see F\Technical\Loader\Adapter.Definition::registerAutoloadFunction()
 	 */
 	public function registerAutoloadFunction($function)
     {
@@ -55,7 +55,7 @@ class Native
 
     /**
      * (non-PHPdoc)
-     * @see sources/F/Technical/Loader/Adapter/F\Technical\Loader\Adapter.Definition::php_require_once()
+     * @see F\Technical\Loader\Adapter.Definition::php_require_once()
      */
 	public function php_require_once($path)
     {
