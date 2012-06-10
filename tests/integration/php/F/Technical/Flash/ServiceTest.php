@@ -77,10 +77,10 @@ class ServiceTest
         $this->s()->flash('third', 'warning');
         $this->s()->flash('fourth', 'error');
         $expected = array(
-            array('first' => 'success'),
-            array('second' => 'notice'),
-            array('third' => 'warning'),
-            array('fourth' => 'error')
+            'first' => 'success',
+            'second' => 'notice',
+            'third' => 'warning',
+            'fourth' => 'error'
         );
         $actual = $this->s()->listFlash();
         $this->assertEquals($expected, $actual);

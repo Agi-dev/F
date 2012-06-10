@@ -43,7 +43,7 @@ class Native
 	 */
 	public function addFlash($msg, $priority)
 	{
-		array_push($this->_flash, array($msg => $priority));
+		$this->_flash[$msg] = $priority;
 		return $this;
 	}
 

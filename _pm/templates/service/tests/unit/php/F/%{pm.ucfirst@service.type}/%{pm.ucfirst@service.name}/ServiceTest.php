@@ -60,5 +60,6 @@ extends \F\Technical\Base\Test\Service
      */
 	public function testToImplement()
     {
+    	$this->markTestIncomplete("Aucun test sur ce service !");
     }
 }
