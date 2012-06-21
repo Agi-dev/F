@@ -86,7 +86,7 @@ abstract class Base
     {
         throw new \RuntimeException('Unknown method ' . get_class($this) . "::$name()");
     }
-    
+
 	/**
      * test if actual is instance of current service
      *
