@@ -105,5 +105,42 @@ interface Definition
      */
     public function commitTransaction();
 
+    /**
+     * Include queries file
+     *
+     * @param string $file
+     *
+     * @return array
+     */
+    public function includeQueriesFile($file);
+
+    /**
+     * init queries file directory
+     *
+     * @params string $path
+     *
+     * @return \F\Technical\Database\Adapter\Definition
+     */
+    public function setQueriesPath($path);
+
+    /**
+     * check if dir exist
+     *
+     * @param $path
+     *
+     * @return \F\Technical\Database\Adapter\Definition
+     *
+     * @throw RuntimeException filesystem.dir.notfound
+     */
+    public function checkDirExists($path);
+
+    /**
+     * Gets the last ID generated automatically by an IDENTITY/AUTOINCREMENT column.
+     *
+     * @param string $tablename
+     *
+     * @return int
+     */
+    public function getLastInsertId($tablename);
 }
 // @codeCoverageIgnoreEnd

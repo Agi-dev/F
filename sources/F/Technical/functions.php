@@ -1,5 +1,7 @@
 <?php
 // @codeCoverageIgnoreStart
+require_once 'F/Technical/Translate/Service.php';
+require_once 'F/Technical/Trace/Service.php';
 /**
  * Show var content
  *
@@ -33,6 +35,16 @@ function f_dbg($v, $exit = true, $dump = false)
 }
 
 /**
+ * usefull for integration test show result and json_encode
+ *
+ * @param $v
+ */
+function f_dbgTest($actual)
+{
+	f_dbg(array('result' => $actual, 'json' => json_encode($actual)));
+}
+
+/**
  * Raccourcie vers le service de traduction
  *
  * @param $key clef
@@ -41,6 +53,30 @@ function f_dbg($v, $exit = true, $dump = false)
 function t($key, $args=null)
 {
 	return \F\Technical\Translate\Service::singleton()->translate($key, $args);
+}
+
+/**
+ * trace message
+ *
+ * @param unknown_type $key
+ * @param unknown_type $params
+ */
+function f_trace($key, $params=null)
+{
+	return \F\Technical\Trace\Service::singleton()->trace($key, $params);
+}
+
+/**
+ * active or desactive trace
+ *
+ * @param unknown_type $activated
+ * @param unknown_type $file
+ */
+function f_trace_out($activated=true, $file = "'php://stdout'")
+{
+
+	$config = array('file' => 'php://stdout', 'activated' => (true === $activated?1:0));
+	\F\Technical\Trace\Service::singleton()->configure($config);
 }
 
 /**

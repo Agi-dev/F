@@ -144,14 +144,6 @@ abstract class Mock
 		return $calls;
 	}
 
-	public function trace($key, $params)
-	{
-		$args = func_get_args();
-		$this->mock('trace');
-		return $this
-			->markMethodExecutionAndReturnExpectedResult(__FUNCTION__, $args);
-	}
-
 	public function __call($method, $args)
 	{
 	    $definition = str_replace('Mock', 'Definition', get_class($this));

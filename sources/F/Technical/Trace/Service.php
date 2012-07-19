@@ -34,7 +34,7 @@ class Service
 {
 	/**
 	 * liste des niveaux à tracer, si vide => tous
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $_filters;
@@ -112,26 +112,27 @@ class Service
      */
     public function trace($key, $params = null )
     {
-        if ( false === $this->getAdapter()->isTraceEnabled() ) {
+
+    	if ( false === $this->getAdapter()->isTraceEnabled() ) {
         	return $this;
         }
-        
+
         $level = $this->getLevelForKey($key);
-        
+
         if ( false === $this->_isLevelEnabled($level) ) {
         	return $this;
         }
-        
+
         if (null !== $params && false === is_array($params) ) {
         	$params = array($params);
         }
-        
+
         $msg = '[' . $this->getAdapter()->getDatetime() . ']['
                 . strtoupper($level) . '] '
                 . $this->getAdapter()->getMsg($key, $params). "\n";
-        
+
         $this->getAdapter()->log($msg);
-        
+
         return $this;
     }
 
@@ -196,7 +197,7 @@ class Service
     {
     	// init with F levels
         $this->loadLevelsFromFile(dirname(__FILE__) . '/../resources/trace/default.ini');
-        
+
         if ( true === isset($config['keylevelfile']) ) {
         	$this->loadLevelsFromFile($config['keylevelfile']);
         }
@@ -210,12 +211,12 @@ class Service
 
     	return $this;
     }
-    
+
     /**
      * check if level is enable
-     * 
+     *
      * @param string $level
-     * 
+     *
      * @return bool
      */
     protected function _isLevelEnabled($level)
@@ -225,5 +226,5 @@ class Service
     	}
     	return true;
     }
-    
+
 }

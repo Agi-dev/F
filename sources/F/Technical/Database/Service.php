@@ -84,7 +84,32 @@ class Service
 	{
 	    $this->checkConnection();
 	    $sql = $this->prepare($sql, $params);
+	    f_trace('database.fetchall.query', $sql);
 	    return $this->getAdapter()->fetchAll($sql);
+	}
+
+	/**
+     * Retourne le resultat d'une requete
+     *
+     * @param string $key clef de la requete
+     * @param array $params
+     *
+     * @return array result
+     */
+	public function fetchAllByKey($key, $params = array())
+	{
+		$file = 'queries';
+		// if . in key, use first for filename
+		if ( false !== strpos($key, '.') ) {
+		  list($file, $key) = explode('.', $key);
+		}
+		$queries = $this->getAdapter()->includeQueriesFile($file);
+
+        if (false === isset($queries[$key])) {
+            $this->throwException('database.queries.key.unknown', $key);
+        }
+
+        return $this->fetchAll($queries[$key], $params);;
 	}
 
 	/**
@@ -94,10 +119,10 @@ class Service
      * with the quoted value.   For example:
 	 *
 	 * <code>
-     * $text = "SELECT * FROM cal WHERE date < ${1} AND id = ${2}";
+     * $text = "SELECT * FROM cal WHERE date < ${date} AND id = ${id}";
      * $date = "2005-01-02";
      * $id = 4
-     * $safe = $sql->quoteInto($text, array($date, $id));
+     * $safe = $sql->quoteInto($text, array('date' => $date, 'id' => $id));
      * // $safe = "SELECT * FROM cal WHERE date < '2005-01-02' AND id = 4"
      * </code>
      *
@@ -115,11 +140,18 @@ class Service
         	return $sql;
         }
 
-        $params = array_map(array($this, 'quote'), $params);
-        // On remplace la structure %{n} par l'argument n-1 dans le
-        // message - sinon on laisse %{n}
-        $sql = preg_replace('/\%\{(\d+)\}/e',
-                'isset($params[$1-1]) ? $params[$1-1] : "%{$1}";', $sql);
+	    $matches = null;
+	    $params = array_map(array($this, 'quote'), $params);
+        if (0 < preg_match_all('|\%\{([^\}]+)\}|', $sql, $matches)) {
+            foreach($matches[0] as $i => $match) {
+                $variableName = $matches[1][$i];
+                if (false === isset($params[$variableName])) {
+                    $params[$variableName] = '';
+                }
+                $sql = str_replace($match, $params[$variableName], $sql);
+                unset($params[$variableName]);
+            }
+        }
         return $sql;
 	}
 
@@ -269,6 +301,7 @@ class Service
 	/**
 	 * Decremente le niveau de transaction
 	 *
+	 * @return \F\Technical\Database\Service
 	 */
 	protected function _transactionLevelDecrement()
 	{
@@ -280,9 +313,137 @@ class Service
 
 	/**
 	 * Retourne le niveau de transaction
+	 *
+	 * @return int
 	 */
 	public function getTransactionLevel()
 	{
 	    return $this->_transactionLevel;
 	}
+
+	/**
+     * init queries file directory
+     *
+     * @params string $path
+     *
+     * @return \F\Technical\Database\Adapter\Definition
+     */
+	public function setQueriesPath($path)
+	{
+		$this->getAdapter()->checkDirExists($path);
+		$this->getAdapter()->setQueriesPath($path);
+		return $this;
+	}
+
+    /**
+     * Insert les donnnées dans la table
+     *
+     * @param string $tablename nom de la table
+     * @param array $data données array('field' => 'value')
+     *
+     * @return id
+     */
+    public function insert($tablename, $data)
+    {
+        $this->checkConnection();
+
+        // build the statement
+        $cols = $vals = array();
+        foreach ($data as $col => $val) {
+            $cols[] = $this->_quoteIdentifier($col);
+            $vals[] = '%{' . $col . '}';
+        }
+
+        $sql = "INSERT INTO "
+        . $this->_quoteIdentifier($tablename)
+        . ' (' . implode(', ', $cols) . ') '
+        . 'VALUES (' . implode(', ', $vals) . ')';
+
+        $sql = $this->prepare($sql, $data);
+        $this->getAdapter()->executeDirectQuery($sql);
+        f_trace('database.sql.query', array(__FUNCTION__, $sql));
+        return $this->getAdapter()->getLastInsertId($tablename);
+    }
+
+    /**
+     * Update les données dans la table en fonction de la clause where
+     *
+     * @param string $tablename
+     * @param array  $data  array('field' => 'value')
+     * @param mixed  $where array('sql', array('key' => value))
+     *
+     * @return bool
+     */
+    public function update($tablename, $data, $where=null)
+    {
+        $this->checkConnection();
+
+        // build the statement
+        $set = array();
+        foreach ($data as $col => $val) {
+            $set[] = $this->_quoteIdentifier($col) . " = " . '%{' . $col . '}';
+        }
+
+        $where = $this->_prepareWhere($where);
+
+        $sql = "UPDATE "
+        . $this->_quoteIdentifier($tablename)
+        . ' SET ' . implode(', ', $set)
+        . (($where) ? " WHERE $where" : '');
+
+        $sql = $this->prepare($sql, $data);
+        f_trace('database.sql.query', array(__FUNCTION__, $sql));
+        return $this->getAdapter()->executeDirectQuery($sql);
+    }
+
+    /**
+     * Delete les données en fonction de la clause where
+     *
+     * @param string $tablename
+     * @param mixed $where
+     *
+     * @return nb delete
+     */
+    public function delete($tablename, $where=null)
+    {
+        $this->checkConnection();
+
+        $where = $this->_prepareWhere($where);
+
+        /**
+         * Build the DELETE statement
+         */
+        $sql = "DELETE FROM "
+        . $this->_quoteIdentifier($tablename)
+        . (($where) ? " WHERE $where" : '');
+
+        f_trace('database.sql.query', array(__FUNCTION__, $sql));
+        return $this->getAdapter()->executeDirectQuery($sql);
+    }
+
+    /**
+     * prepare whereClause
+     *
+     * @param array $where array('sql', array('key' => value))
+     */
+    protected function _prepareWhere($where=null)
+    {
+        if ( null !== $where ) {
+            return $this->prepare($where[0], (true === isset($where[1])?$where[1]:null));
+        }
+        return null;
+    }
+
+    /**
+     * Quote an identifier.
+     *
+     * @param  string $value The identifier or expression.
+     *
+     * @return string        The quoted identifier and alias.
+     */
+    protected function _quoteIdentifier($value)
+    {
+        $q = '`';
+    	return ($q . str_replace("$q", "$q$q", $value) . $q);
+    }
 }

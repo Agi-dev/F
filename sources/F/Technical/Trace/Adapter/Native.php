@@ -22,6 +22,8 @@ namespace F\Technical\Trace\Adapter;
  */
 require_once 'F/Technical/Trace/Adapter/Definition.php';
 
+require_once 'F/Technical/Filesystem/Service.php';
+
 /**
  * F\Technical\Trace\Adapter\Native is the native adapter
  * for the trace service, that implements PHP natives primitives.

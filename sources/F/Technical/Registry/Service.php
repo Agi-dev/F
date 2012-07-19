@@ -71,7 +71,7 @@ class Service
      */
     public function getProperty($key)
     {
-        if ( false === $this->getAdapter()->hasProperty($key)) {
+        if ( false === $this->hasProperty($key)) {
             $this->throwException('config.key.unknown', $key);
         }
 
@@ -93,5 +93,17 @@ class Service
     {
         $this->getAdapter()->setProperty($key, $value);
         return $this;
+    }
+
+     /**
+     * Tests if specified property exist and has value
+     *
+     * @param string $key the property name
+     *
+     * @return bool true if exists (and has a value different from null)
+     */
+    public function hasProperty($key)
+    {
+    	return $this->getAdapter()->hasProperty($key);
     }
 }

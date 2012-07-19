@@ -31,86 +31,39 @@ namespace F\Technical\Base\Table\Adapter;
 interface Definition
 {
     /**
-     * Insert en base de données
-     * 
-     * @param unknown_type $data
-     * @param unknown_type $tablename
-     * 
-     * @return mixed id
-     */
-    public function insert($data, $tablename);
-    
-    /**
-     * Récupére le cuid de l'utilisateur courant
-     * 
-     * @return string
-     */
-    public function getCuidUserConnected();
-    /**
-     * Récupère le type d'historique creation
-     * 
-     * @return string
-     */
-    public function getHistoryCreateType();
-    /**
-     * Récupère le type d'historique suppression
-     * 
-     * @return string
-     */
-    public function getHistoryDeleteType();
-    /**
-     * Récupère le type d'historique modification
-     * 
-     * @return string
-     */
-    public function getHistoryUpdateType();
-    
-    /**
-     * Sauvegarde la maj dans l'historique
-     * 
-     * @param string $tablename
-     * @param string $cuid
-     * @param string $id
-     * @param string $type
-     * @param string $new
-     * @param string $old
-     * 
-     * @return ?
-     */
-    public function saveHistory($tablename, $cuid, $id, $type, $new, $old = null);
-    
-    /**
-     * Récupère la clef primaire de la table
-     * 
-     * @param string $tablename nom de la table
-     * 
-     * @return string
-     */
-    public function getIdColumn($tablename);
-    
-    /**
      * Récupére le resultat d'une requete
-     * @param string $sql
+     *
+     * @param string $key
      * @param array $sqlParams
-     * 
+     *
      * @return array
      */
-     public function fetchAll($sql, $sqlParams = array());
-     
+     public function fetchAll($key, $sqlParams = array());
+
+     /**
+     * Update
+     *
+     * @param array $data
+     * @param string $tablename
+     *
+     * @return int nb u
+     */
+    public function update($data, $where, $tablename);
+
      /**
       * Commence une transaction
       *
       * @return void
       */
      public function beginTransaction();
-     
+
      /**
       * Annule une transaction
       *
       * @return void
       */
      public function rollbackTransaction();
-     
+
      /**
       * Valide une transaction
       *

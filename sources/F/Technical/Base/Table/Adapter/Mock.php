@@ -42,104 +42,12 @@ class Mock
          implements Definition
 {
 	/* (non-PHPdoc)
-	 * @see F\Technical\Base\Table\Adapter.Definition::insert()
-	 */
-	public function insert($data, $tablename) 
-	{
-		$args = func_get_args();
-		return $this->storeCallAndReturnExpectedResult(__FUNCTION__, $args);
-	}
-	
-	/* (non-PHPdoc)
-	 * @see F\Technical\Base\Table\Adapter.Definition::getCuidUserConnected()
-	 */
-	public function getCuidUserConnected() 
-	{
-		$args = func_get_args();
-		return $this->storeCallAndReturnExpectedResult(__FUNCTION__, $args);
-	}
-	
-	/* (non-PHPdoc)
-	 * @see F\Technical\Database\Adapter.Definition::getHistoryCreateType()
-	 */
-	public function getHistoryCreateType()
-	{
-		$args = func_get_args();
-		return $this->storeCallAndReturnExpectedResult(__FUNCTION__, $args);
-	}
-	
-	/* (non-PHPdoc)
-	 * @see F\Technical\Database\Adapter.Definition::getHistoryDeleteType()
-	 */
-	public function getHistoryDeleteType()
-	{
-		$args = func_get_args();
-		return $this->storeCallAndReturnExpectedResult(__FUNCTION__, $args);
-	}
-	
-	/* (non-PHPdoc)
-	 * @see F\Technical\Database\Adapter.Definition::getHistoryUpdateType()
-	 */
-	public function getHistoryUpdateType()
-	{
-		$args = func_get_args();
-		return $this->storeCallAndReturnExpectedResult(__FUNCTION__, $args);
-	}
-	
-	/* (non-PHPdoc)
-	 * @see F\Technical\Base\Table\Adapter.Definition::saveHistory()
-	 */
-	public function saveHistory($tablename, $cuid, $id, $type, $new, $old = null) 
-	{
-		$args = func_get_args();
-		return $this->storeCallAndReturnExpectedResult(__FUNCTION__, $args);
-	}
-	
-	/* (non-PHPdoc)
-	 * @see F\Technical\Base\Table\Adapter.Definition::getIdColumn()
-	 */
-	public function getIdColumn($tablename)
-	{
-		$args = func_get_args();
-		return $this->storeCallAndReturnExpectedResult(__FUNCTION__, $args);
-	}
-	
-	/* (non-PHPdoc)
 	 * @see F\Technical\Base\Table\Adapter.Definition::fetchAll()
-	*/
-	public function fetchAll ($sql, $sqlParams = array())
-	{
-		$args = func_get_args();
-		return $this->storeCallAndReturnExpectedResult(__FUNCTION__, $args);
-	}
-	/* (non-PHPdoc)
-	 * @see F\Technical\Base\Table\Adapter.Definition::beginTransaction()
 	 */
-	public function beginTransaction() 
+	public function fetchAll ($key, $sqlParams = array())
 	{
 		$args = func_get_args();
 		return $this->storeCallAndReturnExpectedResult(__FUNCTION__, $args);
 	}
-
-	/* (non-PHPdoc)
-	 * @see F\Technical\Base\Table\Adapter.Definition::commitTransaction()
-	 */
-	public function commitTransaction() 
-	{
-		$args = func_get_args();
-		return $this->storeCallAndReturnExpectedResult(__FUNCTION__, $args);
-	}
-
-	/* (non-PHPdoc)
-	 * @see F\Technical\Base\Table\Adapter.Definition::rollbackTransaction()
-	 */
-	public function rollbackTransaction() 
-	{
-		$args = func_get_args();
-		return $this->storeCallAndReturnExpectedResult(__FUNCTION__, $args);
-	}
-
-	
-	
 }
 // @codeCoverageIgnoreEnd

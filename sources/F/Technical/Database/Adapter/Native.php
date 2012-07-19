@@ -42,12 +42,19 @@ class Native
      */
 	protected $_cnx = null;
 
+	/**
+	 * queries directory
+	 *
+	 * @var string
+	 */
+	protected $_queriesPath = null;
+
 	/* (non-PHPdoc)
      * @see F\Technical\Database\Adapter.Definition::fetchAll()
      */
     public function fetchAll ($sql)
     {
-        return $this->_cnx->fetchAll($sql);
+        return $this->_cnx->fetchAll($sql, \Phalcon_Db::DB_ASSOC);
     }
 
 	/* (non-PHPdoc)
@@ -72,7 +79,7 @@ class Native
 	public function connect($config)
 	{
 		$this->_cnx = \Phalcon_Db::factory("Mysql", (object) $config);
-		$this->_cnx->setFetchMode(\Phalcon_Db::DB_ASSOC);
+		$this->_activeLog("E:\dev\_logs\db.log");
 		return $this;
 	}
 
@@ -90,6 +97,15 @@ class Native
 	public function getFileContent($filename)
 	{
 		return \F\Technical\Filesystem\Service::singleton()->getFileContents($filename);
+	}
+
+	/**
+	 * (non-PHPdoc)
+	 * @see F\Technical\Database\Adapter.Definition::includeQueriesFile()
+	 */
+	public function includeQueriesFile($file)
+	{
+		return include $this->_queriesPath . '/' . $file .'.php';
 	}
 
 	/* (non-PHPdoc)
@@ -120,5 +136,48 @@ class Native
 		throw new \RuntimeException (
 			"Feature '" . __METHOD__ . "' not yet implemented In Adapter Native"
 		);
+	}
+
+	 /**
+	  * (non-PHPdoc)
+	  * @see F\Technical\Database\Adapter.Definition::setQueriesPath()
+	  */
+	 public function setQueriesPath($path)
+	 {
+	 	$this->_queriesPath = $path;
+	 	return $this;
+	 }
+
+	 /**
+	  * (non-PHPdoc)
+	  * @see F\Technical\Database\Adapter.Definition::checkDirExists()
+	  */
+	 public function checkDirExists($path)
+	 {
+	 	\F\Technical\Filesystem\Service::singleton()->checkDirExists($path);
+	 	return $this;
+	 }
+
+	/**
+	 * (non-PHPdoc)
+	 * @see F\Technical\Database\Adapter.Definition::lastInsertId()
+	 */
+	public function getLastInsertId($tablename)
+    {
+        return $this->_cnx->lastInsertId($tablename);
+    }
+
+    /**
+     * active log
+     *
+     * @param string $logname
+     *
+     * @return  F\Technical\Database\Adapter\Native
+     */
+	protected function _activeLog($logname)
+	{
+		$logger = new \Phalcon_Logger("File", $logname);
+		$this->_cnx->setLogger($logger);
+		return $this;
 	}
 }

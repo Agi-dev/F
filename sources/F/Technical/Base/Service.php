@@ -272,16 +272,5 @@ abstract class Service
     {
     	return get_class($this);
     }
-
-    /**
-     * trace message
-     *
-     * @param unknown_type $key
-     * @param unknown_type $params
-     */
-    public function trace($key, $params)
-    {
-    	return $this->getAdapter()->trace($key, $params);
-    }
     // @codeCoverageIgnoreEnd
 }

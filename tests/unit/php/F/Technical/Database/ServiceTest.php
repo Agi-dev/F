@@ -288,7 +288,7 @@ EOF;
         $this->assertInstanceOfService( $actual);
     }
 
-    public function testCommitTransactionAfterMultiBeginTransactionNotRollbackSuccess()
+    public function testCommitTransactionAfterMultiBeginTransactionNotCommitSuccess()
     {
         $this->mockGetConnectionSuccess();
         $this->mock('beginTransaction');
@@ -301,7 +301,7 @@ EOF;
         $this->assertEquals(1, $this->s()->getTransactionLevel());
     }
 
-    public function testCommitTransactionAfterSeveralBeginTransactionAndRollbackAsManySuccess()
+    public function testCommitTransactionAfterSeveralBeginTransactionAndCommitAsManySuccess()
     {
         $this->mockGetConnectionSuccess();
         $this->mock('beginTransaction');
@@ -316,7 +316,7 @@ EOF;
         $this->assertEquals(0, $this->s()->getTransactionLevel());
     }
 
-    public function testCommitTransactionAfterSeveralBeginTransactionAndMoreRollbackSuccess()
+    public function testCommitTransactionAfterSeveralBeginTransactionAndMoreCommitSuccess()
     {
         $this->mockGetConnectionSuccess();
         $this->mock('beginTransaction');
@@ -342,14 +342,153 @@ EOF;
     }
     public function testPrepareWithParamSuccess()
     {
-        $actual = $this->s()->prepare('requete %{1} param', 'avec');
+        $actual = $this->s()->prepare('requete %{0} param', 'avec');
         $this->assertEquals("requete 'avec' param", $actual);
     }
     public function testPrepareWithMultiTypeParamsSuccess()
     {
-    	$actual = $this->s()->prepare('param %{1} is int, param %{2} is string, param %{3} is float, ' .
-    	          'param %{4} is date', array(1, 'une chaine', 1.24, '2012-06-01'));
+    	$actual = $this->s()->prepare('param %{int} is int, param %{string} is string, param %{float} is float, ' .
+    	          'param %{date} is date', array('int' => 1, 'string' => 'une chaine', 'float' => 1.24, 'date' => '2012-06-01'));
     	$this->assertEquals("param 1 is int, param 'une chaine' is string, param 1.240000 is float" .
     	", param '2012-06-01' is date", $actual);
+    }
+
+    /**
+     * fetchAllByKey
+     */
+    public function testFetchAllByKeyWithNoDatabaseConnectedThrowRuntimeException()
+    {
+        $this->mock('includeQueriesFile', array('requete' => ''));
+    	$this->mock('isConnected', false);
+        $this->setExpectedException('RuntimeException', 'aucune connection à une base de données', 503);
+        $this->s()->fetchAllByKey('requete', array('knownData'));
+    }
+
+    public function testFetchAllByKeyWithUnknownKeyThrowRuntimeException()
+    {
+    	$this->mock('isConnected', true);
+    	$this->mock('includeQueriesFile', array());
+    	$this->setExpectedException('RuntimeException', "clef de requête sql 'query' inconnue");
+    	$this->s()->fetchAllByKey('unknown.query');
+    }
+
+    public function testFetchAllByKeyWithSuccess()
+    {
+        $this->mock('includeQueriesFile', array('requete' => "une requete sql avec une data =%{unedata}"));
+    	$this->mockGetConnectionSuccess();
+        $this->mock('fetchAll', array(array('knownData')));
+        $actual = $this->s()->fetchAllByKey('requete', array('unedata' => 'theData'));
+        $this->assertEquals(array("une requete sql avec une data ='theData'"), $this->m()->getCallArgs('fetchAll'));
+    }
+
+    /**
+     * setQueriesPath
+     */
+    public function testSetQueriesPathWithDirNotExistThrowRuntimeException()
+    {
+    	$this->mock('checkDirExists', new \RuntimeException('dir not exist'));
+    	$this->setExpectedException('RuntimeException', 'dir not exist');
+    	$this->s()->setQueriesPath('notExist');
+    }
+
+    public function testSetQueriesPathWithSuccess()
+    {
+    	$this->mock('checkDirExists');
+    	$this->mock('setQueriesPath', $this->s()->getAdapter());
+    	$this->assertInstanceOfService($this->s()->setQueriesPath('unchemin'));
+    }
+
+    /**
+     * insert
+     */
+
+    public function testInsertWithNoDatabaseConnectedThrowRuntimeException()
+    {
+        $this->mock('isConnected', false);
+        $this->setExpectedException('RuntimeException', 'aucune connection à une base de données', 503);
+        $this->s()->insert(array('un champs' => 'une valeur'), 'une table');
+    }
+
+    public function testInsertWithSuccessReturnId()
+    {
+        $this->mock('isConnected', true);
+        $this->mock('executeDirectQuery');
+        $this->mock('getLastInsertId', 'newId');
+
+        $actual = $this->s()->insert('une table', array('un champs' => 'une valeur', 'un autre' => 10));
+        $this->assertEquals('newId', $actual);
+        $this->assertEquals(array("INSERT INTO `une table` (`un champs`, `un autre`) VALUES ('une valeur', 10)"),
+                            $this->m()->getCallArgs('executeDirectQuery'));
+    }
+
+    /**
+     * update
+     */
+
+    public function testUpdateWithNoDatabaseConnectedThrowRuntimeException()
+    {
+        $this->mock('isConnected', false);
+        $this->setExpectedException('RuntimeException', 'aucune connection à une base de données', 503);
+        $this->s()->update('une table', array('un champs' => 'une valeur'));
+    }
+
+    public function testUpdateWithSuccess()
+    {
+        $this->mock('isConnected', true);
+        $this->mock('executeDirectQuery');
+        $actual = $this->s()->update('une table', array('un champs' => 'une valeur', 'un autre' => 10),
+                                        array('clause where id = %{id} OR name = %{name}',
+                                              array('id' => 10, 'name' => 'the name')));
+        $this->assertEquals(array("UPDATE `une table` SET `un champs` = 'une valeur', `un autre` = 10 WHERE clause where id = 10 OR name = 'the name'"),
+                            $this->m()->getCallArgs('executeDirectQuery'));
+
+    }
+
+    public function testUpdateWithNoWhereClauseSuccess()
+    {
+        $this->mock('isConnected', true);
+        $this->mock('executeDirectQuery');
+        $actual = $this->s()->update('une table', array('un champs' => 'une valeur', 'un autre' => 10));
+        $this->assertEquals(array("UPDATE `une table` SET `un champs` = 'une valeur', `un autre` = 10"),
+                            $this->m()->getCallArgs('executeDirectQuery'));
+    }
+
+    public function testUpdateWithNoParamInWhereClauseSuccess()
+    {
+        $this->mock('isConnected', true);
+        $this->mock('executeDirectQuery', true);
+        $actual = $this->s()->update('une table', array('un champs' => 'une valeur'),
+                                        array("clause where id = 10"));
+        $this->assertEquals(array("UPDATE `une table` SET `un champs` = 'une valeur' WHERE clause where id = 10"),
+                            $this->m()->getCallArgs('executeDirectQuery'));
+
+    }
+
+    /**
+     * delete
+     */
+    public function testDeleteWithNoDatabaseConnectedThrowRuntimeException()
+    {
+        $this->mock('isConnected', false);
+        $this->setExpectedException('RuntimeException', 'aucune connection à une base de données', 503);
+        $this->s()->delete('unetable', 'clausewhere');
+    }
+    public function testDeleteWithSuccess()
+    {
+        $this->mock('isConnected', true);
+        $this->mock('executeDirectQuery');
+        $actual=$this->s()->delete('une table', array('clause where id = %{id} OR name = %{name}',
+                                                array('id' => 10, 'name' => 'the name')));
+        $this->assertEquals(array("DELETE FROM `une table` WHERE clause where id = 10 OR name = 'the name'"),
+                            $this->m()->getCallArgs('executeDirectQuery'));
+    }
+
+    public function testDeleteWithNoWhereSuccess()
+    {
+        $this->mock('isConnected', true);
+        $this->mock('executeDirectQuery');
+        $actual=$this->s()->delete('une table');
+        $this->assertEquals(array("DELETE FROM `une table`"),
+                            $this->m()->getCallArgs('executeDirectQuery'));
     }
 }

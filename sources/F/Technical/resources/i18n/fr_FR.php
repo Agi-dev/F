@@ -20,6 +20,9 @@
 
 
 return array(
+    /**
+     * Exception
+     */
 	// badformat
 	'filesystem.resource.badformat' => "la resource fichier est null ou incorrect",
 
@@ -29,6 +32,7 @@ return array(
 	// notfound
 	'filesystem.file.notfound' => "le fichier '%{1}' n'existe pas",
     'filesystem.dir.notfound'  => "le répertoire '%{1}' n'existe pas",
+    'table.id.notfound'         => "l'id '%{1}' de la table '%{2}' n'existe pas",
 
     'flash.priority.notfound'  => "la priorité de flash '%{1}' est inconnue",
 
@@ -40,5 +44,14 @@ return array(
 	'database.notconnected'  => "aucune connection à une base de données",
 
     // unknown
-    'config.key.unknown' => "clef de registre '%{1}' inconnue",
+    'config.key.unknown'           => "clef de registre '%{1}' inconnue",
+    'database.queries.key.unknown' => "clef de requête sql '%{1}' inconnue",
+
+    /**
+     * Trace
+     */
+
+    // database
+    'database.fetchall.query' => "%{1}",
+    'database.sql.query'      => "%{1} : %{2}",
 );

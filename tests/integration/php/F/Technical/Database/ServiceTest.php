@@ -52,6 +52,7 @@ class ServiceTest
     {
     	$config = \F\Technical\Registry\Service::singleton()->getProperty('bdd');
         $this->s()->connect($config);
+        $this->s()->setQueriesPath($this->getDataSetPath());
         if ( true === $init ) {
             $this->s()->execScriptFile($this->getDataSetPath() . '/TestDatabaseService.sql');
         }
@@ -146,7 +147,7 @@ class ServiceTest
     public function testFetchAllWithOneParamSuccess()
     {
         $this->connectDatabase();
-    	$sql = "SELECT * FROM robots WHERE `type` = %{1}";
+    	$sql = "SELECT * FROM robots WHERE `type` = %{0}";
     	$actual = $this->s()->fetchAll($sql, 'mechanical');
     	$this->assertEquals($this->getResultSet('Technical_Database.php', __FUNCTION__),
     	                    json_encode($actual));
@@ -155,10 +156,130 @@ class ServiceTest
     public function testFetchAllWithManyParamsSuccess()
     {
         $this->connectDatabase();
-        $sql = "SELECT * FROM robots WHERE `type` = %{1} AND year > %{2}";
-        $actual = $this->s()->fetchAll($sql, array('mechanical', 1954));
+        $sql = "SELECT * FROM robots WHERE `type` = %{type} AND year > %{annee}";
+        $actual = $this->s()->fetchAll($sql, array('type' => 'mechanical', 'annee' => 1954));
         $this->assertEquals($this->getResultSet('Technical_Database.php', __FUNCTION__),
                             json_encode($actual));
+    }
+
+    /**
+     * setQueriesPath
+     */
+    public function testSetQueriesPathWithDirNotExistThrowRuntimeException()
+    {
+        $this->setExpectedException('RuntimeException', "le répertoire 'notExist' n'existe pas");
+        $this->s()->setQueriesPath('notExist');
+    }
+
+    public function testSetQueriesPathWithSuccess()
+    {
+        $this->assertInstanceOfService($this->s()->setQueriesPath($this->getDataSetPath()));
+    }
+
+    /**
+     * fetchAllByKey
+     */
+    public function testFetchAllByKeyWithNoDatabaseConnectedThrowRuntimeException()
+    {
+        $this->s()->setQueriesPath($this->getDataSetPath());
+    	$this->setExpectedException('RuntimeException', 'aucune connection à une base de données', 503);
+        $this->s()->fetchAllByKey('TestDatabaseKey.typeByYear');
+    }
+
+    public function testFetchAllByKeyWithUnknownKeyThrowRuntimeException()
+    {
+        $this->connectDatabase();
+        $this->setExpectedException('RuntimeException', "clef de requête sql 'unknownquery' inconnue");
+        $this->s()->fetchAllByKey('TestDatabaseKey.unknownquery');
+    }
+
+    public function testFetchAllByKeyWithSuccess()
+    {
+        $this->connectDatabase();
+        $actual = $this->s()->fetchAllByKey('TestDatabaseKey.typeByYear',
+                                                array('type' => 'mechanical', 'annee' => 1954));
+        $this->assertEquals($this->getResultSet('Technical_Database.php', __FUNCTION__),
+                            json_encode($actual));
+    }
+
+    /**
+     * insert
+     */
+
+    public function testInsertWithNoDatabaseConnectedThrowRuntimeException()
+    {
+        $this->setExpectedException('RuntimeException', 'aucune connection à une base de données', 503);
+        $this->s()->insert(array('un champs' => 'une valeur'), 'une table');
+    }
+
+    public function testInsertWithSuccessReturnId()
+    {
+        $this->connectDatabase();
+    	$actual = $this->s()->insert('robots', array('name' => "Marauder", 'type' => "biomecha", 'year' => 2052));
+        $this->assertEquals(4, $actual);
+        $actual = $this->s()->fetchAll('SELECT * FROM robots');
+        $this->assertEqualsResultSet($actual);
+    }
+
+    /**
+     * update
+     */
+
+    public function testUpdateWithNoDatabaseConnectedThrowRuntimeException()
+    {
+        $this->setExpectedException('RuntimeException', 'aucune connection à une base de données', 503);
+        $this->s()->update('une table', array('un champs' => 'une valeur'));
+    }
+
+    public function testUpdateWithSuccessReturnTrue()
+    {
+        $this->connectDatabase();
+        $data = array('name' => "Marauder", 'type' => "biomecha", 'year' => 2052);
+        $where = array('name = %{name} AND `type` = %{type}', array ('name' => "goldorak", 'type' => "mechanical"));
+        $actual = $this->s()->update('robots', $data, $where);
+        $this->assertTrue($actual);
+        $actual = $this->s()->fetchAll('SELECT * FROM robots');
+        $this->assertEqualsResultSet($actual);
+
+    }
+
+    public function testUpdateWithNoWhereClauseSuccessReturnTrue()
+    {
+        $this->connectDatabase();
+        $data = array('name' => "Marauder", 'type' => "biomecha", 'year' => 2052);
+        $actual = $this->s()->update('robots', $data);
+        $this->assertTrue($actual);
+        $actual = $this->s()->fetchAll('SELECT * FROM robots');
+        $this->assertEqualsResultSet($actual);
+    }
+
+
+    /**
+     * delete
+     */
+    public function testDeleteWithNoDatabaseConnectedThrowRuntimeException()
+    {
+        $this->setExpectedException('RuntimeException', 'aucune connection à une base de données', 503);
+        $this->s()->delete('unetable', 'clausewhere');
+    }
+
+    public function testDeleteWithSuccessReturnTrue()
+    {
+        $this->connectDatabase();
+    	$where = array('name = %{name} AND `type` = %{type}', array ('name' => "goldorak", 'type' => "mechanical"));
+    	$actual=$this->s()->delete('robots', $where);
+        $this->assertTrue($actual);
+        $actual = $this->s()->fetchAll('SELECT * FROM robots');
+        $this->assertEqualsResultSet($actual);
+    }
+
+    public function testDeleteWithNoWhereSuccessReturnTrue()
+    {
+        $this->connectDatabase();
+        $actual=$this->s()->delete('robots');
+        $this->assertTrue($actual);
+        $actual = $this->s()->fetchAll('SELECT * FROM robots');
+        $this->assertEqualsResultSet($actual);
     }
 
 
