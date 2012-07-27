@@ -113,9 +113,8 @@ class Native
 	 */
 	public function beginTransaction()
 	{
-		throw new \RuntimeException (
-			"Feature '" . __METHOD__ . "' not yet implemented In Adapter Native"
-		);
+		$this->_cnx->begin();
+		return $this;
 	}
 
 	/* (non-PHPdoc)
@@ -123,9 +122,8 @@ class Native
 	 */
 	public function commitTransaction()
 	{
-		throw new \RuntimeException (
-			"Feature '" . __METHOD__ . "' not yet implemented In Adapter Native"
-		);
+		$this->_cnx->commit();
+        return $this;
 	}
 
 	/* (non-PHPdoc)
@@ -133,9 +131,8 @@ class Native
 	 */
 	public function rollbackTransaction()
 	{
-		throw new \RuntimeException (
-			"Feature '" . __METHOD__ . "' not yet implemented In Adapter Native"
-		);
+		$this->_cnx->rollback();
+        return $this;
 	}
 
 	 /**

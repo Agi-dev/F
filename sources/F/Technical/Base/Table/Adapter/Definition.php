@@ -40,7 +40,7 @@ interface Definition
      */
      public function fetchAll($key, $sqlParams = array());
 
-     /**
+    /**
      * Update
      *
      * @param array $data

@@ -43,5 +43,44 @@ class Native implements Definition
 	{
 		return \F\Technical\Database\Service::singleton()->fetchAllByKey($key, $sqlParams);
 	}
+
+/**
+     * (non-PHPdoc)
+     * @see F\Technical\Base\Table\Adapter.Definition::update()
+     */
+    public function update($data, $where, $tablename)
+    {
+    	return \F\Technical\Database\Service::singleton()->update($tablename, $data, $where);
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see F\Technical\Base\Table\Adapter.Definition::beginTransaction()
+     */
+    public function beginTransaction()
+    {
+    	\F\Technical\Database\Service::singleton()->beginTransaction();
+    	return $this;
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see F\Technical\Base\Table\Adapter.Definition::rollbackTransaction()
+     */
+    public function rollbackTransaction()
+    {
+    	\F\Technical\Database\Service::singleton()->rollbackTransaction();
+        return $this;
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see F\Technical\Base\Table\Adapter.Definition::commitTransaction()
+     */
+    public function commitTransaction()
+    {
+    	\F\Technical\Database\Service::singleton()->commitTransaction();
+        return $this;
+    }
 }
 // @codeCoverageIgnoreEnd

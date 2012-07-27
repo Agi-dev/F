@@ -31,16 +31,6 @@ abstract class Service
     protected $_tablename;
 
     /**
-     * Returns the underlying adapter.
-
-     * @return F\Technical\Base\Table\Adapter\Definition
-     */
-    public function getAdapter()
-    {
-    	return parent::getAdapter();
-    }
-
-    /**
      * Check id exist for table _tablename
      *
      * @param mixed table
@@ -50,7 +40,7 @@ abstract class Service
      */
     public function checkId($id)
     {
-    	$result = $this->getAdapter()->fetchAll($this->_tablename . '.checkId', array('id' => $id));
+    	$result = $this->getById($id);
     	if (true === isset($result[0]['id']) ) {
             return true;
         }
@@ -58,22 +48,70 @@ abstract class Service
     }
 
     /**
+     * get user by id
+     *
+     * @param mixed $id
+     *
+     * @return array
+     */
+    public function getById($id)
+    {
+        return $this->getAdapter()->fetchAll($this->_tablename .
+                                             '.getById', array('id' => $id));
+    }
+
+    /**
      * update data
-     * Enter description here ...
-     * @param unknown_type $data
-     * @param unknown_type $where
+     *
+     * @param array $data
+     * @param array $where
+     *
+     * @return int nb updated
      */
     public function update($data, $where)
     {
-    	$this->beginTransaction();
+    	$this->_beginTransaction();
     	try {
-    		$this->getAdapter()->update($data, $where, $this->_tablename);
-    		$this->getAdapter()->commitTransaction();
+    		$nb = $this->getAdapter()->update($data, $where, $this->_tablename);
+    		$this->_commitTransaction();
     	} catch (Exception $e) {
-    		$this->getAdapter()->rollbackTransaction();
+    		$this->_rollbackTransaction();
     		$this->throwException('sql.update.dbfailure', $e->getMessage());
     	}
-    	return $this;
+    	return $nb;
+    }
+
+    /**
+     * Begin transaction
+     *
+     * @return F\Technical\Base\Table\Service
+     */
+    protected function _beginTransaction()
+    {
+        $this->getAdapter()->beginTransaction();
+        return $this;
+    }
+
+    /**
+     * Commit DB transaction
+     *
+     * @return F\Technical\Base\Table\Service
+     */
+    protected function _commitTransaction()
+    {
+        $this->getAdapter()->commitTransaction();
+        return $this;
+    }
+
+    /**
+     * Rollback DB transaction
+     *
+     * @return F\Technical\Base\Table\Service
+     */
+    protected function _rollbackTransaction()
+    {
+        $this->getAdapter()->rollbackTransaction();
+        return $this;
     }
 }
 // @codeCoverageIgnoreEnd
