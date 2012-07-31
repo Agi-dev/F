@@ -54,7 +54,8 @@ class Native
      */
     public function fetchAll ($sql)
     {
-        return $this->_cnx->fetchAll($sql, \Phalcon_Db::DB_ASSOC);
+        f_dbg(array($sql, $this->_cnx->fetchAll($sql, \Phalcon_Db::DB_ASSOC)));
+    	return $this->_cnx->fetchAll($sql, \Phalcon_Db::DB_ASSOC);
     }
 
 	/* (non-PHPdoc)
@@ -79,7 +80,7 @@ class Native
 	public function connect($config)
 	{
 		$this->_cnx = \Phalcon_Db::factory("Mysql", (object) $config);
-		$this->_activeLog("E:\dev\_logs\db.log");
+		$this->_activeLog("D:\dev\_logs\db.log");
 		return $this;
 	}
 
