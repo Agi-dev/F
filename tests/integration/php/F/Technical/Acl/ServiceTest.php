@@ -41,7 +41,7 @@ class ServiceTest
     extends \F\Technical\Base\Test\Integration\Service
 {
     /**
-     * @return F\Technical\Acl\Service
+     * @return \F\Technical\Acl\Service
      */
     public function s()
     {

@@ -127,7 +127,7 @@ abstract class Service
 	 *
 	 * @param string $sqlFile
 	 *
-	 * @return F\Technical\Base\Test\Integration_Service
+	 * @return \F\Technical\Base\Test\Integration_Service
 	 */
 	protected function setUpDataSet($sqlFile)
 	{

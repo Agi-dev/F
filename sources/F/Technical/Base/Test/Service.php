@@ -83,7 +83,7 @@ abstract class Service
      * @param string $methodName     the adapter method name
      * @param mixed  $expectedReturn the expected adapter method result
      *
-     * @return F\Technical\Base\Test\Service
+     * @return \F\Technical\Base\Test\Service
      */
     public function mock($methodName, $expectedReturn = null)
     {

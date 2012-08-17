@@ -67,7 +67,7 @@ interface Definition
      *
      * @param string $path the translation directory
      *
-     * @return F\Technical\Translate\Definition
+     * @return \F\Technical\Translate\Definition
      *
      * @throws Exception if an error occured
      */
@@ -78,7 +78,7 @@ interface Definition
      *
      * @param $path
      *
-     * @return F\Technical\Translate\Definition
+     * @return \F\Technical\Translate\Definition
      *
      * @throw RuntimeException
      */

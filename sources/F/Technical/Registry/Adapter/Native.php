@@ -70,7 +70,7 @@ class Native
      * @param string $key   the property name
      * @param mixed  $value the property value
      *
-     * @return F\Technical\Registry\Adapter\Native
+     * @return \F\Technical\Registry\Adapter\Native
      */
     public function setProperty($key, $value)
     {

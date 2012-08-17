@@ -66,7 +66,7 @@ class Native
     /**
      * Constructs a new adapter.
      *
-     * @return F\Technical\Trace\Adapter\Native
+     * @return \F\Technical\Trace\Adapter\Native
      */
     public function __construct()
     {

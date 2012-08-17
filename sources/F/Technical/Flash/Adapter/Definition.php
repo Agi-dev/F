@@ -36,7 +36,7 @@ interface Definition
 	 * @param string $msg
 	 * @param string $priority
 	 *
-	 * @return F\Technical\Flash\Adapter\Definition
+	 * @return \F\Technical\Flash\Adapter\Definition
 	 */
 	public function addFlash($msg, $priority);
 
@@ -50,7 +50,7 @@ interface Definition
     /**
      * Vide les flashs
      *
-     * @return F\Technical\Flash\Adapter\Definition
+     * @return \F\Technical\Flash\Adapter\Definition
      */
     public function clearFlash();
 }

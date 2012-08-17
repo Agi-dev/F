@@ -84,7 +84,7 @@ abstract class Service
     /**
      * Begin transaction
      *
-     * @return F\Technical\Base\Table\Service
+     * @return \F\Technical\Base\Table\Service
      */
     protected function _beginTransaction()
     {
@@ -95,7 +95,7 @@ abstract class Service
     /**
      * Commit DB transaction
      *
-     * @return F\Technical\Base\Table\Service
+     * @return \F\Technical\Base\Table\Service
      */
     protected function _commitTransaction()
     {
@@ -106,7 +106,7 @@ abstract class Service
     /**
      * Rollback DB transaction
      *
-     * @return F\Technical\Base\Table\Service
+     * @return \F\Technical\Base\Table\Service
      */
     protected function _rollbackTransaction()
     {

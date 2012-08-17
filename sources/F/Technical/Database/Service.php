@@ -48,7 +48,7 @@ class Service
 	/**
 	 * Returns the singleton of this service
 	 *
-	 * @return F\Technical\Database\Service
+	 * @return \F\Technical\Database\Service
 	 */
 	public static function singleton()
 	{
@@ -57,7 +57,7 @@ class Service
 	/**
 	 * Returns an instance of this service
 	 *
-	 * @return F\Technical\Database\Service
+	 * @return \F\Technical\Database\Service
 	 */
 	public static function factory($adapter = null)
 	{
@@ -66,7 +66,7 @@ class Service
 	/**
 	 * Returns the underlying adapter
 	 *
-	 * @return F\Technical\Database\Adapter\Definition
+	 * @return \F\Technical\Database\Adapter\Definition
 	 */
 	public function getAdapter()
 	{

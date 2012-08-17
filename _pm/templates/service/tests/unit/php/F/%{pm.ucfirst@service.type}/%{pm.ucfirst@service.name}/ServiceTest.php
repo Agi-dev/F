@@ -41,14 +41,14 @@ class ServiceTest
 extends \F\Technical\Base\Test\Service
 {
 	/**
-	 * @return F\%{pm.ucfirst@service.type}\%{pm.ucfirst@service.name}\Service
+	 * @return \F\%{pm.ucfirst@service.type}\%{pm.ucfirst@service.name}\Service
 	 */
 	public function s()
 	{
 		return parent::s();
 	}
 	/**
-	 * @return F\%{pm.ucfirst@service.type}\%{pm.ucfirst@service.name}\Adapter\Mock
+	 * @return \F\%{pm.ucfirst@service.type}\%{pm.ucfirst@service.name}\Adapter\Mock
 	 */
 	public function m()
 	{

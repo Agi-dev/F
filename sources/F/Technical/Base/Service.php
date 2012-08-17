@@ -42,7 +42,7 @@ abstract class Service
 	/**
 	 * Returns the singleton of this service
 	 *
-	 * @return F\Technical\Base\Service
+	 * @return \F\Technical\Base\Service
 	 *
 	 * @throws Exception if an error occured
 	 */
@@ -58,7 +58,7 @@ abstract class Service
 	/**
 	 * Returns a new instance of this service
 	 *
-	 * @return F\Technical\Base\Service
+	 * @return \F\Technical\Base\Service
 	 *
 	 * @throws Exception if an error occured
 	 */
@@ -72,7 +72,7 @@ abstract class Service
 	 *
 	 * @param mixed $adapter the adapter
 	 *
-	 * @return F\Technical\Base\Service
+	 * @return \F\Technical\Base\Service
 	 *
 	 * @throws Exception if an error occured
 	 */
@@ -100,7 +100,7 @@ abstract class Service
      *
      * @param mixed $adapter
      *
-     * @return F\Technical\Base\Service
+     * @return \F\Technical\Base\Service
      *
      * @throws Exception if an error occured
      */
@@ -239,7 +239,7 @@ abstract class Service
      *
      * @param mixed $adapter
      *
-     * @return F\Technical\Base\Service
+     * @return \F\Technical\Base\Service
      *
      * @throws Exception if an error occured
      */

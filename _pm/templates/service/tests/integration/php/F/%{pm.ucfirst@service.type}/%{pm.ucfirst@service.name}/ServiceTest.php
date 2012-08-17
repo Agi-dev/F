@@ -41,7 +41,7 @@ class ServiceTest
     extends \F\Technical\Base\Test\Integration\Service
 {
     /**
-     * @return F\%{pm.ucfirst@service.type}\%{pm.ucfirst@service.name}\Service
+     * @return \F\%{pm.ucfirst@service.type}\%{pm.ucfirst@service.name}\Service
      */
     public function s()
     {

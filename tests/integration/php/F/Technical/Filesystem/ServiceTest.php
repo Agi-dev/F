@@ -41,7 +41,7 @@ class ServiceTest
     extends \F\Technical\Base\Test\Integration\Service
 {
     /**
-     * @return F\Technical\Filesystem\Service
+     * @return \F\Technical\Filesystem\Service
      */
     public function s()
     {

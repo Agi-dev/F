@@ -35,7 +35,7 @@ class Service
 	/**
 	 * Returns the singleton of this service
 	 *
-	 * @return F\%{pm.ucfirst@service.type}\%{pm.ucfirst@service.name}\Service
+	 * @return \F\%{pm.ucfirst@service.type}\%{pm.ucfirst@service.name}\Service
 	 */
 	public static function singleton()
 	{
@@ -44,7 +44,7 @@ class Service
 	/**
 	 * Returns an instance of this service
 	 *
-	 * @return F\%{pm.ucfirst@service.type}\%{pm.ucfirst@service.name}\Service
+	 * @return \F\%{pm.ucfirst@service.type}\%{pm.ucfirst@service.name}\Service
 	 */
 	public static function factory($adapter = null)
 	{
@@ -53,7 +53,7 @@ class Service
 	/**
 	 * Returns the underlying adapter
 	 *
-	 * @return F\%{pm.ucfirst@service.type}\%{pm.ucfirst@service.name}\Adapter\Definition
+	 * @return \F\%{pm.ucfirst@service.type}\%{pm.ucfirst@service.name}\Adapter\Definition
 	 */
 	public function getAdapter()
 	{

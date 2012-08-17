@@ -42,7 +42,7 @@ class Service
 	/**
 	 * Returns the singleton of this service
 	 *
-	 * @return F\Technical\Flash\Service
+	 * @return \F\Technical\Flash\Service
 	 */
 	public static function singleton()
 	{
@@ -51,7 +51,7 @@ class Service
 	/**
 	 * Returns an instance of this service
 	 *
-	 * @return F\Technical\Flash\Service
+	 * @return \F\Technical\Flash\Service
 	 */
 	public static function factory($adapter = null)
 	{
@@ -60,7 +60,7 @@ class Service
 	/**
 	 * Returns the underlying adapter
 	 *
-	 * @return F\Technical\Flash\Adapter\Definition
+	 * @return \F\Technical\Flash\Adapter\Definition
 	 */
 	public function getAdapter()
 	{
@@ -73,7 +73,7 @@ class Service
 	 * @param string $message
 	 * @param string $priority
 	 *
-	 * @return F\Technical\Flash\Service
+	 * @return \F\Technical\Flash\Service
 	 */
 	public function flash($message, $priority)
 	{

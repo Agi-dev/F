@@ -41,14 +41,14 @@ class ServiceTest
 extends \F\Technical\Base\Test\Service
 {
 	/**
-	 * @return F\Technical\Acl\Service
+	 * @return \F\Technical\Acl\Service
 	 */
 	public function s()
 	{
 		return parent::s();
 	}
 	/**
-	 * @return F\Technical\Acl\Adapter\Mock
+	 * @return \F\Technical\Acl\Adapter\Mock
 	 */
 	public function m()
 	{
