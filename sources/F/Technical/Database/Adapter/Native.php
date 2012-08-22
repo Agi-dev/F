@@ -80,7 +80,7 @@ class Native
 	public function connect($config)
 	{
 		$this->_cnx = \Phalcon_Db::factory("Mysql", (object) $config);
-		$this->_activeLog("D:\dev\_logs\db.log");
+		//$this->_activeLog("E:\dev\_logs\db.log");
 		return $this;
 	}
 
