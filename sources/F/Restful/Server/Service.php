@@ -41,12 +41,15 @@ class Service
 	{
 		return parent::singleton();
 	}
+
 	/**
 	 * Returns an instance of this service
 	 *
+	 * @param null $adapter
+	 *
 	 * @return \F\Restful\Server\Service
 	 */
-	public static function factory($adapter = null)
+	public static function factory($adapter = NULL)
 	{
 		return parent::factory($adapter);
 	}
@@ -60,47 +63,107 @@ class Service
 		return parent::getAdapter();
 	}
 
+	/**
+	 * Dispatch restful request
+	 *
+	 * request format :
+	 *  get all resource            => /:resource (GET)
+	 *  get resource by id          => /:resource/:id (GET)
+	 *  get resource property by id => /:resource/:id/:property (GET)
+	 *  get resource filtered       => /:resource?filter1=value&filter2=value2...&filterN=valueN
+	 *
+	 *  create resource             => /:resource (POST)
+	 *
+	 *  update resource by id       => /:resource/:id (PUT)
+	 *
+	 *  delete all resources        => /:resource (DELETE)
+	 *  delete resource by id       => /:resource/:id (DELETE)
+	 *
+	 * @throws \RuntimeException
+	 * @return \F\Restful\Server\Service
+	 */
 	public function dispatch()
 	{
-		echo 'Dispatch Success';
+		try {
+			$request = array();
+			$request['httpMethod'] = trim(strtolower($this->getAdapter()->getHttpRequestedMethod()));
+
+			// analyse query
+			$tokens = explode('/', $this->getAdapter()->getHttpRequestedPath());
+			array_shift($tokens);
+
+			// First token is resource
+			$request['resource'] = array_shift($tokens);
+
+			// route query
+			switch ($request['httpMethod']) {
+				/**
+				 * GET
+				 */
+				case 'get':
+					$request['action'] = 'retrieve';
+
+					// querystring  => filters
+					$qs =  $this->getAdapter()->getHttpQueryString();
+					if (false === empty($qs)) {
+						$list = explode('&', $qs);
+						foreach ($list as $filter) {
+							list($f, $v) = explode('=', $filter);
+							$request['filter'][$f] = $v;
+						}
+					}
+
+					// 2e token must be id
+					if (0 < count($tokens)) {
+						$request['id'] = array_shift($tokens);
+
+						// 3e token must be property
+						if (0 < count($tokens)) {
+							$request['property'] = array_shift($tokens);
+						}
+					}
+
+					break;
+				/**
+				 * POST
+				 */
+				case 'post':
+					$request['action'] = 'create';
+					$request['data']   = $this->getAdapter()->getRawHttpRequest();
+					break;
+				/**
+				 * DELETE
+				 */
+				case 'delete':
+					$request['action'] = 'delete';
+					// 2e token must be id
+					if (0 < count($tokens)) {
+						$request['id'] = array_shift($tokens);
+					}
+					break;
+				/**
+				 * PUT
+				 */
+				case 'put':
+					$request['action'] = 'update';
+					$request['data']   = $this->getAdapter()->getRawHttpRequest();
+					// 2e token must be id
+					if (0 < count($tokens)) {
+						$request['id'] = array_shift($tokens);
+					}
+					break;
+				default:
+					throw $this->getExceptionToThrow('restful.httpmethod.notsupported', $request['httpMethod']);
+			}
+
+			$this->getAdapter()->dispatch($request);
+			return $this;
+		} catch(\Exception $e) {
+			//throw $e;
+			$this->getAdapter()->renderExceptionError($e);
+			return $this;
+		}
+
 	}
 }
 
-/*
-Array
-(
-    [COMSPEC] => C:\WINNT\system32\cmd.exe
-    [DOCUMENT_ROOT] => E:/dev/workspaces/perso/phpStorm/smartbacklog/server/public
-    [GATEWAY_INTERFACE] => CGI/1.1
-    [HTTP_ACCEPT] => text/html,application/xhtml+xml,application/xml;q=0.9,/*;q=0.8
-    [HTTP_ACCEPT_ENCODING] => gzip, deflate
-    [HTTP_ACCEPT_LANGUAGE] => fr,fr-fr;q=0.8,en-us;q=0.5,en;q=0.3
-    [HTTP_CONNECTION] => keep-alive
-    [HTTP_HOST] => smartrest
-    [HTTP_USER_AGENT] => Mozilla/5.0 (Windows NT 5.1; rv:14.0) Gecko/20100101 Firefox/14.0.1
-    [PATH] => C:\Program Files\AMD APP\bin\x86;C:\WINNT\system32;C:\WINNT;C:\WINNT\System32\Wbem;c:\progra~1\tivoli\lcf\bin\w32-ix86\tools;C:\Program Files\Tivoli\lcf\dat\1\cache\lib\w32-ix86;C:\Program Files\Tivoli\lcf\bin\w32-ix86\mrt;C:\Program Files\Tivoli\lcf\bin\w32-ix86\tools;E:\APPFT\maven3\bin;C:\Program Files\Windows Imaging;E:\APPFT\apache-ant-1.8.1\bin;C:\Program Files\TortoiseSVN\bin;C:\Program Files\Java\jdk6\bin;E:\APPFT\FlashBuilder4\player\win\10.1;E:\APPFT\GnuWin32\bin;E:\APPFT\subversion-1.5.2;E:\APPFT\apache-jmeter-2.6\bin;C:\Program Files\SafeNet\Authentication\SAC\x32;C:\Program Files\Git\cmd;C:\Program Files\TortoiseGit\bin;E:\APPFT\wamp\bin\mysql\mysql5.0.86\bin;E:\APPFT\wamp\bin\php\php5.2.11
-    [PATHEXT] => .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH
-    [PHP_SELF] => /index.php
-    [QUERY_STRING] => q=test&p=z
-    [REDIRECT_QUERY_STRING] => q=test&p=z
-    [REDIRECT_STATUS] => 200
-    [REDIRECT_URL] => /toto/tata
-    [REMOTE_ADDR] => 127.0.0.1
-    [REMOTE_PORT] => 1671
-    [REQUEST_METHOD] => GET
-    [REQUEST_TIME] => 1345649368
-    [REQUEST_URI] => /toto/tata?q=test&p=z
-	[SCRIPT_FILENAME] => E:/dev/workspaces/perso/phpStorm/smartbacklog/server/public/index.php
-    [SCRIPT_NAME] => /index.php
-    [SERVER_ADDR] => 127.0.0.1
-    [SERVER_ADMIN] => admin@localhost
-    [SERVER_NAME] => smartrest
-    [SERVER_PORT] => 80
-    [SERVER_PROTOCOL] => HTTP/1.1
-    [SERVER_SIGNATURE] =>
-    [SERVER_SOFTWARE] => Apache/2.2.21 (Win32) PHP/5.3.8
-    [SystemRoot] => C:\WINNT
-    [WINDIR] => C:\WINNT
-)
-
- */

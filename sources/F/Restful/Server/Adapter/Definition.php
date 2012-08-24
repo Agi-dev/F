@@ -30,5 +30,16 @@ namespace F\Restful\Server\Adapter;
  */
 interface Definition
 {
+	public function dispatch($request);
+
+	public function renderExceptionError($e);
+
+	public function getHttpRequestedPath();
+
+	public function getHttpRequestedMethod();
+
+	public function getRawHttpRequest();
+
+	public function getHttpQueryString();
 }
 // @codeCoverageIgnoreEnd

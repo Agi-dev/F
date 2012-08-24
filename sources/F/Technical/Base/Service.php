@@ -35,7 +35,7 @@ abstract class Service
 	protected static $_singletons = array();
 
 	/**
-	 * @var F_Technical_Abstract_Adapter_Interface
+	 * adapter
 	 */
 	protected $_adapter;
 
@@ -44,7 +44,7 @@ abstract class Service
 	 *
 	 * @return \F\Technical\Base\Service
 	 *
-	 * @throws Exception if an error occured
+	 * @throws \Exception if an error occured
 	 */
 	public static function singleton()
 	{
@@ -60,7 +60,7 @@ abstract class Service
 	 *
 	 * @return \F\Technical\Base\Service
 	 *
-	 * @throws Exception if an error occured
+	 * @throws \Exception if an error occured
 	 */
 	public static function factory($adapter = null)
 	{
@@ -74,7 +74,7 @@ abstract class Service
 	 *
 	 * @return \F\Technical\Base\Service
 	 *
-	 * @throws Exception if an error occured
+	 * @throws \Exception if an error occured
 	 */
 	public function __construct($adapter = null)
     {
@@ -90,9 +90,6 @@ abstract class Service
 
         $this->setAdapter($adapter);
 
-        if (true === method_exists($this, 'init')) {
-            $this->init();
-        }
     }
 
     /**
@@ -102,7 +99,7 @@ abstract class Service
      *
      * @return \F\Technical\Base\Service
      *
-     * @throws Exception if an error occured
+     * @throws \Exception if an error occured
      */
     public function setAdapter($adapter)
     {
@@ -130,7 +127,7 @@ abstract class Service
      * @param string $arg2 the second message variable
      * @param string ...
      *
-     * @throws RuntimeException always
+     * @throws \RuntimeException always
      */
     public function throwException()
     {
@@ -139,6 +136,15 @@ abstract class Service
     	   0 === count($args) ? 'unexpected' : array_shift($args), $args
     	);
     }
+
+	// AFAIRE : virer throwException de partout ? et mettre un commentaire
+	public function getExceptionToThrow()
+	{
+		$args = func_get_args();
+		return $this->throwExceptionArray(
+			0 === count($args) ? 'unexpected' : array_shift($args), $args
+		);
+	}
 
     /**
      * Returns the exception code from the specified key.
@@ -179,7 +185,8 @@ abstract class Service
 				'unknown'           => 404,
 				'toshort'           => 412,
     		    'notconnected'      => 503,
-    		    'alreadyexist'      => 409
+    		    'alreadyexist'      => 409,
+				'notsupported'		=> 400,
     		);
     		if (true === isset($mapping[$suffix])) {
     			$code = (int) $mapping[$suffix];
@@ -195,7 +202,7 @@ abstract class Service
      * @param string $value the exception i18n key
      * @param array $args the variables
      *
-     * @throws RuntimeException always
+     * @throws \RuntimeException always
      */
     public function throwExceptionArray($value, $args = null)
     {
@@ -224,10 +231,10 @@ abstract class Service
 
     /**
      * Recupère la traduction de $key
-     * @param unknown_type $key
-     * @param unknown_type $args
+     * @param string $key
+     * @param mixed $args
      *
-     * @return sting
+     * @return string
      */
     function translate($key, $args = null)
     {
@@ -241,7 +248,7 @@ abstract class Service
      *
      * @return \F\Technical\Base\Service
      *
-     * @throws Exception if an error occured
+     * @throws \Exception if an error occured
      */
     public function checkAdapter($adapter)
     {

@@ -10,6 +10,7 @@
  * 'notauthentified'   => 401,
  * 'notempty'          => 412,
  * 'notfound'          => 404,
+ * 'notsupported'      => 400,
  * 'notyetimplemented' => 400,
  * 'unexpected'        => 500,
  * 'unknown'           => 404,
@@ -42,6 +43,9 @@ return array(
 
 	// notconnected
 	'database.notconnected'  => "aucune connection à une base de données",
+
+	// notsupported
+	'restful.httpmethod.notsupported' => "HTTP method '%{1}' not supported",
 
     // unknown
     'config.key.unknown'           => "clef de registre '%{1}' inconnue",

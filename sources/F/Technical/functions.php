@@ -15,13 +15,13 @@ function f_dbg($v, $exit = true, $dump = false)
 	$calledFrom = "\n=== DEBUG FROM ". substr($calledFrom[0]['file'], 1) .' (line ' . $calledFrom[0]['line'].")\n\n";
 	if (true === $dump) {
 		if ( !isset($_SERVER['PROMPT']) ) {
-		  header('Content-Type: text/html');
+		  //header('Content-Type: text/html');
 		}
 		echo $calledFrom;
 		var_dump($v);
 	} else {
 		if ( !isset($_SERVER['PROMPT']) ) {
-		  header('Content-Type: text/plain');
+		  //header('Content-Type: text/plain');
 		}
 		echo $calledFrom;
 		print_r($v);
@@ -47,8 +47,8 @@ function f_dbgTest($actual)
 /**
  * Raccourcie vers le service de traduction
  *
- * @param $key clef
- * @param $args arguements si nécessaires
+ * @param string $key clef
+ * @param mixed $args arguements si nécessaires
  */
 function t($key, $args=null)
 {
@@ -58,8 +58,8 @@ function t($key, $args=null)
 /**
  * trace message
  *
- * @param unknown_type $key
- * @param unknown_type $params
+ * @param string $key
+ * @param mixed $params
  */
 function f_trace($key, $params=null)
 {
@@ -69,8 +69,8 @@ function f_trace($key, $params=null)
 /**
  * active or desactive trace
  *
- * @param unknown_type $activated
- * @param unknown_type $file
+ * @param bool $activated
+ * @param string $file
  */
 function f_trace_out($activated=true, $file = "'php://stdout'")
 {
@@ -83,7 +83,7 @@ function f_trace_out($activated=true, $file = "'php://stdout'")
  * Remove all accentuation from a string
  *
  * @param string $str      string
- * @return the string without all the accents
+ * @return string the string without all the accents
  */
 function stripAccent($str)
 {
