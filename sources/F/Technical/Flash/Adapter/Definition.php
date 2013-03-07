@@ -30,17 +30,17 @@ namespace F\Technical\Flash\Adapter;
  */
 interface Definition
 {
-	/**
-	 * add flash message
-	 *
-	 * @param string $msg
-	 * @param string $priority
-	 *
-	 * @return \F\Technical\Flash\Adapter\Definition
-	 */
-	public function addFlash($msg, $priority);
+    /**
+     * add flash message
+     *
+     * @param string $msg
+     * @param string $priority
+     *
+     * @return \F\Technical\Flash\Adapter\Definition
+     */
+    public function addFlash($msg, $priority);
 
-	/**
+    /**
      * Récupère la liste des messages flash
      *
      * @return array
@@ -53,5 +53,12 @@ interface Definition
      * @return \F\Technical\Flash\Adapter\Definition
      */
     public function clearFlash();
+
+    /**
+     * Indique si des messages flash
+     *
+     * @return boolean
+     */
+    public function isFlashExists();
 }
 // @codeCoverageIgnoreEnd

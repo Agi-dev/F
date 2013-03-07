@@ -39,6 +39,16 @@ interface Definition
      * @return array
      */
      public function fetchAll($key, $sqlParams = array());
+     
+     /**
+      * Insert les donnnées dans la table
+      *
+      * @param string $tablename nom de la table
+      * @param array $data données array('field' => 'value')
+      *
+      * @return id
+      */
+     public function insert($data, $tablename);
 
     /**
      * Update
@@ -49,6 +59,16 @@ interface Definition
      * @return int nb u
      */
     public function update($data, $where, $tablename);
+    
+    /**
+     * Delete les données en fonction de la clause where
+     *
+     * @param mixed $where
+     * @param string $tablename
+     *
+     * @return nb delete
+     */
+    public function delete($where=null, $tablename);
 
      /**
       * Commence une transaction

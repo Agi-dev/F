@@ -2,9 +2,10 @@ Ma librairie que c'est la mienne ;o)
 
 - I - Dépendances
 
-* Framework PHP    : PhalconPHP (http://www.phalconphp.com)
+* Framework PHP    : PHPExcel (http://phpexcel.codeplex.com/)
 * Tests Unitaires  : PHP
-* Project Manager  : PM (http://blog.phppro.fr/?post/2011/04/13/PM-%3A-Developpeurs-augmentez-votre-productivite)
+
+You can install dependencies with Composer package tool (http://getcomposer.org/).
 
 - II - Tests Intégrations
 

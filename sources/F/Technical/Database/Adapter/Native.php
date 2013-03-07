@@ -21,6 +21,8 @@ namespace F\Technical\Database\Adapter;
  */
 require_once 'F/Technical/Database/Adapter/Definition.php';
 
+require_once 'F/Technical/Filesystem/Service.php';
+
 /**
  * F\Technical\Database\Adapter\Native is the native adapter
  * for the database service, that implements PHP natives primitives.
@@ -38,7 +40,7 @@ class Native
     /**
      * resource database
      *
-     * @var \Phalcon_Db_Adapter_Mysql
+     * @var \Zend_Db_Adapter_Mysqli
      */
 	protected $_cnx = null;
 
@@ -49,24 +51,26 @@ class Native
 	 */
 	protected $_queriesPath = null;
 
-	/* (non-PHPdoc)
+	/**
+	 * (non-PHPdoc)
      * @see F\Technical\Database\Adapter.Definition::fetchAll()
      */
-    public function fetchAll ($sql)
+    public  function fetchAll ($sql)
     {
-        f_dbg(array($sql, $this->_cnx->fetchAll($sql, \Phalcon_Db::DB_ASSOC)));
-    	return $this->_cnx->fetchAll($sql, \Phalcon_Db::DB_ASSOC);
+        return $this->_cnx->fetchAll($sql);
     }
 
-	/* (non-PHPdoc)
+	/**
+	 * (non-PHPdoc)
      * @see F\Technical\Database\Adapter.Definition::isConnected()
      */
     public function isConnected ()
     {
-    	return ($this->_cnx instanceof \Phalcon_Db_Adapter_Mysql);
+        return ($this->_cnx instanceof \mysqli);
     }
 
-	/* (non-PHPdoc)
+	/**
+	 * (non-PHPdoc)
 	 * @see F\Technical\Database\Adapter.Definition::executeDirectQuery()
 	 */
 	public function executeDirectQuery($sql)
@@ -74,17 +78,23 @@ class Native
 		return $this->_cnx->query($sql);
 	}
 
-	/* (non-PHPdoc)
+	/**
+	 * (non-PHPdoc)
 	 * @see F\Technical\Database\Adapter.Definition::connect()
 	 */
 	public function connect($config)
 	{
-		$this->_cnx = \Phalcon_Db::factory("Mysql", (object) $config);
-		//$this->_activeLog("E:\dev\_logs\db.log");
+        $this->_cnx = new \mysqli($config['host'], $config['username'], $config['password'], $config['dbname'],
+                                    (true === isset($config['port']) ? $config['port']:null));
+
+        if ($this->_cnx->connect_errno) {
+            throw new \RuntimeException($mysqli->connect_errno . ' ' . $mysqli->connect_error);
+        }
 		return $this;
 	}
 
-	/* (non-PHPdoc)
+	/**
+	 * (non-PHPdoc)
      * @see F\Technical\Database\Adapter.Definition::getConnectConfig()
      */
     public function getConnectConfig()
@@ -92,7 +102,8 @@ class Native
     	return \F\Technical\Registry\Service::singleton()->getProperty('_databaseConfig');
     }
 
-	/* (non-PHPdoc)
+	/**
+	 * (non-PHPdoc)
 	 * @see F\Technical\Database\Adapter.Definition::getFileContent()
 	 */
 	public function getFileContent($filename)
@@ -109,16 +120,18 @@ class Native
 		return include $this->_queriesPath . '/' . $file .'.php';
 	}
 
-	/* (non-PHPdoc)
+	/**
+	 * (non-PHPdoc)
 	 * @see F\Technical\Database\Adapter.Definition::beginTransaction()
 	 */
 	public function beginTransaction()
 	{
-		$this->_cnx->begin();
+		$this->_cnx->beginTransaction();		
 		return $this;
 	}
 
-	/* (non-PHPdoc)
+	/**
+	 * (non-PHPdoc)
 	 * @see F\Technical\Database\Adapter.Definition::commit()
 	 */
 	public function commitTransaction()
@@ -127,7 +140,8 @@ class Native
         return $this;
 	}
 
-	/* (non-PHPdoc)
+	/**
+	 * (non-PHPdoc)
 	 * @see F\Technical\Database\Adapter.Definition::rollback()
 	 */
 	public function rollbackTransaction()
@@ -177,5 +191,32 @@ class Native
 		$logger = new \Phalcon_Logger("File", $logname);
 		$this->_cnx->setLogger($logger);
 		return $this;
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see F\Technical\Database\Adapter.Definition::insert()
+	 */
+	public function insert($sql)
+	{
+        return $this->executeDirectQuery($sql)->rowCount();
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see F\Technical\Database\Adapter.Definition::delete()
+	 */
+	public function delete($sql)
+	{
+        return $this->executeDirectQuery($sql)->rowCount();
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see F\Technical\Database\Adapter.Definition::update()
+	 */
+	public function update($sql)
+	{
+		return $this->executeDirectQuery($sql)->rowCount();
 	}
 }

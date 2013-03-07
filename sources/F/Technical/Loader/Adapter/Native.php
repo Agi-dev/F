@@ -8,7 +8,7 @@
  * <LICENSETXT>
  *
  * @category  F
- * @author    Fran�ois Schneider <francoisschneider@neuf.fr>
+ * @author    François Schneider <francoisschneider@neuf.fr>
  * @package    F\Technical\Loader\Adapter
  * @copyright Copyright (c) 2012 <COPYRIGHT>
  * @license   <LICENSE>

@@ -154,5 +154,152 @@ class Native
 
         return $result;
 	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see \F\Technical\Filesystem\Adapter\Definition::getFileSize()
+	 */
+	public function getFileSize($filename)
+	{
+		$err1   = error_get_last();
+        $result = @filesize($filename);
+        $err    = error_get_last();
+
+        if (false === $result && (serialize($err1) !== serialize($err))) {
+            throw new \RuntimeException($err['message'], 1000 + $err['type']);
+        }
+
+        return (int) round($result / 1024);
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see \F\Technical\Filesystem\Adapter\Definition::copy()
+	 */
+	public function copy($source, $destination)
+	{
+		$err1   = error_get_last();
+		$result = @copy($source, $destination);
+		$err    = error_get_last();
+		
+		if (false === $result && (serialize($err1) !== serialize($err))) {
+			throw new \RuntimeException($err['message'], 1000 + $err['type']);
+		}
+		
+		return $this;
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see \F\Technical\Filesystem\Adapter\Definition::mkdir()
+	 */
+	public function mkdir($dir) 
+	{
+		$err1   = error_get_last();
+		$result = @mkdir($dir);
+		$err    = error_get_last();
+		
+		if (false === $result && (serialize($err1) !== serialize($err))) {
+			throw new \RuntimeException($err['message'], 1000 + $err['type']);
+		}
+		
+		return $this;
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see \F\Technical\Filesystem\Adapter\Definition::scandir()
+	 */
+	public function scandir ($dir)
+	{
+		$err1   = error_get_last();
+		$result = @scandir($dir);
+		$err    = error_get_last();
+		
+		if (false === $result && (serialize($err1) !== serialize($err))) {
+			throw new \RuntimeException($err['message'], 1000 + $err['type']);
+		}
+		
+		return $result;
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see \F\Technical\Filesystem\Adapter\Definition::is_dir()
+	 */
+	public function is_dir ($filename)
+	{
+		$err1   = error_get_last();
+		$result = @is_dir($filename);
+		$err    = error_get_last();
+		
+		if (false === $result && (serialize($err1) !== serialize($err))) {
+			throw new \RuntimeException($err['message'], 1000 + $err['type']);
+		}
+		
+		return true === $result;
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see \F\Technical\Filesystem\Adapter\Definition::unlink()
+	 */
+	public function unlink ($filename)
+	{
+		$err1   = error_get_last();
+		$result = @unlink($filename);
+		$err    = error_get_last();
+		
+		if (false === $result && (serialize($err1) !== serialize($err))) {
+			throw new \RuntimeException($err['message'], 1000 + $err['type']);
+		}
+		
+		return $result;
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see \F\Technical\Filesystem\Adapter\Definition::rmdir()
+	 */
+	public function rmdir ($dirname)
+	{
+		$err1   = error_get_last();
+		$result = @rmdir($dirname);
+		$err    = error_get_last();
+		
+		if (false === $result && (serialize($err1) !== serialize($err))) {
+			throw new \RuntimeException($err['message'], 1000 + $err['type']);
+		}
+		
+		return $result;
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see \F\Technical\Filesystem\Adapter\Definition::is_deleteable()
+	 */
+	public function is_deletable($filename)
+	{
+		return $this->is_writable($filename);
+	}
+	
+	/**
+	 * 
+	 * @param unknown $filename
+	 * @throws \RuntimeException
+	 * @return boolean
+	 */
+	public function is_writable($filename)
+	{
+		$err1   = error_get_last();
+		$result = @is_writable($filename);
+		$err    = error_get_last();
+		
+		if (false === $result && (serialize($err1) !== serialize($err))) {
+			throw new \RuntimeException($err['message'], 1000 + $err['type']);
+		}
+		
+		return true === $result;
+	}
 }
 // @codeCoverageIgnoreEnd

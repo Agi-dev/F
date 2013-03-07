@@ -37,22 +37,35 @@ abstract class Base
 	 */
 	protected $_service;
 	/**
-	 * Returns the class name of the service to unit-test
+	 * Returns the path of the service to unit-test
+	 *
+	 * @return string
+	 */
+	public function getServicePath()
+	{
+		return preg_replace('|Test$|', '', get_class($this));
+	}
+	/**
+	 * Returns the class of the service to unit-test
 	 *
 	 * @return string
 	 */
 	public function getServiceClass()
 	{
-		return preg_replace('|Test$|', '', get_class($this));
+		$path = dirname(str_replace('\\', '/', $this->getServicePath()));
+		return str_replace('/','\\',$path) . '\\Service';
 	}
 	/**
 	 * Set-ups the unit test
 	 */
 	public function setUp()
 	{
-		$serviceClass = $this->getServiceClass();
-		require_once str_replace('_', '/', $serviceClass) . '.php';
+		
+        $serviceClass = $this->getServiceClass();     
+        require_once $this->getServiceClass() . '.php';
 		$this->_service = new $serviceClass();
+		
+		
 	}
 	/**
 	 * Returns the tested service instance.

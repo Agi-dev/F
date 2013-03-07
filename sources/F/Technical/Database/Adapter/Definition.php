@@ -142,5 +142,32 @@ interface Definition
      * @return int
      */
     public function getLastInsertId($tablename);
+    
+    /**
+     * Execute un update sql
+     *
+     * @param string $sql script sql
+     *
+     * @return bool
+     */
+    public function update($sql);
+    
+    /**
+     * Execute un insert sql
+     *
+     * @param string $sql script sql
+     *
+     * @return bool
+     */
+    public function insert($sql);
+    
+    /**
+     * Execute un delete sql
+     *
+     * @param string $sql script sql
+     *
+     * @return bool
+     */
+    public function delete($sql);
 }
 // @codeCoverageIgnoreEnd

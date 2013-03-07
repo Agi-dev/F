@@ -23,6 +23,11 @@ namespace F\Technical\Flash\Adapter;
 require_once 'F/Technical/Flash/Adapter/Definition.php';
 
 /**
+ * @see F/Technical/Session/Service.php
+ */
+require_once 'F/Technical/Session/Service.php'; 
+
+/**
  * F\Technical\Flash\Adapter\Native is the native adapter
  * for the flash service, that implements PHP natives primitives.
  *
@@ -36,7 +41,29 @@ require_once 'F/Technical/Flash/Adapter/Definition.php';
 class Native
     implements Definition
 {
+	/**
+	 * liste des messages flash
+	 * @var array
+	 */
 	protected $_flash = array();
+	
+	/**
+	 * session 
+	 * @var \F\Technical\Session\Service
+	 */
+	protected $_session;
+	
+	/**
+	 * constructeur
+	 */
+	public function __construct()
+	{
+		$this->_session =  \F\Technical\Session\Service::singleton();
+		if ( true === $this->_session->isVarnameExists('f_flashSession') ) {
+			$this->_flash = $this->_session->get('f_flashSession');
+		}
+	}
+	
 	/**
 	 * (non-PHPdoc)
 	 * @see F\Technical\Flash\Adapter.Definition::addMessage()
@@ -44,7 +71,7 @@ class Native
 	public function addFlash($msg, $priority)
 	{
 		$this->_flash[$msg] = $priority;
-		return $this;
+		return $this->_saveToSession();
 	}
 
 	/**
@@ -63,6 +90,25 @@ class Native
     public function clearFlash()
     {
     	$this->_flash = array();
+    	return $this->_saveToSession();
+    }
+    
+    /**
+     * (non-PHPdoc)
+     * @see \F\Technical\Flash\Adapter\Definition::isFlashExists()
+     */
+    public function isFlashExists()
+    {
+    	return (count($this->_flash) > 0);
+    }
+    
+    /**
+     * Sauvegarde en session
+     * @return \F\Technical\Flash\Adapter\Native
+     */
+    protected function _saveToSession()
+    {
+    	$this->_session->set('f_flashSession' ,$this->_flash);
     	return $this;
     }
 }

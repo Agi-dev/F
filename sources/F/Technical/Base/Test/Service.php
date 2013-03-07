@@ -37,21 +37,18 @@ abstract class Service
      * @var mixed
      */
     protected $_mockAdapter;
+
     /**
      * Set-ups the unit test
      */
     public function setUp()
     {
-        $mockClass = str_replace(
-         '/',
-         '\\',
-            dirname(str_replace('\\', '/', $this->getServiceClass()))
-        ) . '\\Adapter\Mock';
+        $path = dirname(str_replace('\\', '/', $this->getServicePath()));
+        $mockClass = str_replace('/', '\\', $path) . '\\Adapter\Mock';
         $serviceClass = $this->getServiceClass();
 
         require_once str_replace('\\', '/', $mockClass) . '.php';
         require_once str_replace('\\', '/', $serviceClass) . '.php';
-
 
         $this->_mockAdapter = new $mockClass;
         if (true === method_exists($this, 'setUpMockAdapter')) {
@@ -59,6 +56,7 @@ abstract class Service
         }
         $this->_service = new $serviceClass($this->_mockAdapter);
     }
+
     /**
      * Returns the mock adapter of the tested service instance.
      *
@@ -68,6 +66,7 @@ abstract class Service
     {
         return $this->_mockAdapter;
     }
+
     /**
      * Returns the mock adapter for the unit-tested service
      *
@@ -77,6 +76,7 @@ abstract class Service
     {
         return $this->_mockAdapter;
     }
+
     /**
      * Mocks the specified method of the underlying adapter.
      *
@@ -91,6 +91,7 @@ abstract class Service
 
         return $this;
     }
+
     /**
      * Call Mock Adapter Method
      * @param string $method
@@ -98,17 +99,16 @@ abstract class Service
      */
     public function assertAdapterCalled($method)
     {
-        try
-        {
+        try {
             $this->getMockAdapter()->getMethodCall($method, 0);
-        } catch ( RuntimeException $e )
-        {
+        } catch (RuntimeException $e) {
             if (404 === $e->getCode()) {
                 $this->fail("No call registered for method '$method'");
             }
             throw $e;
         }
     }
+
     /**
      * Test Factory
      */
@@ -126,6 +126,7 @@ abstract class Service
         $this->assertEquals('value1', $instanceOne->testProperty);
         $this->assertEquals('value2', $instanceTwo->testProperty);
     }
+
     /**
      * Test singleton
      */

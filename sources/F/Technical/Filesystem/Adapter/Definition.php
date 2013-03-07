@@ -94,5 +94,76 @@ interface Definition
 	 * @return string
 	 */
 	public function getFileContents($filename);
+	
+	/**
+	 * Give file size in ko
+	 *
+	 * @param $filename
+	 *
+	 * @return int
+	 */
+	public function getFileSize($filename);
+	
+	/**
+	 * Copies file
+	 *
+	 * @param string $source
+	 * @param string $destination
+	 *
+	 * @return Asm\Technical\Filesystem\Adapter\Definition
+	 */
+	public function copy($source, $destination);
+	
+	/**
+	 * List files and directories inside the specified path
+	 * 
+	 * @param string $dir
+	 * 
+	 * @return array
+	 */
+	public function scandir($dir);
+	
+	/**
+	 * Tells whether the filename is a directory
+	 *
+	 * @param string $filename
+	 *
+	 * @return boolean
+	*/
+	public function is_dir($filename);
+	
+	/**
+	 * Makes directory
+	 * 
+	 * @param unknown $dir
+	 */
+	public function mkdir($dir);
+	
+	/**
+	 * Deletes a file
+	 *
+	 * @param string $filename
+	 *
+	 * @return boolean
+	 */
+	public function unlink($filename);
+	
+	/**
+	 * Removes directory
+	 *
+	 * @param string $filename
+	 *
+	 * @return boolean
+	 */
+	public function rmdir($dirname);
+	
+	/**
+	 * Check if filename is deleteable
+	 * 
+	 * @param string $filename
+	 * 
+	 * @return bool
+	 */
+	public function is_deletable($filename);
 }
 // @codeCoverageIgnoreEnd

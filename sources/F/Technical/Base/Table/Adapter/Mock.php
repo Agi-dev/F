@@ -53,9 +53,29 @@ class Mock
 
 	/**
 	 * (non-PHPdoc)
-	 * @see F\Technical\Base\Table\Adapter.Definition::update()
+	 * @see \F\Technical\Base\Table\Adapter\Definition::insert()
 	 */
-	public function update($data, $where, $tablename)
+	public function insert($data, $tablename)
+    {
+        $args = func_get_args();
+        return $this->storeCallAndReturnExpectedResult(__FUNCTION__, $args);
+    }
+    
+    /**
+     * (non-PHPdoc)
+     * @see \F\Technical\Base\Table\Adapter\Definition::update()
+     */
+    public function update($data, $where, $tablename)
+    {
+        $args = func_get_args();
+        return $this->storeCallAndReturnExpectedResult(__FUNCTION__, $args);
+    }
+    
+    /**
+     * (non-PHPdoc)
+     * @see \F\Technical\Base\Table\Adapter\Definition::delete()
+     */
+    public function delete($where=null, $tablename)
     {
         $args = func_get_args();
         return $this->storeCallAndReturnExpectedResult(__FUNCTION__, $args);
