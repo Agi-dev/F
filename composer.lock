@@ -1,0 +1,78 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
+    "hash": "60f51b85ae8bb23e729460c184730938",
+    "packages": [
+        {
+            "name": "2085020/zendframework1",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/2085020/zendframework1.git",
+                "reference": "3ac051a30978e2df805d86d071a8fda7d457d65d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/2085020/zendframework1/zipball/3ac051a30978e2df805d86d071a8fda7d457d65d",
+                "reference": "3ac051a30978e2df805d86d071a8fda7d457d65d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.4"
+            },
+            "bin": [
+                "bin/classmap_generator.php",
+                "bin/zf.bat",
+                "bin/zf.php",
+                "bin/zf.sh"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Zend": "src/",
+                    "ZendX": "src/"
+                }
+            },
+            "notification-url": "http://packagist.org/downloads/",
+            "include-path": [
+                "src/"
+            ],
+            "license": [
+                "New BSD"
+            ],
+            "authors": [
+                {
+                    "name": "Emagister Tech",
+                    "email": "php@emagister.com",
+                    "homepage": "http://engineering.emagister.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A Zend Framework 1.12.x mirror for Emagister",
+            "keywords": [
+                "Zend Framework",
+                "emagister",
+                "zend"
+            ],
+            "time": "2013-01-04 14:28:48"
+        }
+    ],
+    "packages-dev": [
+
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "2085020/zendframework1": 20
+    },
+    "platform": [
+
+    ],
+    "platform-dev": [
+
+    ]
+}
