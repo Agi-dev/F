@@ -1,0 +1,14 @@
+{
+    "name": "Feelpix/F",
+    "description": "PHP Service Libraries",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "François Schneider",
+            "email": "fschneider@astek.fr"
+        }
+    ],
+    "require": {
+        "zendframework/zendframework1": "dev-master"
+    }
+}

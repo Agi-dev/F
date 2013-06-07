@@ -10,8 +10,11 @@ set_include_path(
 include_once 'F/Technical/functions.php';
 
 // AUTOLOAD
-require_once 'F/Technical/Loader/Service.php';
-\F\Technical\Loader\Service::singleton()->autoload();
+require_once 'Zend/Loader/Autoloader.php';
+Zend_Loader_Autoloader::getInstance();
+
+// Starting session
+\Zend_Session::start();
 
 // require_once 'F/Technical/Loader/Service.php';
 // \F\Technical\Loader\Service::singleton()->autoload();
@@ -19,8 +22,8 @@ require_once 'F/Technical/Loader/Service.php';
 // DATABASE
 $bdd = array(
     'host'     => '127.0.0.1',
-    'username' => 'feelpix',
-    'password' => 'feelpix',
+    'username' => 'root',
+    'password' => '',
     'dbname' => 'f_test'
 );
 require_once '\F\Technical\Registry\Service.php';

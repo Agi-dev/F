@@ -122,11 +122,10 @@ abstract class Service
     /**
      * Throws the specified localized exception
      *
-     * @param string $key the exception key
-     * @param string $arg1 the first message variable
-     * @param string $arg2 the second message variable
-     * @param string ...
-     *
+     * @internal param string $key the exception key
+     * @internal param string $arg1 the first message variable
+     * @internal param string $arg2 the second message variable
+     * @internal param $string ...
      * @throws \RuntimeException always
      */
     public function throwException()

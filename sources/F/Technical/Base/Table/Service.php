@@ -40,8 +40,8 @@ abstract class Service
      */
     public function checkId($id)
     {
-        $result = $this->getById($id);
-        if (true === isset($result['id'])) {
+    	$result = $this->getById($id);
+    	if (true === isset($result['id']) ) {
             return true;
         }
         $this->throwException('table.id.notfound', $id, $this->_tablename);
@@ -57,17 +57,17 @@ abstract class Service
     public function getById($id)
     {
         $result = $this->_fetchAll($this->_tablename . '.getById', array('id' => $id));
-        return (true === isset($result[0]) ? $result[0] : $result);
+        return (true===isset($result[0])?$result[0]:$result);
     }
-
+    
     /**
      * get All
-     *
+     * 
      * @return array
      */
     public function getAll()
     {
-        return $this->_fetchAll($this->_tablename . '.getAll');
+    	return $this->_fetchAll($this->_tablename . '.getAll');
     }
 
     /**
@@ -78,19 +78,19 @@ abstract class Service
      *
      * @return int nb updated
      */
-    public function update($data, $where = array())
+    public function update($data, $where=array())
     {
-        $this->_beginTransaction();
-        try {
-            $nb = $this->getAdapter()->update($data, $where, $this->_tablename);
-            $this->_commitTransaction();
-        } catch (Exception $e) {
-            $this->_rollbackTransaction();
-            $this->throwException('sql.update.dbfailure', $e->getMessage());
-        }
-        return $nb;
+    	$this->_beginTransaction();
+    	try {
+    		$nb = $this->getAdapter()->update($data, $where, $this->_tablename);
+    		$this->_commitTransaction();
+    	} catch (Exception $e) {
+    		$this->_rollbackTransaction();
+    		$this->throwException('sql.update.dbfailure', $e->getMessage());
+    	}
+    	return $nb;
     }
-
+    
     /**
      * insert data
      *
@@ -100,17 +100,17 @@ abstract class Service
      */
     public function insert($data)
     {
-        $this->_beginTransaction();
-        try {
-            $id = $this->getAdapter()->insert($data, $this->_tablename);
-            $this->_commitTransaction();
-        } catch (Exception $e) {
-            $this->_rollbackTransaction();
-            $this->throwException('sql.insert.dbfailure', $e->getMessage());
-        }
-        return $id;
+    	$this->_beginTransaction();
+    	try {
+    		$id = $this->getAdapter()->insert($data, $this->_tablename);
+    		$this->_commitTransaction();
+    	} catch (Exception $e) {
+    		$this->_rollbackTransaction();
+    		$this->throwException('sql.insert.dbfailure', $e->getMessage());
+    	}
+    	return $id;
     }
-
+    
     /**
      * delete data
      *
@@ -120,15 +120,15 @@ abstract class Service
      */
     public function delete($where)
     {
-        $this->_beginTransaction();
-        try {
-            $nb = $this->getAdapter()->delete($where, $this->_tablename);
-            $this->_commitTransaction();
-        } catch (Exception $e) {
-            $this->_rollbackTransaction();
-            $this->throwException('sql.delete.dbfailure', $e->getMessage());
-        }
-        return $nb;
+    	$this->_beginTransaction();
+    	try {
+    		$nb = $this->getAdapter()->delete($where, $this->_tablename);
+    		$this->_commitTransaction();
+    	} catch (Exception $e) {
+    		$this->_rollbackTransaction();
+    		$this->throwException('sql.delete.dbfailure', $e->getMessage());
+    	}
+    	return $nb;
     }
 
     /**
@@ -163,8 +163,8 @@ abstract class Service
         $this->getAdapter()->rollbackTransaction();
         return $this;
     }
-
-    /**
+    
+	/**
      * fetch all by key and params
      *
      * @param string $key
@@ -172,7 +172,7 @@ abstract class Service
      *
      * @return array
      */
-    public function _fetchAll($key, $params = array())
+    public function _fetchAll($key, $params=array())
     {
         return $this->getAdapter()->fetchAll($key, $params);
     }

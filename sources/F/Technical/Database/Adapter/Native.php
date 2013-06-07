@@ -66,7 +66,7 @@ class Native
      */
     public function isConnected ()
     {
-        return ($this->_cnx instanceof \mysqli);
+        return ((null !== $this->_cnx)?$this->_cnx->isConnected():false);
     }
 
 	/**
@@ -84,12 +84,10 @@ class Native
 	 */
 	public function connect($config)
 	{
-        $this->_cnx = new \mysqli($config['host'], $config['username'], $config['password'], $config['dbname'],
-                                    (true === isset($config['port']) ? $config['port']:null));
-
-        if ($this->_cnx->connect_errno) {
-            throw new \RuntimeException($mysqli->connect_errno . ' ' . $mysqli->connect_error);
-        }
+        $config['driver'] = 'Mysqli';
+        $this->_cnx = new \Zend_Db_Adapter_Mysqli($config);
+        $this->_cnx->getConnection();
+        $this->_cnx->setFetchMode(\Zend_Db::FETCH_ASSOC);
 		return $this;
 	}
 
